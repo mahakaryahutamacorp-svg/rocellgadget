@@ -3,31 +3,35 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Katalog Handphone</title>
+  <title>Rocell Gadget | Katalog Handphone</title>
+  <meta name="description" content="Rocell Gadget - Jual beli handphone, tablet, dan aksesoris. Stok terupdate, harga bersaing. Hubungi via WhatsApp untuk pemesanan." />
+  <meta name="keywords" content="rocell gadget, jual beli hp, toko hp, iPad, Samsung, Oppo, bekas, second" />
+  <meta property="og:title" content="Rocell Gadget | Katalog Handphone" />
+  <meta property="og:description" content="Lihat katalog handphone dan aksesoris kami. Klik untuk chat langsung via WhatsApp." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://rocellgadget.com" />
+  <link rel="icon" href="/favicon.ico" />
+
   <!-- Bootstrap 5 -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <!-- DataTables -->
   <link href="https://cdn.datatables.net/v/bs5/dt-2.1.7/r-3.0.3/datatables.min.css" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
   <style>
-    body{background:#0d1117;color:#e6edf3}
-    .navbar,.modal-content{background:#161b22;color:#e6edf3}
-    .table{--bs-table-bg:transparent;color:#e6edf3}
-    .table thead th{background:#0b1220;color:#91a5c6;border-bottom:1px solid #23375a}
-    .table tbody tr{border-color:#23375a}
-    .card{background:#0f1524;border:1px solid #23375a}
+    :root{--bg:#0d1117;--card:#0f1524;--muted:#91a5c6;--accent:#2563eb}
+    body{background:var(--bg);color:#e6edf3;font-family:Inter,system-ui,Segoe UI,Roboto,'Helvetica Neue',Arial}
+    .navbar,.modal-content{background:#161b22}
+    .table thead th{background:#0b1220;color:var(--muted);border-bottom:1px solid #23375a}
+    .card{background:var(--card);border:1px solid #23375a}
     .form-control,.form-select{background:#0b1220;color:#e6edf3;border-color:#23375a}
-    .btn-primary{background:#2563eb;border-color:#2563eb}
-    .btn-outline-light{border-color:#23375a}
-    .badge{font-weight:500}
-    .dt-search{display:none} /* hide built-in search; we use our own */
-    @media (max-width: 576px){
-      .brand-filter-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-    }
+    .btn-primary{background:var(--accent);border-color:var(--accent)}
+    .wa-btn{position:fixed;right:18px;bottom:18px;z-index:9999;border-radius:999px;padding:12px 14px;box-shadow:0 6px 18px rgba(0,0,0,.35)}
+    .small-muted{color:#9fb0c8;font-size:.92rem}
+    @media (max-width:576px){.brand-filter-grid{grid-template-columns:repeat(2,1fr)}}
   </style>
 </head>
 <body>
-  <nav class="navbar navbar-expand-lg border-bottom border-dark sticky-top">
+  <nav class="navbar navbar-expand-lg border-bottom border-dark sticky-top py-2">
     <div class="container-fluid">
       <button class="btn btn-outline-light me-2" data-bs-toggle="modal" data-bs-target="#filterModal"><i class="bi bi-sliders"></i> Filter</button>
       <div class="input-group flex-grow-1 me-2">
@@ -60,6 +64,12 @@
       </div>
     </div>
   </main>
+
+  <!-- Floating WhatsApp Button -->
+  <a id="waBtn" class="btn btn-success wa-btn" href="#" target="_blank" title="Chat via WhatsApp">
+    <i class="bi bi-whatsapp" style="font-size:20px"></i>
+    <span class="d-none d-md-inline ms-2">Chat via WhatsApp</span>
+  </a>
 
   <!-- Modal Filter -->
   <div class="modal fade" id="filterModal" tabindex="-1" aria-hidden="true">
@@ -174,6 +184,10 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.datatables.net/v/bs5/dt-2.1.7/r-3.0.3/datatables.min.js"></script>
   <script>
+    // ====== CONFIG ======
+    const WA_NUMBER = '6281211172228'; // ganti kalau nomor lain
+    const WA_MSG_PREFIX = 'Halo, saya minat produk ini dari Rocell Gadget:';
+
     // ====== DATA SAMPLE (ubah sesuai stok toko) ======
     let items = [
       { id: crypto.randomUUID(), kategori:'Tablet', brand:'Apple', nama:'Ipad Mini 2 4G 16GB', stok:1, harga:400000, kondisi:'Bekas' },
@@ -230,9 +244,7 @@
     }
 
     function applyFilters(){
-      // Brand filter
       const selectedBrands = [...document.querySelectorAll('.brandCheck:checked')].map(e=>e.value);
-      // Price
       const min = parseInt(document.getElementById('minPrice').value || '0');
       const max = parseInt(document.getElementById('maxPrice').value || '0');
       const kond = document.getElementById('kondisiSelect').value;
@@ -244,7 +256,6 @@
         return brandOk && hargaOk && kondOk;
       });
 
-      // Render temporary view without mutating 'items'
       const tbody = document.querySelector('#tblBarang tbody');
       table.clear();
       tbody.innerHTML='';
@@ -270,8 +281,8 @@
           e.preventDefault();
           const id = e.target.closest('tr').dataset.id;
           const r = items.find(x=>x.id===id);
-          const msg = `Halo, saya minat ${r.brand} ${r.nama} (stok ${r.stok}). Harga mulai Rp ${toIDR(r.harga)}.`;
-          const url = `https://wa.me/?text=${encodeURIComponent(msg)}`;
+          const msg = `${WA_MSG_PREFIX} ${r.brand} ${r.nama} (stok ${r.stok}). Harga mulai Rp ${toIDR(r.harga)}.`;
+          const url = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
           window.open(url, '_blank');
         };
       });
@@ -297,7 +308,11 @@
           e.preventDefault();
           const id = e.target.closest('tr').dataset.id;
           const r = items.find(x=>x.id===id);
-          alert(`${r.kategori} - ${r.brand}\n${r.nama}\nStok: ${r.stok}\nKondisi: ${r.kondisi}\nHarga: Rp ${toIDR(r.harga)}`);
+          alert(`${r.kategori} - ${r.brand}
+${r.nama}
+Stok: ${r.stok}
+Kondisi: ${r.kondisi}
+Harga: Rp ${toIDR(r.harga)}`);
         };
       });
     }
@@ -336,10 +351,17 @@
       }
     }
 
+    // Floating WA button link update
+    function updateWaButton(){
+      const url = `https://wa.me/${WA_NUMBER}`;
+      const waBtn = document.getElementById('waBtn');
+      waBtn.href = url;
+    }
+
     // ====== BOOT ======
     document.addEventListener('DOMContentLoaded', ()=>{
       renderTable();
-      // search
+      updateWaButton();
       document.getElementById('searchInput').addEventListener('input', (e)=>{
         table.search(e.target.value).draw();
       });

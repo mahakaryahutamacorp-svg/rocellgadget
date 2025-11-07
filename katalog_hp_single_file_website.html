@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Katalog Handphone</title>
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- DataTables -->
+  <link href="https://cdn.datatables.net/v/bs5/dt-2.1.7/r-3.0.3/datatables.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+  <style>
+    body{background:#0d1117;color:#e6edf3}
+    .navbar,.modal-content{background:#161b22;color:#e6edf3}
+    .table{--bs-table-bg:transparent;color:#e6edf3}
+    .table thead th{background:#0b1220;color:#91a5c6;border-bottom:1px solid #23375a}
+    .table tbody tr{border-color:#23375a}
+    .card{background:#0f1524;border:1px solid #23375a}
+    .form-control,.form-select{background:#0b1220;color:#e6edf3;border-color:#23375a}
+    .btn-primary{background:#2563eb;border-color:#2563eb}
+    .btn-outline-light{border-color:#23375a}
+    .badge{font-weight:500}
+    .dt-search{display:none} /* hide built-in search; we use our own */
+    @media (max-width: 576px){
+      .brand-filter-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg border-bottom border-dark sticky-top">
+    <div class="container-fluid">
+      <button class="btn btn-outline-light me-2" data-bs-toggle="modal" data-bs-target="#filterModal"><i class="bi bi-sliders"></i> Filter</button>
+      <div class="input-group flex-grow-1 me-2">
+        <span class="input-group-text bg-transparent text-secondary border-secondary"><i class="bi bi-search"></i></span>
+        <input id="searchInput" class="form-control border-secondary" type="search" placeholder="Cari Nama Barang…" autocomplete="off" />
+      </div>
+      <div class="d-flex gap-2">
+        <button id="btnReset" class="btn btn-outline-light">Reset</button>
+        <button id="btnTambah" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Tambah</button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container py-3">
+    <div class="card">
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table id="tblBarang" class="table table-hover align-middle w-100">
+            <thead>
+              <tr>
+                <th>Barang</th>
+                <th>Stok</th>
+                <th>Harga Jual</th>
+                <th class="text-center">Aksi</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Modal Filter -->
+  <div class="modal fade" id="filterModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-sliders"></i> Filter</h5>
+          <button class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Brand</label>
+            <div class="d-grid gap-2 brand-filter-grid" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr))"> 
+              <div><input class="form-check-input me-1 brandCheck" type="checkbox" value="Apple" id="brandApple" checked> <label for="brandApple">Apple</label></div>
+              <div><input class="form-check-input me-1 brandCheck" type="checkbox" value="Samsung" id="brandSamsung" checked> <label for="brandSamsung">Samsung</label></div>
+              <div><input class="form-check-input me-1 brandCheck" type="checkbox" value="Oppo" id="brandOppo" checked> <label for="brandOppo">Oppo</label></div>
+              <div><input class="form-check-input me-1 brandCheck" type="checkbox" value="Xiaomi" id="brandXiaomi" checked> <label for="brandXiaomi">Xiaomi</label></div>
+              <div><input class="form-check-input me-1 brandCheck" type="checkbox" value="Vivo" id="brandVivo" checked> <label for="brandVivo">Vivo</label></div>
+              <div><input class="form-check-input me-1 brandCheck" type="checkbox" value="Realme" id="brandRealme" checked> <label for="brandRealme">Realme</label></div>
+            </div>
+          </div>
+          <div class="row g-3">
+            <div class="col-6">
+              <label class="form-label">Harga Min (Rp)</label>
+              <input type="number" class="form-control" id="minPrice" placeholder="0" />
+            </div>
+            <div class="col-6">
+              <label class="form-label">Harga Max (Rp)</label>
+              <input type="number" class="form-control" id="maxPrice" placeholder="10000000" />
+            </div>
+          </div>
+          <div class="mt-3">
+            <label class="form-label">Kondisi</label>
+            <select id="kondisiSelect" class="form-select">
+              <option value="">Semua</option>
+              <option value="Baru">Baru</option>
+              <option value="Bekas">Bekas</option>
+              <option value="Reman/OEM">Reman/OEM</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-outline-light" data-bs-dismiss="modal">Tutup</button>
+          <button id="applyFilter" class="btn btn-primary" data-bs-dismiss="modal">Terapkan</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Tambah/Edit -->
+  <div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editTitle">Tambah Barang</h5>
+          <button class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row g-3">
+            <div class="col-6">
+              <label class="form-label">Brand</label>
+              <input id="fBrand" class="form-control" placeholder="Apple/Samsung/Oppo" />
+            </div>
+            <div class="col-6">
+              <label class="form-label">Kategori</label>
+              <select id="fKategori" class="form-select">
+                <option>Handphone</option>
+                <option>Tablet</option>
+                <option>Jam tangan</option>
+                <option>Aksesoris</option>
+              </select>
+            </div>
+            <div class="col-12">
+              <label class="form-label">Nama</label>
+              <input id="fNama" class="form-control" placeholder="Contoh: Ipad Mini 2 4G 16GB" />
+            </div>
+            <div class="col-6">
+              <label class="form-label">Stok</label>
+              <input id="fStok" type="number" min="0" class="form-control" value="1" />
+            </div>
+            <div class="col-6">
+              <label class="form-label">Harga Mulai (Rp)</label>
+              <input id="fHarga" type="number" min="0" class="form-control" value="0" />
+            </div>
+            <div class="col-12">
+              <label class="form-label">Kondisi</label>
+              <input id="fKondisi" class="form-control" placeholder="Baru/Bekas/Reman" />
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-outline-light" data-bs-dismiss="modal">Batal</button>
+          <button id="saveItem" class="btn btn-primary">Simpan</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <template id="aksiTpl">
+    <div class="dropstart">
+      <button class="btn btn-outline-light" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-list"></i></button>
+      <ul class="dropdown-menu dropdown-menu-dark">
+        <li><a class="dropdown-item btn-detail" href="#">Detail</a></li>
+        <li><a class="dropdown-item btn-wa" href="#">Kirim ke WhatsApp</a></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item btn-edit" href="#">Edit</a></li>
+        <li><a class="dropdown-item text-danger btn-hapus" href="#">Hapus</a></li>
+      </ul>
+    </div>
+  </template>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.datatables.net/v/bs5/dt-2.1.7/r-3.0.3/datatables.min.js"></script>
+  <script>
+    // ====== DATA SAMPLE (ubah sesuai stok toko) ======
+    let items = [
+      { id: crypto.randomUUID(), kategori:'Tablet', brand:'Apple', nama:'Ipad Mini 2 4G 16GB', stok:1, harga:400000, kondisi:'Bekas' },
+      { id: crypto.randomUUID(), kategori:'Handphone', brand:'Samsung', nama:'Samsung Note 5 4/32', stok:1, harga:200000, kondisi:'Bekas' },
+      { id: crypto.randomUUID(), kategori:'Tablet', brand:'Apple', nama:'Ipad Pro 9.7 Inch Wifi 32GB (2016)', stok:2, harga:1900000, kondisi:'Bekas' },
+      { id: crypto.randomUUID(), kategori:'Handphone', brand:'Oppo', nama:'Oppo F1 Plus Selfie Expert 4/64', stok:1, harga:150000, kondisi:'Bekas' },
+      { id: crypto.randomUUID(), kategori:'Jam tangan', brand:'Apple', nama:'Apple iWatch Series 1 38MM', stok:2, harga:200000, kondisi:'Bekas' },
+      { id: crypto.randomUUID(), kategori:'Handphone', brand:'Oppo', nama:'Oppo A37 2/16', stok:10, harga:0, kondisi:'Bekas' },
+      { id: crypto.randomUUID(), kategori:'Handphone', brand:'Oppo', nama:'Oppo F1S 3/32', stok:3, harga:100000, kondisi:'Bekas' },
+      { id: crypto.randomUUID(), kategori:'Handphone', brand:'Samsung', nama:'Samsung J5 Prime 2/16', stok:1, harga:150000, kondisi:'Bekas' },
+      { id: crypto.randomUUID(), kategori:'Handphone', brand:'Samsung', nama:'Samsung J7 Prime 3/32', stok:2, harga:150000, kondisi:'Bekas' }
+    ];
+
+    // ====== HELPERS ======
+    const toIDR = n => new Intl.NumberFormat('id-ID').format(n||0);
+    const hargaCol = row => row.harga>0 ? `Dimulai dari harga<br><strong>Rp. ${toIDR(row.harga)}</strong>` : '<span class="text-secondary">Hubungi untuk harga</span>';
+    const barangCol = row => `${row.kategori} - ${row.brand}<br><strong>${row.nama}</strong>`;
+
+    let table;
+
+    function renderTable(){
+      const tbody = document.querySelector('#tblBarang tbody');
+      tbody.innerHTML = '';
+      items.forEach(row => {
+        const tr = document.createElement('tr');
+        tr.dataset.id = row.id;
+        tr.innerHTML = `
+          <td>${barangCol(row)}</td>
+          <td>${row.stok} unit</td>
+          <td>${hargaCol(row)}</td>
+          <td class="text-center"></td>
+        `;
+        const cellAksi = tr.children[3];
+        cellAksi.appendChild(document.getElementById('aksiTpl').content.cloneNode(true));
+        tbody.appendChild(tr);
+      });
+
+      if(table){ table.destroy(); }
+      table = new DataTable('#tblBarang', {
+        responsive:true,
+        paging:true,
+        pageLength:10,
+        order: [],
+        language:{
+          searchPlaceholder:'Cari…',
+          lengthMenu:'Tampil _MENU_',
+          zeroRecords:'Tidak ada data',
+          info:'_START_–_END_ dari _TOTAL_ barang',
+          infoEmpty:'0 data',
+        }
+      });
+
+      attachRowHandlers();
+    }
+
+    function applyFilters(){
+      // Brand filter
+      const selectedBrands = [...document.querySelectorAll('.brandCheck:checked')].map(e=>e.value);
+      // Price
+      const min = parseInt(document.getElementById('minPrice').value || '0');
+      const max = parseInt(document.getElementById('maxPrice').value || '0');
+      const kond = document.getElementById('kondisiSelect').value;
+
+      const filtered = items.filter(x=>{
+        const brandOk = selectedBrands.includes(x.brand);
+        const hargaOk = (!min || x.harga>=min) && (!max || x.harga<=max);
+        const kondOk = !kond || x.kondisi===kond;
+        return brandOk && hargaOk && kondOk;
+      });
+
+      // Render temporary view without mutating 'items'
+      const tbody = document.querySelector('#tblBarang tbody');
+      table.clear();
+      tbody.innerHTML='';
+      filtered.forEach(row=>{
+        const tr = document.createElement('tr');
+        tr.dataset.id = row.id;
+        tr.innerHTML = `
+          <td>${barangCol(row)}</td>
+          <td>${row.stok} unit</td>
+          <td>${hargaCol(row)}</td>
+          <td class="text-center"></td>
+        `;
+        tr.children[3].appendChild(document.getElementById('aksiTpl').content.cloneNode(true));
+        tbody.appendChild(tr);
+      });
+      table.rows().invalidate().draw();
+      attachRowHandlers();
+    }
+
+    function attachRowHandlers(){
+      document.querySelectorAll('.btn-wa').forEach(btn=>{
+        btn.onclick = (e)=>{
+          e.preventDefault();
+          const id = e.target.closest('tr').dataset.id;
+          const r = items.find(x=>x.id===id);
+          const msg = `Halo, saya minat ${r.brand} ${r.nama} (stok ${r.stok}). Harga mulai Rp ${toIDR(r.harga)}.`;
+          const url = `https://wa.me/?text=${encodeURIComponent(msg)}`;
+          window.open(url, '_blank');
+        };
+      });
+      document.querySelectorAll('.btn-hapus').forEach(btn=>{
+        btn.onclick = (e)=>{
+          e.preventDefault();
+          const id = e.target.closest('tr').dataset.id;
+          if(confirm('Hapus item ini?')){
+            items = items.filter(x=>x.id!==id);
+            renderTable();
+          }
+        };
+      });
+      document.querySelectorAll('.btn-edit').forEach(btn=>{
+        btn.onclick = (e)=>{
+          e.preventDefault();
+          const id = e.target.closest('tr').dataset.id;
+          openEdit(id);
+        };
+      });
+      document.querySelectorAll('.btn-detail').forEach(btn=>{
+        btn.onclick = (e)=>{
+          e.preventDefault();
+          const id = e.target.closest('tr').dataset.id;
+          const r = items.find(x=>x.id===id);
+          alert(`${r.kategori} - ${r.brand}\n${r.nama}\nStok: ${r.stok}\nKondisi: ${r.kondisi}\nHarga: Rp ${toIDR(r.harga)}`);
+        };
+      });
+    }
+
+    function openEdit(id){
+      const isEdit = Boolean(id);
+      const title = document.getElementById('editTitle');
+      title.textContent = isEdit ? 'Edit Barang' : 'Tambah Barang';
+      const r = isEdit ? items.find(x=>x.id===id) : {kategori:'Handphone',brand:'',nama:'',stok:1,harga:0,kondisi:''};
+      document.getElementById('fBrand').value = r.brand||'';
+      document.getElementById('fKategori').value = r.kategori||'Handphone';
+      document.getElementById('fNama').value = r.nama||'';
+      document.getElementById('fStok').value = r.stok||1;
+      document.getElementById('fHarga').value = r.harga||0;
+      document.getElementById('fKondisi').value = r.kondisi||'';
+      const modal = new bootstrap.Modal('#editModal');
+      modal.show();
+      document.getElementById('saveItem').onclick = ()=>{
+        const data = {
+          id: isEdit ? id : crypto.randomUUID(),
+          kategori: document.getElementById('fKategori').value.trim(),
+          brand: document.getElementById('fBrand').value.trim(),
+          nama: document.getElementById('fNama').value.trim(),
+          stok: parseInt(document.getElementById('fStok').value||'0'),
+          harga: parseInt(document.getElementById('fHarga').value||'0'),
+          kondisi: document.getElementById('fKondisi').value.trim()||'Bekas'
+        };
+        if(isEdit){
+          const idx = items.findIndex(x=>x.id===id);
+          items[idx] = data;
+        } else {
+          items.unshift(data);
+        }
+        modal.hide();
+        renderTable();
+      }
+    }
+
+    // ====== BOOT ======
+    document.addEventListener('DOMContentLoaded', ()=>{
+      renderTable();
+      // search
+      document.getElementById('searchInput').addEventListener('input', (e)=>{
+        table.search(e.target.value).draw();
+      });
+      document.getElementById('btnReset').addEventListener('click', ()=>{
+        document.getElementById('searchInput').value='';
+        document.getElementById('minPrice').value = '';
+        document.getElementById('maxPrice').value = '';
+        document.getElementById('kondisiSelect').value = '';
+        document.querySelectorAll('.brandCheck').forEach(cb=>cb.checked=true);
+        renderTable();
+      });
+      document.getElementById('btnTambah').addEventListener('click', ()=>openEdit(null));
+      document.getElementById('applyFilter').addEventListener('click', applyFilters);
+    });
+  </script>
+</body>
+</html>

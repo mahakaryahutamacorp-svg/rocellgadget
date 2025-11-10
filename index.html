@@ -1,381 +1,281 @@
 <!doctype html>
 <html lang="id">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Rocell Gadget | Katalog Handphone</title>
-  <meta name="description" content="Rocell Gadget - Jual beli handphone, tablet, dan aksesoris. Stok terupdate, harga bersaing. Hubungi via WhatsApp untuk pemesanan." />
-  <meta name="keywords" content="rocell gadget, jual beli hp, toko hp, iPad, Samsung, Oppo, bekas, second" />
-  <meta property="og:title" content="Rocell Gadget | Katalog Handphone" />
-  <meta property="og:description" content="Lihat katalog handphone dan aksesoris kami. Klik untuk chat langsung via WhatsApp." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://rocellgadget.com" />
-  <link rel="icon" href="/favicon.ico" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Rocell Gadget — Katalog (Admin)</title>
+<meta name="description" content="Katalog Rocell Gadget — admin CRUD langsung di browser (localStorage)" />
+<link rel="icon" href="rocell_gadget_logo.png" />
 
-  <!-- Bootstrap 5 -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <!-- DataTables -->
-  <link href="https://cdn.datatables.net/v/bs5/dt-2.1.7/r-3.0.3/datatables.min.css" rel="stylesheet" />
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
-  <style>
-    :root{--bg:#0d1117;--card:#0f1524;--muted:#91a5c6;--accent:#2563eb}
-    body{background:var(--bg);color:#e6edf3;font-family:Inter,system-ui,Segoe UI,Roboto,'Helvetica Neue',Arial}
-    .navbar,.modal-content{background:#161b22}
-    .table thead th{background:#0b1220;color:var(--muted);border-bottom:1px solid #23375a}
-    .card{background:var(--card);border:1px solid #23375a}
-    .form-control,.form-select{background:#0b1220;color:#e6edf3;border-color:#23375a}
-    .btn-primary{background:var(--accent);border-color:var(--accent)}
-    .wa-btn{position:fixed;right:18px;bottom:18px;z-index:9999;border-radius:999px;padding:12px 14px;box-shadow:0 6px 18px rgba(0,0,0,.35)}
-    .small-muted{color:#9fb0c8;font-size:.92rem}
-    @media (max-width:576px){.brand-filter-grid{grid-template-columns:repeat(2,1fr)}}
-  </style>
+<!-- Optional: Bootstrap CSS for quick nice UI (no JS) -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+
+<style>
+  :root{--bg:#0d1117;--card:#0f1524;--muted:#91a5c6;--accent:#2563eb}
+  body{background:var(--bg);color:#e6edf3;font-family:Inter,system-ui,Segoe UI,Roboto,Arial;margin:0;padding:0}
+  .container{max-width:1100px;margin:18px auto;padding:0 12px}
+  .card{background:var(--card);border:1px solid #23375a}
+  table{width:100%;border-collapse:collapse}
+  thead th{background:#0b1220;color:var(--muted);padding:10px;border-bottom:1px solid #23375a;text-align:left}
+  tbody td{padding:10px;border-bottom:1px solid rgba(255,255,255,0.03)}
+  .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:#e6edf3}
+  .admin-badge{background:#1b7a2f;padding:.25rem .5rem;border-radius:.4rem;color:#fff}
+  .logo{display:block;margin:8px auto 14px;max-width:160px;border-radius:8px}
+  .topbar{display:flex;gap:8px;align-items:center;justify-content:space-between;margin-bottom:8px}
+  .actions{display:flex;gap:8px;align-items:center}
+  .small-muted{color:#9fb0c8;font-size:.92rem}
+  /* dialog fallback */
+  dialog{border-radius:8px;border:none;padding:0;background:transparent}
+  .modal-box{background:#0f1524;padding:18px;border-radius:8px;border:1px solid #23375a;color:#e6edf3;min-width:280px}
+  input,select{background:#0b1220;border:1px solid #23375a;color:#e6edf3;padding:.5rem;border-radius:6px;width:100%}
+  @media (max-width:600px){ .topbar{flex-direction:column;align-items:flex-start} }
+</style>
 </head>
 <body>
-  <nav class="navbar navbar-expand-lg border-bottom border-dark sticky-top py-2">
-    <div class="container-fluid">
-      <button class="btn btn-outline-light me-2" data-bs-toggle="modal" data-bs-target="#filterModal"><i class="bi bi-sliders"></i> Filter</button>
-      <div class="input-group flex-grow-1 me-2">
-        <span class="input-group-text bg-transparent text-secondary border-secondary"><i class="bi bi-search"></i></span>
-        <input id="searchInput" class="form-control border-secondary" type="search" placeholder="Cari Nama Barang…" autocomplete="off" />
+  <div class="container">
+    <img src="rocell_gadget_logo.png" alt="Rocell Gadget" class="logo" onerror="this.style.display='none'">
+    <div class="topbar">
+      <div style="display:flex;gap:8px;align-items:center">
+        <button id="btnToggleView" class="btn-ghost">Terbuka</button>
+        <input id="searchInput" placeholder="Cari nama barang..." style="min-width:220px;padding:.45rem;border-radius:6px">
       </div>
-      <div class="d-flex gap-2">
-        <button id="btnReset" class="btn btn-outline-light">Reset</button>
-        <button id="btnTambah" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Tambah</button>
+      <div class="actions">
+        <span id="adminStatus"></span>
+        <button id="btnLogin" class="btn-ghost">Login</button>
+        <button id="btnLogout" class="btn-ghost" style="display:none">Logout</button>
+        <button id="btnTambah" class="btn-ghost" style="display:none">Tambah</button>
       </div>
     </div>
-  </nav>
 
-  <main class="container py-3">
     <div class="card">
-      <div class="card-body p-0">
-        <div class="table-responsive">
-          <table id="tblBarang" class="table table-hover align-middle w-100">
-            <thead>
-              <tr>
-                <th>Barang</th>
-                <th>Stok</th>
-                <th>Harga Jual</th>
-                <th class="text-center">Aksi</th>
-              </tr>
-            </thead>
-            <tbody></tbody>
-          </table>
-        </div>
+      <div style="padding:12px">
+        <table id="tblBarang" aria-live="polite">
+          <thead>
+            <tr><th style="width:90px">Gambar</th><th>Barang</th><th>Stok</th><th>Harga</th><th style="text-align:center">Aksi</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
       </div>
     </div>
-  </main>
 
-  <!-- Floating WhatsApp Button -->
-  <a id="waBtn" class="btn btn-success wa-btn" href="#" target="_blank" title="Chat via WhatsApp">
-    <i class="bi bi-whatsapp" style="font-size:20px"></i>
-    <span class="d-none d-md-inline ms-2">Chat via WhatsApp</span>
-  </a>
-
-  <!-- Modal Filter -->
-  <div class="modal fade" id="filterModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title"><i class="bi bi-sliders"></i> Filter</h5>
-          <button class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <div class="mb-3">
-            <label class="form-label">Brand</label>
-            <div class="d-grid gap-2 brand-filter-grid" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr))"> 
-              <div><input class="form-check-input me-1 brandCheck" type="checkbox" value="Apple" id="brandApple" checked> <label for="brandApple">Apple</label></div>
-              <div><input class="form-check-input me-1 brandCheck" type="checkbox" value="Samsung" id="brandSamsung" checked> <label for="brandSamsung">Samsung</label></div>
-              <div><input class="form-check-input me-1 brandCheck" type="checkbox" value="Oppo" id="brandOppo" checked> <label for="brandOppo">Oppo</label></div>
-              <div><input class="form-check-input me-1 brandCheck" type="checkbox" value="Xiaomi" id="brandXiaomi" checked> <label for="brandXiaomi">Xiaomi</label></div>
-              <div><input class="form-check-input me-1 brandCheck" type="checkbox" value="Vivo" id="brandVivo" checked> <label for="brandVivo">Vivo</label></div>
-              <div><input class="form-check-input me-1 brandCheck" type="checkbox" value="Realme" id="brandRealme" checked> <label for="brandRealme">Realme</label></div>
-            </div>
-          </div>
-          <div class="row g-3">
-            <div class="col-6">
-              <label class="form-label">Harga Min (Rp)</label>
-              <input type="number" class="form-control" id="minPrice" placeholder="0" />
-            </div>
-            <div class="col-6">
-              <label class="form-label">Harga Max (Rp)</label>
-              <input type="number" class="form-control" id="maxPrice" placeholder="10000000" />
-            </div>
-          </div>
-          <div class="mt-3">
-            <label class="form-label">Kondisi</label>
-            <select id="kondisiSelect" class="form-select">
-              <option value="">Semua</option>
-              <option value="Baru">Baru</option>
-              <option value="Bekas">Bekas</option>
-              <option value="Reman/OEM">Reman/OEM</option>
-            </select>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button class="btn btn-outline-light" data-bs-dismiss="modal">Tutup</button>
-          <button id="applyFilter" class="btn btn-primary" data-bs-dismiss="modal">Terapkan</button>
-        </div>
-      </div>
-    </div>
+    <div style="margin-top:10px" class="small-muted">Catatan: perubahan disimpan di browser (localStorage). Hanya admin yang login bisa edit/hapus/tambah.</div>
   </div>
 
-  <!-- Modal Tambah/Edit -->
-  <div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="editTitle">Tambah Barang</h5>
-          <button class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <div class="row g-3">
-            <div class="col-6">
-              <label class="form-label">Brand</label>
-              <input id="fBrand" class="form-control" placeholder="Apple/Samsung/Oppo" />
-            </div>
-            <div class="col-6">
-              <label class="form-label">Kategori</label>
-              <select id="fKategori" class="form-select">
-                <option>Handphone</option>
-                <option>Tablet</option>
-                <option>Jam tangan</option>
-                <option>Aksesoris</option>
-              </select>
-            </div>
-            <div class="col-12">
-              <label class="form-label">Nama</label>
-              <input id="fNama" class="form-control" placeholder="Contoh: Ipad Mini 2 4G 16GB" />
-            </div>
-            <div class="col-6">
-              <label class="form-label">Stok</label>
-              <input id="fStok" type="number" min="0" class="form-control" value="1" />
-            </div>
-            <div class="col-6">
-              <label class="form-label">Harga Mulai (Rp)</label>
-              <input id="fHarga" type="number" min="0" class="form-control" value="0" />
-            </div>
-            <div class="col-12">
-              <label class="form-label">Kondisi</label>
-              <input id="fKondisi" class="form-control" placeholder="Baru/Bekas/Reman" />
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button class="btn btn-outline-light" data-bs-dismiss="modal">Batal</button>
-          <button id="saveItem" class="btn btn-primary">Simpan</button>
-        </div>
+  <!-- Login Dialog (native dialog element -> no external JS) -->
+  <dialog id="dlgLogin">
+    <div class="modal-box">
+      <h5>Login Admin</h5>
+      <div style="margin-top:8px"><input id="loginPassword" type="password" placeholder="Masukkan password"></div>
+      <div id="loginError" style="color:#ff6666;margin-top:8px;display:none"></div>
+      <div style="margin-top:10px;display:flex;gap:8px;justify-content:flex-end">
+        <button id="loginCancel" class="btn-ghost">Batal</button>
+        <button id="loginDo" class="btn-ghost">Masuk</button>
       </div>
     </div>
-  </div>
+  </dialog>
 
-  <template id="aksiTpl">
-    <div class="dropstart">
-      <button class="btn btn-outline-light" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-list"></i></button>
-      <ul class="dropdown-menu dropdown-menu-dark">
-        <li><a class="dropdown-item btn-detail" href="#">Detail</a></li>
-        <li><a class="dropdown-item btn-wa" href="#">Kirim ke WhatsApp</a></li>
-        <li><hr class="dropdown-divider"></li>
-        <li><a class="dropdown-item btn-edit" href="#">Edit</a></li>
-        <li><a class="dropdown-item text-danger btn-hapus" href="#">Hapus</a></li>
-      </ul>
+  <!-- Item Dialog -->
+  <dialog id="dlgItem">
+    <div class="modal-box">
+      <h5 id="itemTitle">Tambah Produk</h5>
+      <div style="margin-top:8px">
+        <label class="small-muted">Nama</label>
+        <input id="iNama" placeholder="Nama produk">
+      </div>
+      <div style="margin-top:8px">
+        <label class="small-muted">Brand</label>
+        <input id="iBrand" placeholder="Brand">
+      </div>
+      <div style="margin-top:8px;display:flex;gap:8px">
+        <div style="flex:1"><label class="small-muted">Stok</label><input id="iStok" type="number" value="1"></div>
+        <div style="flex:1"><label class="small-muted">Harga (Rp)</label><input id="iHarga" type="number" value="0"></div>
+      </div>
+      <div style="margin-top:8px">
+        <label class="small-muted">URL Gambar (opsional)</label>
+        <input id="iGambar" placeholder="https://...jpg">
+      </div>
+      <input id="iId" type="hidden">
+      <div style="margin-top:10px;display:flex;gap:8px;justify-content:flex-end">
+        <button id="iCancel" class="btn-ghost">Batal</button>
+        <button id="iSave" class="btn-ghost">Simpan</button>
+      </div>
     </div>
-  </template>
+  </dialog>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://cdn.datatables.net/v/bs5/dt-2.1.7/r-3.0.3/datatables.min.js"></script>
-  <script>
-    // ====== CONFIG ======
-    const WA_NUMBER = '6281211172228'; // ganti kalau nomor lain
-    const WA_MSG_PREFIX = 'Halo, saya minat produk ini dari Rocell Gadget:';
+<script>
+(() => {
+  'use strict';
 
-    // ====== DATA SAMPLE (ubah sesuai stok toko) ======
-    let items = [
-      { id: crypto.randomUUID(), kategori:'Tablet', brand:'Apple', nama:'Ipad Mini 2 4G 16GB', stok:1, harga:400000, kondisi:'Bekas' },
-      { id: crypto.randomUUID(), kategori:'Handphone', brand:'Samsung', nama:'Samsung Note 5 4/32', stok:1, harga:200000, kondisi:'Bekas' },
-      { id: crypto.randomUUID(), kategori:'Tablet', brand:'Apple', nama:'Ipad Pro 9.7 Inch Wifi 32GB (2016)', stok:2, harga:1900000, kondisi:'Bekas' },
-      { id: crypto.randomUUID(), kategori:'Handphone', brand:'Oppo', nama:'Oppo F1 Plus Selfie Expert 4/64', stok:1, harga:150000, kondisi:'Bekas' },
-      { id: crypto.randomUUID(), kategori:'Jam tangan', brand:'Apple', nama:'Apple iWatch Series 1 38MM', stok:2, harga:200000, kondisi:'Bekas' },
-      { id: crypto.randomUUID(), kategori:'Handphone', brand:'Oppo', nama:'Oppo A37 2/16', stok:10, harga:0, kondisi:'Bekas' },
-      { id: crypto.randomUUID(), kategori:'Handphone', brand:'Oppo', nama:'Oppo F1S 3/32', stok:3, harga:100000, kondisi:'Bekas' },
-      { id: crypto.randomUUID(), kategori:'Handphone', brand:'Samsung', nama:'Samsung J5 Prime 2/16', stok:1, harga:150000, kondisi:'Bekas' },
-      { id: crypto.randomUUID(), kategori:'Handphone', brand:'Samsung', nama:'Samsung J7 Prime 3/32', stok:2, harga:150000, kondisi:'Bekas' }
-    ];
+  // CONFIG
+  const STORAGE_KEY = 'rocell_items_v1';
+  const ADMIN_FLAG = 'rocell_admin_logged';
+  const ADMIN_PASSWORD = 'rocelladmin'; // change if needed
 
-    // ====== HELPERS ======
-    const toIDR = n => new Intl.NumberFormat('id-ID').format(n||0);
-    const hargaCol = row => row.harga>0 ? `Dimulai dari harga<br><strong>Rp. ${toIDR(row.harga)}</strong>` : '<span class="text-secondary">Hubungi untuk harga</span>';
-    const barangCol = row => `${row.kategori} - ${row.brand}<br><strong>${row.nama}</strong>`;
+  // initial sample test items (added if storage empty)
+  const SAMPLE = [
+    {id:'t1', nama:'Ipad Mini 2 4G 16GB', brand:'Apple', stok:1, harga:400000, gambar:''},
+    {id:'t2', nama:'Samsung Note 5 4/32', brand:'Samsung', stok:1, harga:200000, gambar:''},
+    {id:'t3', nama:'Oppo A37 2/16', brand:'Oppo', stok:10, harga:0, gambar:''}
+  ];
 
-    let table;
+  // helpers
+  const q = s => document.querySelector(s);
+  const el = id => document.getElementById(id);
+  const fmt = n => new Intl.NumberFormat('id-ID').format(Number(n)||0);
+  const escapeHtml = s => (s||'').toString().replace(/[&"'<>]/g,c=>({'&':'&amp;','"':'&quot;',"'":'&#39;','<':'&lt;','>':'&gt;'})[c]);
 
-    function renderTable(){
-      const tbody = document.querySelector('#tblBarang tbody');
-      tbody.innerHTML = '';
-      items.forEach(row => {
-        const tr = document.createElement('tr');
-        tr.dataset.id = row.id;
-        tr.innerHTML = `
-          <td>${barangCol(row)}</td>
-          <td>${row.stok} unit</td>
-          <td>${hargaCol(row)}</td>
-          <td class="text-center"></td>
-        `;
-        const cellAksi = tr.children[3];
-        cellAksi.appendChild(document.getElementById('aksiTpl').content.cloneNode(true));
-        tbody.appendChild(tr);
-      });
+  function loadItems() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) { localStorage.setItem(STORAGE_KEY, JSON.stringify(SAMPLE)); return SAMPLE.slice(); }
+      return JSON.parse(raw);
+    } catch(e) { console.error('loadItems', e); return SAMPLE.slice(); }
+  }
+  function saveItems(items) {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(items)); } catch(e){ console.error('saveItems', e); }
+  }
 
-      if(table){ table.destroy(); }
-      table = new DataTable('#tblBarang', {
-        responsive:true,
-        paging:true,
-        pageLength:10,
-        order: [],
-        language:{
-          searchPlaceholder:'Cari…',
-          lengthMenu:'Tampil _MENU_',
-          zeroRecords:'Tidak ada data',
-          info:'_START_–_END_ dari _TOTAL_ barang',
-          infoEmpty:'0 data',
-        }
-      });
+  let items = loadItems();
 
-      attachRowHandlers();
-    }
-
-    function applyFilters(){
-      const selectedBrands = [...document.querySelectorAll('.brandCheck:checked')].map(e=>e.value);
-      const min = parseInt(document.getElementById('minPrice').value || '0');
-      const max = parseInt(document.getElementById('maxPrice').value || '0');
-      const kond = document.getElementById('kondisiSelect').value;
-
-      const filtered = items.filter(x=>{
-        const brandOk = selectedBrands.includes(x.brand);
-        const hargaOk = (!min || x.harga>=min) && (!max || x.harga<=max);
-        const kondOk = !kond || x.kondisi===kond;
-        return brandOk && hargaOk && kondOk;
-      });
-
-      const tbody = document.querySelector('#tblBarang tbody');
-      table.clear();
-      tbody.innerHTML='';
-      filtered.forEach(row=>{
-        const tr = document.createElement('tr');
-        tr.dataset.id = row.id;
-        tr.innerHTML = `
-          <td>${barangCol(row)}</td>
-          <td>${row.stok} unit</td>
-          <td>${hargaCol(row)}</td>
-          <td class="text-center"></td>
-        `;
-        tr.children[3].appendChild(document.getElementById('aksiTpl').content.cloneNode(true));
-        tbody.appendChild(tr);
-      });
-      table.rows().invalidate().draw();
-      attachRowHandlers();
-    }
-
-    function attachRowHandlers(){
-      document.querySelectorAll('.btn-wa').forEach(btn=>{
-        btn.onclick = (e)=>{
-          e.preventDefault();
-          const id = e.target.closest('tr').dataset.id;
-          const r = items.find(x=>x.id===id);
-          const msg = `${WA_MSG_PREFIX} ${r.brand} ${r.nama} (stok ${r.stok}). Harga mulai Rp ${toIDR(r.harga)}.`;
-          const url = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
-          window.open(url, '_blank');
-        };
-      });
-      document.querySelectorAll('.btn-hapus').forEach(btn=>{
-        btn.onclick = (e)=>{
-          e.preventDefault();
-          const id = e.target.closest('tr').dataset.id;
-          if(confirm('Hapus item ini?')){
-            items = items.filter(x=>x.id!==id);
-            renderTable();
-          }
-        };
-      });
-      document.querySelectorAll('.btn-edit').forEach(btn=>{
-        btn.onclick = (e)=>{
-          e.preventDefault();
-          const id = e.target.closest('tr').dataset.id;
-          openEdit(id);
-        };
-      });
-      document.querySelectorAll('.btn-detail').forEach(btn=>{
-        btn.onclick = (e)=>{
-          e.preventDefault();
-          const id = e.target.closest('tr').dataset.id;
-          const r = items.find(x=>x.id===id);
-          alert(`${r.kategori} - ${r.brand}
-${r.nama}
-Stok: ${r.stok}
-Kondisi: ${r.kondisi}
-Harga: Rp ${toIDR(r.harga)}`);
-        };
-      });
-    }
-
-    function openEdit(id){
-      const isEdit = Boolean(id);
-      const title = document.getElementById('editTitle');
-      title.textContent = isEdit ? 'Edit Barang' : 'Tambah Barang';
-      const r = isEdit ? items.find(x=>x.id===id) : {kategori:'Handphone',brand:'',nama:'',stok:1,harga:0,kondisi:''};
-      document.getElementById('fBrand').value = r.brand||'';
-      document.getElementById('fKategori').value = r.kategori||'Handphone';
-      document.getElementById('fNama').value = r.nama||'';
-      document.getElementById('fStok').value = r.stok||1;
-      document.getElementById('fHarga').value = r.harga||0;
-      document.getElementById('fKondisi').value = r.kondisi||'';
-      const modal = new bootstrap.Modal('#editModal');
-      modal.show();
-      document.getElementById('saveItem').onclick = ()=>{
-        const data = {
-          id: isEdit ? id : crypto.randomUUID(),
-          kategori: document.getElementById('fKategori').value.trim(),
-          brand: document.getElementById('fBrand').value.trim(),
-          nama: document.getElementById('fNama').value.trim(),
-          stok: parseInt(document.getElementById('fStok').value||'0'),
-          harga: parseInt(document.getElementById('fHarga').value||'0'),
-          kondisi: document.getElementById('fKondisi').value.trim()||'Bekas'
-        };
-        if(isEdit){
-          const idx = items.findIndex(x=>x.id===id);
-          items[idx] = data;
-        } else {
-          items.unshift(data);
-        }
-        modal.hide();
-        renderTable();
-      }
-    }
-
-    // Floating WA button link update
-    function updateWaButton(){
-      const url = `https://wa.me/${WA_NUMBER}`;
-      const waBtn = document.getElementById('waBtn');
-      waBtn.href = url;
-    }
-
-    // ====== BOOT ======
-    document.addEventListener('DOMContentLoaded', ()=>{
-      renderTable();
-      updateWaButton();
-      document.getElementById('searchInput').addEventListener('input', (e)=>{
-        table.search(e.target.value).draw();
-      });
-      document.getElementById('btnReset').addEventListener('click', ()=>{
-        document.getElementById('searchInput').value='';
-        document.getElementById('minPrice').value = '';
-        document.getElementById('maxPrice').value = '';
-        document.getElementById('kondisiSelect').value = '';
-        document.querySelectorAll('.brandCheck').forEach(cb=>cb.checked=true);
-        renderTable();
-      });
-      document.getElementById('btnTambah').addEventListener('click', ()=>openEdit(null));
-      document.getElementById('applyFilter').addEventListener('click', applyFilters);
+  // render table
+  function renderRows(list) {
+    const tbody = q('#tblBarang tbody');
+    tbody.innerHTML = '';
+    (list || items).forEach(it => {
+      const tr = document.createElement('tr');
+      tr.dataset.id = it.id;
+      const imgHtml = it.gambar ? `<img src="${escapeHtml(it.gambar)}" alt="" style="max-width:80px;max-height:60px;object-fit:cover;border-radius:6px" onerror="this.style.display='none'">` : '';
+      const harga = Number(it.harga) > 0 ? 'Rp ' + fmt(it.harga) : '<span style="color:#999">Hubungi</span>';
+      tr.innerHTML = `
+        <td style="width:90px">${imgHtml}</td>
+        <td><strong>${escapeHtml(it.nama)}</strong><div style="color:#9fb0c8">${escapeHtml(it.brand)}</div></td>
+        <td>${Number(it.stok)||0} unit</td>
+        <td>${harga}</td>
+        <td style="text-align:center">
+          <button data-action="edit" class="btn-ghost">Edit</button>
+          <button data-action="delete" class="btn-ghost" style="margin-left:6px">Hapus</button>
+        </td>
+      `;
+      tbody.appendChild(tr);
     });
-  </script>
+  }
+
+  // CRUD functions
+  function addItem(obj){ items.unshift(obj); saveItems(items); renderRows(); }
+  function updateItem(id, obj){ const i = items.findIndex(x=>x.id===id); if(i>=0){ items[i]=obj; saveItems(items); renderRows(); } }
+  function deleteItem(id){ items = items.filter(x=>x.id!==id); saveItems(items); renderRows(); }
+
+  // admin UI
+  function isAdmin(){ return localStorage.getItem(ADMIN_FLAG) === '1'; }
+  function setAdminMode(on){
+    const status = el('adminStatus');
+    const btnLogin = el('btnLogin'), btnLogout = el('btnLogout'), btnTambah = el('btnTambah');
+    if(on){ localStorage.setItem(ADMIN_FLAG,'1'); status.innerHTML = '<span class="admin-badge">ADMIN</span>'; btnLogin.style.display='none'; btnLogout.style.display='inline-block'; btnTambah.style.display='inline-block'; }
+    else { localStorage.removeItem(ADMIN_FLAG); status.innerHTML=''; btnLogin.style.display='inline-block'; btnLogout.style.display='none'; btnTambah.style.display='none'; }
+  }
+
+  // wire events (pure JS)
+  function attachEvents(){
+    // login dialog
+    const dlgLogin = el('dlgLogin'), dlgItem = el('dlgItem');
+    el('btnLogin').addEventListener('click', ()=>{ el('loginPassword').value=''; el('loginError').style.display='none'; dlgLogin.showModal(); });
+    el('loginCancel').addEventListener('click', ()=>dlgLogin.close());
+    el('loginDo').addEventListener('click', ()=>{
+      const pw = el('loginPassword').value||'';
+      if(pw === ADMIN_PASSWORD){ setAdminMode(true); dlgLogin.close(); } else { el('loginError').textContent='Password salah'; el('loginError').style.display='block'; }
+    });
+    el('btnLogout').addEventListener('click', ()=> setAdminMode(false));
+
+    // tambah button
+    el('btnTambah').addEventListener('click', ()=> openItem());
+
+    // table actions (delegated)
+    q('#tblBarang tbody').addEventListener('click', (ev)=>{
+      const btn = ev.target.closest('button');
+      if(!btn) return;
+      const action = btn.dataset.action;
+      const tr = ev.target.closest('tr');
+      if(!tr) return;
+      const id = tr.dataset.id;
+      if(action === 'edit'){
+        if(!isAdmin()){ alert('Hanya admin yang bisa mengedit'); return; }
+        const it = items.find(x=>x.id===id);
+        openItem(it);
+      } else if(action === 'delete'){
+        if(!isAdmin()){ alert('Hanya admin yang bisa menghapus'); return; }
+        if(confirm('Hapus item ini?')) deleteItem(id);
+      }
+    });
+
+    // save item
+    el('iCancel').addEventListener('click', ()=> el('dlgItem').close());
+    el('iSave').addEventListener('click', ()=>{
+      const id = el('iId').value || ('id'+Math.random().toString(36).slice(2,9));
+      const obj = {
+        id,
+        nama: (el('iNama').value||'').trim(),
+        brand: (el('iBrand').value||'').trim(),
+        stok: Number(el('iStok').value)||0,
+        harga: Number(el('iHarga').value)||0,
+        gambar: (el('iGambar').value||'').trim()
+      };
+      if(!obj.nama){ alert('Nama wajib diisi'); return; }
+      const existing = items.find(x=>x.id===id);
+      if(existing) updateItem(id,obj); else addItem(obj);
+      el('dlgItem').close();
+    });
+
+    // search
+    el('searchInput').addEventListener('input', function(){
+      const qv = (this.value||'').trim().toLowerCase();
+      if(!qv) { renderRows(); return; }
+      const filtered = items.filter(i => (i.nama+' '+i.brand).toLowerCase().includes(qv));
+      renderRows(filtered);
+    });
+
+    // toggle view (hide/show logo)
+    el('btnToggleView').addEventListener('click', function(){
+      const logo = document.querySelector('.logo');
+      if(logo.style.display === 'none'){ logo.style.display = 'block'; this.textContent='Terbuka'; } else { logo.style.display='none'; this.textContent='Compact'; }
+    });
+
+    // helper: open item dialog
+    window.openItemDialog = (it) => openItem(it);
+  }
+
+  function openItem(item){
+    const dlg = el('dlgItem');
+    if(item){
+      el('itemTitle').textContent = 'Edit Produk';
+      el('iId').value = item.id;
+      el('iNama').value = item.nama;
+      el('iBrand').value = item.brand;
+      el('iStok').value = item.stok;
+      el('iHarga').value = item.harga;
+      el('iGambar').value = item.gambar || '';
+    } else {
+      el('itemTitle').textContent = 'Tambah Produk';
+      el('iId').value = '';
+      el('iNama').value = '';
+      el('iBrand').value = '';
+      el('iStok').value = 1;
+      el('iHarga').value = 0;
+      el('iGambar').value = '';
+    }
+    dlg.showModal();
+  }
+
+  // boot
+  function boot(){
+    renderRows(items);
+    attachEvents();
+    setAdminMode(isAdmin());
+    console.log('Rocell Gadget (no-ext-js) ready');
+  }
+
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
+
+})();
+</script>
 </body>
 </html>

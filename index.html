@@ -1,6 +1,25 @@
 <!doctype html>
 <html lang="id">
 <head>
+  <!-- FORCE LIGHT THEME: paste di atas file CSS / style -->
+<script>
+  try {
+    // Force light mode by storing preference and applying CSS variables immediately
+    localStorage.setItem('rocell_theme', 'light');
+    (function applyLight(){
+      const root = document.documentElement;
+      root.style.setProperty('--bg', '#f8f9fa');
+      root.style.setProperty('--card', '#ffffff');
+      root.style.setProperty('--muted', '#6c757d');
+      root.style.setProperty('--accent', '#0d6efd');
+      root.style.setProperty('--text', '#212529');
+      // optional: force body bg/text to avoid flashes
+      document.body && (document.body.style.background = '#f8f9fa');
+      document.body && (document.body.style.color = '#212529');
+    })();
+  } catch(e) { console.warn('force light theme failed', e); }
+</script>
+
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Rocell Gadget — Katalog (Admin)</title>

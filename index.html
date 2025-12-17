@@ -110,7 +110,7 @@ footer{
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 </head>
-
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
 <body>
 
 <div class="container">
@@ -123,9 +123,14 @@ footer{
   </header>
 
   <div id="adminPanel" class="admin hidden">
-    <strong>ADMIN PANEL</strong><br/><br/>
-    <button id="addBtn" class="primary">Tambah Barang</button>
-  </div>
+  <strong>ADMIN PANEL</strong><br/><br/>
+
+  <input id="namaBarang" placeholder="Nama barang" /><br/><br/>
+  <input id="hargaBarang" type="number" placeholder="Harga" /><br/><br/>
+  <input id="fotoBarang" type="file" accept="image/*" /><br/><br/>
+
+  <button id="addBtn" class="primary">Simpan Barang</button>
+</div>
 
   <div id="produk" class="grid"></div>
 
@@ -221,18 +226,41 @@ db.collection("items").onSnapshot(snap => {
 });
 
 // Tambah barang
-document.getElementById("addBtn").onclick = () => {
-  const nama = prompt("Nama barang");
-  if(!nama) return;
-  const harga = Number(prompt("Harga")) || 0;
+const storage = firebase.storage();
 
-  db.collection("items").add({
+document.getElementById("addBtn").onclick = async () => {
+  const nama = document.getElementById("namaBarang").value.trim();
+  const harga = Number(document.getElementById("hargaBarang").value) || 0;
+  const file = document.getElementById("fotoBarang").files[0];
+
+  if (!nama) {
+    alert("Nama barang wajib diisi");
+    return;
+  }
+
+  let fotoURL = "";
+
+  // Upload foto kalau ada
+  if (file) {
+    const ref = storage.ref("produk/" + Date.now() + "_" + file.name);
+    const snap = await ref.put(file);
+    fotoURL = await snap.ref.getDownloadURL();
+  }
+
+  await db.collection("items").add({
     nama,
     harga,
     stok: 1,
-    gambar: "",
+    gambar: fotoURL,
     createdAt: firebase.firestore.FieldValue.serverTimestamp()
   });
+
+  // reset form
+  document.getElementById("namaBarang").value = "";
+  document.getElementById("hargaBarang").value = "";
+  document.getElementById("fotoBarang").value = "";
+
+  alert("Barang berhasil ditambahkan");
 };
 </script>
 

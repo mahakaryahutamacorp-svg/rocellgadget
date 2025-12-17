@@ -1,332 +1,231 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Rocell Gadget | Katalog HP</title>
+  <meta charset="UTF-8" />
+  <title>Rocell Gadget | Katalog HP</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<meta name="description" content="Rocell Gadget - Jual beli HP aman & terpercaya" />
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
 
-<style>
-:root{
-  --bg:#ffffff;
-  --card:#f8fafc;
-  --border:#e5e7eb;
-  --text:#0f172a;
-  --muted:#64748b;
-  --accent:#2563eb;
-  --wa:#22c55e;
-}
-*{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
-  background:var(--bg);
-  color:var(--text);
-}
-.container{max-width:1100px;margin:24px auto;padding:0 16px}
-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:20px;
-}
-h1{margin:0;font-size:1.3rem}
-button{
-  padding:8px 12px;
-  border-radius:8px;
-  border:1px solid var(--border);
-  background:#fff;
-  cursor:pointer;
-}
-button.primary{
-  background:var(--accent);
-  color:#fff;
-  border-color:var(--accent);
-}
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
-  gap:16px;
-}
-.card{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:12px;
-  overflow:hidden;
-  display:flex;
-  flex-direction:column;
-}
-.card img{
-  width:100%;
-  height:180px;
-  object-fit:contain;
-  background:#fff;
-}
-.card .info{
-  padding:12px;
-  flex:1;
-}
-.card h3{margin:0 0 6px;font-size:1rem}
-.price{color:var(--accent);font-weight:700;margin-bottom:10px}
-.card a{
-  margin:12px;
-  text-align:center;
-  background:var(--accent);
-  color:white;
-  padding:10px;
-  border-radius:6px;
-  text-decoration:none;
-  font-weight:600;
-}
-.admin{
-  margin:20px 0;
-  padding:12px;
-  border:1px dashed var(--border);
-  border-radius:12px;
-}
-.hidden{display:none}
-.wa-float{
-  position:fixed;
-  right:16px;
-  bottom:16px;
-  background:var(--wa);
-  color:white;
-  padding:12px 16px;
-  border-radius:999px;
-  text-decoration:none;
-  font-weight:600;
-}
-footer{
-  margin:24px 0;
-  text-align:center;
-  color:var(--muted);
-  font-size:13px;
-}
-</style>
-
-<!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f6f8;
+      margin: 0;
+      padding: 0;
+      color: #222;
+    }
+    header {
+      text-align: center;
+      padding: 20px;
+    }
+    header img {
+      max-width: 140px;
+    }
+    .container {
+      max-width: 1100px;
+      margin: auto;
+      padding: 10px;
+    }
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 15px;
+    }
+    input, button {
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    button {
+      cursor: pointer;
+      background: #2563eb;
+      color: #fff;
+      border: none;
+    }
+    button.danger {
+      background: #dc2626;
+    }
+    button.secondary {
+      background: #16a34a;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 15px;
+    }
+    .card {
+      background: #fff;
+      border-radius: 8px;
+      padding: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    }
+    .card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 6px;
+    }
+    .price {
+      font-weight: bold;
+      margin-top: 5px;
+    }
+    .actions {
+      display: flex;
+      gap: 5px;
+      margin-top: 8px;
+    }
+    .wa {
+      display: block;
+      text-align: center;
+      margin-top: 8px;
+      background: #22c55e;
+      color: #fff;
+      padding: 6px;
+      border-radius: 6px;
+      text-decoration: none;
+    }
+    footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 14px;
+      color: #666;
+    }
+  </style>
 </head>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+
 <body>
 
+<header>
+  <img src="rocell_gadget_logo.png" alt="Rocell Gadget" />
+</header>
+
 <div class="container">
-  <header>
-    <h1>Rocell Gadget</h1>
-    <div>
-      <button id="loginBtn">Login Admin</button>
-      <button id="logoutBtn" class="hidden">Logout</button>
-    </div>
-  </header>
 
-  <div id="adminPanel" class="admin hidden">
-  <strong>ADMIN PANEL</strong><br/><br/>
+  <div class="top-bar">
+    <input type="email" id="email" placeholder="Email admin">
+    <input type="password" id="password" placeholder="Password">
+    <button onclick="login()">Login</button>
+    <button onclick="logout()">Logout</button>
+  </div>
 
-  <input id="namaBarang" placeholder="Nama barang" /><br/><br/>
-  <input id="hargaBarang" type="number" placeholder="Harga" /><br/><br/>
-  <input id="fotoBarang" type="file" accept="image/*" /><br/><br/>
+  <div class="top-bar">
+    <input id="nama" placeholder="Nama HP">
+    <input id="harga" type="number" placeholder="Harga">
+    <input id="stok" type="number" placeholder="Stok">
+    <input id="foto" type="file">
+    <button class="secondary" onclick="tambahBarang()">Tambah Barang</button>
+  </div>
 
-  <button id="addBtn" class="primary">Simpan Barang</button>
+  <div class="grid" id="listBarang"></div>
 </div>
 
-  <div id="produk" class="grid"></div>
-
-  <footer>
-    © Rocell Gadget · Jual Beli HP Aman & Terpercaya
-  </footer>
-</div>
-
-<a class="wa-float" target="_blank"
-   href="https://wa.me/6281211172228">
-  WhatsApp
-</a>
+<footer>
+  © Rocell Gadget – Jual Beli HP Aman & Terpercaya
+</footer>
 
 <script>
-/* =============================
-   🔥 KONFIGURASI WAJIB
-============================= */
+  const firebaseConfig = {
+    apiKey: "ISI_API_KEY_KAMU",
+    authDomain: "ISI_AUTH_DOMAIN",
+    projectId: "ISI_PROJECT_ID",
+    storageBucket: "ISI_STORAGE_BUCKET",
+    messagingSenderId: "ISI_SENDER_ID",
+    appId: "ISI_APP_ID"
+  };
 
-// 🔁 GANTI DENGAN CONFIG FIREBASE KAMU
-const firebaseConfig = {
-  apiKey: "AIzaSyAcLq0OpLMY9gfOVb7854pzaEAjqNbgHGs",
-  authDomain: "rocellgadget.firebaseapp.com",
-  projectId: "rocellgadget",
-  storageBucket: "rocellgadget.firebasestorage.app",
-  messagingSenderId: "451065886878",
-  appId: "1:451065886878:web:e3f291259be532f8a5638f"
-};
-// 🔐 GANTI DENGAN EMAIL GOOGLE ADMIN
-const ADMIN_EMAIL = "mahakaryahutama.corp@gmail.com";
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+  const storage = firebase.storage();
 
-/* =============================
-   🚀 INIT FIREBASE
-============================= */
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.firestore();
-
-/* =============================
-   🧠 LOGIC
-============================= */
-const produk = document.getElementById("produk");
-const adminPanel = document.getElementById("adminPanel");
-const loginBtn = document.getElementById("loginBtn");
-const logoutBtn = document.getElementById("logoutBtn");
-
-// Login Google
-loginBtn.onclick = () => {
-  const provider = new firebase.auth.GoogleAuthProvider();
-  auth.signInWithPopup(provider);
-};
-
-// Logout
-logoutBtn.onclick = () => auth.signOut();
-
-// Auth state
-auth.onAuthStateChanged(user => {
-  if(user && user.email === ADMIN_EMAIL){
-    adminPanel.classList.remove("hidden");
-    logoutBtn.classList.remove("hidden");
-    loginBtn.classList.add("hidden");
-  }else{
-    adminPanel.classList.add("hidden");
-    logoutBtn.classList.add("hidden");
-    loginBtn.classList.remove("hidden");
-  }
-});
-
-// Render realtime
-db.collection("items").onSnapshot(snap => {
-  produk.innerHTML = "";
-  snap.forEach(doc => {
-    const p = doc.data();
-    const img = p.gambar || "https://via.placeholder.com/300x300?text=Rocell+Gadget";
-    const harga = p.harga ? "Rp " + p.harga.toLocaleString("id-ID") : "Hubungi";
-    const pesan = encodeURIComponent(
-      `Halo Rocell Gadget, saya tertarik dengan ${p.nama}, apakah masih tersedia?`
-    );
-
-    produk.innerHTML += `
-  <div class="card">
-    <img src="${img}">
-    <div class="info">
-      <h3>${p.nama}</h3>
-      <div class="price">${harga}</div>
-    </div>
-
-    <a target="_blank"
-      href="https://wa.me/6281211172228?text=${pesan}">
-      Chat WhatsApp
-    </a>
-
-    ${auth.currentUser && auth.currentUser.email === ADMIN_EMAIL ? `
-      <div style="display:flex;gap:8px;padding:12px">
-        <button onclick="editFoto('${doc.id}','${p.gambar || ""}')">Edit Foto</button>
-        <button onclick="hapusBarang('${doc.id}','${p.gambar || ""}')" style="color:red">
-          Hapus
-        </button>
-      </div>
-    ` : ""}
-  </div>
-`;
-  });
-});
-
-// Tambah barang
-const storage = firebase.storage();
-
-document.getElementById("addBtn").onclick = async () => {
-  const nama = document.getElementById("namaBarang").value.trim();
-  const harga = Number(document.getElementById("hargaBarang").value) || 0;
-  const file = document.getElementById("fotoBarang").files[0];
-
-  if (!nama) {
-    alert("Nama barang wajib diisi");
-    return;
-  }
-
-  let fotoURL = "";
-
-  // Upload foto kalau ada
-  if (file) {
-    const ref = storage.ref("produk/" + Date.now() + "_" + file.name);
-    const snap = await ref.put(file);
-    fotoURL = await snap.ref.getDownloadURL();
-  }
-
-  await db.collection("items").add({
-    nama,
-    harga,
-    stok: 1,
-    gambar: fotoURL,
-    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+  auth.onAuthStateChanged(user => {
+    if (user) loadBarang();
   });
 
-  // reset form
-  document.getElementById("namaBarang").value = "";
-  document.getElementById("hargaBarang").value = "";
-  document.getElementById("fotoBarang").value = "";
+  function login() {
+    auth.signInWithEmailAndPassword(
+      email.value,
+      password.value
+    ).catch(e => alert(e.message));
+  }
 
-  alert("Barang berhasil ditambahkan");
-};
+  function logout() {
+    auth.signOut();
+  }
+
+  async function tambahBarang() {
+    if (!auth.currentUser) return alert("Login dulu");
+
+    const file = foto.files[0];
+    if (!file) return alert("Pilih foto");
+
+    const ref = storage.ref("produk/" + Date.now());
+    await ref.put(file);
+    const fotoUrl = await ref.getDownloadURL();
+
+    await db.collection("items").add({
+      nama: nama.value,
+      harga: Number(harga.value),
+      stok: Number(stok.value),
+      fotoUrl,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    foto.value = "";
+    loadBarang();
+  }
+
+  async function hapusBarang(id, fotoUrl) {
+    if (!confirm("Hapus barang ini?")) return;
+
+    await db.collection("items").doc(id).delete();
+    await storage.refFromURL(fotoUrl).delete();
+    loadBarang();
+  }
+
+  async function gantiFoto(id) {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.onchange = async () => {
+      const file = input.files[0];
+      const ref = storage.ref("produk/" + Date.now());
+      await ref.put(file);
+      const url = await ref.getDownloadURL();
+      await db.collection("items").doc(id).update({ fotoUrl: url });
+      loadBarang();
+    };
+    input.click();
+  }
+
+  async function loadBarang() {
+    const list = document.getElementById("listBarang");
+    list.innerHTML = "";
+    const snap = await db.collection("items").orderBy("createdAt", "desc").get();
+    snap.forEach(doc => {
+      const d = doc.data();
+      list.innerHTML += `
+        <div class="card">
+          <img src="${d.fotoUrl}">
+          <div><strong>${d.nama}</strong></div>
+          <div class="price">Rp ${d.harga.toLocaleString()}</div>
+          <div>Stok: ${d.stok}</div>
+          <a class="wa" href="https://wa.me/6281211172228" target="_blank">Chat WhatsApp</a>
+          ${auth.currentUser ? `
+            <div class="actions">
+              <button onclick="gantiFoto('${doc.id}')">Edit Foto</button>
+              <button class="danger" onclick="hapusBarang('${doc.id}','${d.fotoUrl}')">Hapus</button>
+            </div>` : ``}
+        </div>`;
+    });
+  }
 </script>
-async function hapusBarang(docId, fotoUrl) {
-  if (!confirm("Yakin hapus barang ini?")) return;
 
-  try {
-    // Hapus foto dari Storage jika ada
-    if (fotoUrl) {
-      const ref = firebase.storage().refFromURL(fotoUrl);
-      await ref.delete();
-    }
-
-    // Hapus data Firestore
-    await db.collection("items").doc(docId).delete();
-
-    alert("Barang & foto berhasil dihapus");
-  } catch (err) {
-    console.error(err);
-    alert("Gagal menghapus barang");
-  }
-}
-  async function editFoto(docId, fotoLama) {
-  const input = document.createElement("input");
-  input.type = "file";
-  input.accept = "image/*";
-
-  input.onchange = async () => {
-    const file = input.files[0];
-    if (!file) return;
-
-    try {
-      // Upload foto baru
-      const ref = firebase.storage().ref("produk/" + Date.now() + "_" + file.name);
-      const snap = await ref.put(file);
-      const fotoBaru = await snap.ref.getDownloadURL();
-
-      // Update Firestore
-      await db.collection("items").doc(docId).update({
-        gambar: fotoBaru
-      });
-
-      // Hapus foto lama
-      if (fotoLama) {
-        const oldRef = firebase.storage().refFromURL(fotoLama);
-        await oldRef.delete();
-      }
-
-      alert("Foto berhasil diganti");
-    } catch (err) {
-      console.error(err);
-      alert("Gagal mengganti foto");
-    }
-  };
-
-  input.click();
-}
-  };
 </body>
 </html>

@@ -210,18 +210,28 @@ db.collection("items").onSnapshot(snap => {
     );
 
     produk.innerHTML += `
-      <div class="card">
-        <img src="${img}">
-        <div class="info">
-          <h3>${p.nama}</h3>
-          <div class="price">${harga}</div>
-        </div>
-        <a target="_blank"
-           href="https://wa.me/6281211172228?text=${pesan}">
-           Chat WhatsApp
-        </a>
+  <div class="card">
+    <img src="${img}">
+    <div class="info">
+      <h3>${p.nama}</h3>
+      <div class="price">${harga}</div>
+    </div>
+
+    <a target="_blank"
+      href="https://wa.me/6281211172228?text=${pesan}">
+      Chat WhatsApp
+    </a>
+
+    ${auth.currentUser && auth.currentUser.email === ADMIN_EMAIL ? `
+      <div style="display:flex;gap:8px;padding:12px">
+        <button onclick="editFoto('${doc.id}','${p.gambar || ""}')">Edit Foto</button>
+        <button onclick="hapusBarang('${doc.id}','${p.gambar || ""}')" style="color:red">
+          Hapus
+        </button>
       </div>
-    `;
+    ` : ""}
+  </div>
+`;
   });
 });
 
@@ -263,6 +273,59 @@ document.getElementById("addBtn").onclick = async () => {
   alert("Barang berhasil ditambahkan");
 };
 </script>
+async function hapusBarang(docId, fotoUrl) {
+  if (!confirm("Yakin hapus barang ini?")) return;
 
+  try {
+    // Hapus foto dari Storage jika ada
+    if (fotoUrl) {
+      const ref = firebase.storage().refFromURL(fotoUrl);
+      await ref.delete();
+    }
+
+    // Hapus data Firestore
+    await db.collection("items").doc(docId).delete();
+
+    alert("Barang & foto berhasil dihapus");
+  } catch (err) {
+    console.error(err);
+    alert("Gagal menghapus barang");
+  }
+}
+  async function editFoto(docId, fotoLama) {
+  const input = document.createElement("input");
+  input.type = "file";
+  input.accept = "image/*";
+
+  input.onchange = async () => {
+    const file = input.files[0];
+    if (!file) return;
+
+    try {
+      // Upload foto baru
+      const ref = firebase.storage().ref("produk/" + Date.now() + "_" + file.name);
+      const snap = await ref.put(file);
+      const fotoBaru = await snap.ref.getDownloadURL();
+
+      // Update Firestore
+      await db.collection("items").doc(docId).update({
+        gambar: fotoBaru
+      });
+
+      // Hapus foto lama
+      if (fotoLama) {
+        const oldRef = firebase.storage().refFromURL(fotoLama);
+        await oldRef.delete();
+      }
+
+      alert("Foto berhasil diganti");
+    } catch (err) {
+      console.error(err);
+      alert("Gagal mengganti foto");
+    }
+  };
+
+  input.click();
+}
 </body>
 </html>

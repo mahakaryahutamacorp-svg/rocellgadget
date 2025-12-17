@@ -1,158 +1,297 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Rocell Gadget | Katalog HP</title>
+  <meta charset="UTF-8">
+  <title>Rocell Gadget | Katalog HP</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Rocell Gadget - Jual beli HP aman & terpercaya">
+  <link rel="icon" href="rocell_gadget_logo.png">
 
-<style>
-:root{
-  --bg:#0f1115;
-  --card:#171a21;
-  --text:#e5e7eb;
-  --muted:#9ca3af;
-  --accent:#2563eb;
-}
-*{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:system-ui,-apple-system,Segoe UI,Roboto;
-  background:var(--bg);
-  color:var(--text);
-}
-header{
-  padding:20px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  border-bottom:1px solid #222;
-}
-header h1{
-  margin:0;
-  font-size:1.2rem;
-}
-header a{
-  background:var(--accent);
-  color:white;
-  padding:10px 14px;
-  border-radius:6px;
-  text-decoration:none;
-  font-weight:600;
-}
-.container{
-  padding:20px;
-  max-width:1200px;
-  margin:auto;
-}
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
-  gap:16px;
-}
-.card{
-  background:var(--card);
-  border-radius:10px;
-  overflow:hidden;
-  display:flex;
-  flex-direction:column;
-}
-.card img{
-  width:100%;
-  height:180px;
-  object-fit:contain;
-  background:#fff;
-}
-.card .info{
-  padding:14px;
-  flex:1;
-}
-.card h3{
-  margin:0 0 6px;
-  font-size:1rem;
-}
-.price{
-  color:var(--accent);
-  font-weight:700;
-  margin-bottom:10px;
-}
-.card a{
-  margin:14px;
-  text-align:center;
-  background:var(--accent);
-  color:white;
-  padding:10px;
-  border-radius:6px;
-  text-decoration:none;
-  font-weight:600;
-}
-.floating-wa{
-  position:fixed;
-  right:18px;
-  bottom:18px;
-  background:#25D366;
-  color:white;
-  padding:14px 18px;
-  border-radius:50px;
-  text-decoration:none;
-  font-weight:700;
-}
-footer{
-  text-align:center;
-  color:var(--muted);
-  padding:30px 10px;
-  font-size:0.9rem;
-}
-</style>
+  <style>
+    :root{
+      --bg:#f8fafc;
+      --card:#ffffff;
+      --text:#0f172a;
+      --muted:#64748b;
+      --accent:#2563eb;
+      --border:#e2e8f0;
+      --success:#16a34a;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
+      background:var(--bg);
+      color:var(--text);
+    }
+
+    .container{
+      max-width:1000px;
+      margin:auto;
+      padding:20px;
+    }
+
+    .logo{
+      display:block;
+      margin:10px auto 20px;
+      max-width:140px;
+    }
+
+    .topbar{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:15px;
+    }
+
+    .left, .right{
+      display:flex;
+      gap:8px;
+      align-items:center;
+    }
+
+    input{
+      padding:8px 10px;
+      border-radius:6px;
+      border:1px solid var(--border);
+    }
+
+    button{
+      padding:8px 12px;
+      border-radius:6px;
+      border:1px solid var(--border);
+      background:#fff;
+      cursor:pointer;
+    }
+
+    button.primary{
+      background:var(--accent);
+      color:#fff;
+      border:none;
+    }
+
+    button.success{
+      background:var(--success);
+      color:#fff;
+      border:none;
+    }
+
+    .admin-badge{
+      background:var(--success);
+      color:#fff;
+      padding:4px 8px;
+      border-radius:6px;
+      font-size:13px;
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:8px;
+      overflow:hidden;
+    }
+
+    th,td{
+      padding:12px;
+      border-bottom:1px solid var(--border);
+      text-align:left;
+      vertical-align:middle;
+    }
+
+    th{
+      background:#f1f5f9;
+      font-size:14px;
+      color:var(--muted);
+    }
+
+    tr:last-child td{border-bottom:none}
+
+    .muted{color:var(--muted);font-size:13px}
+
+    .center{text-align:center}
+
+    .actions button{
+      margin-left:5px;
+    }
+
+    .hidden{display:none}
+
+    .wa-btn{
+      position:fixed;
+      right:20px;
+      bottom:20px;
+      background:#22c55e;
+      color:#fff;
+      padding:14px 18px;
+      border-radius:999px;
+      text-decoration:none;
+      font-weight:600;
+      box-shadow:0 10px 20px rgba(0,0,0,.15);
+    }
+
+    footer{
+      text-align:center;
+      margin-top:25px;
+      font-size:13px;
+      color:var(--muted);
+    }
+  </style>
 </head>
 
 <body>
-
-<header>
-  <h1>Rocell Gadget</h1>
-  <a href="https://wa.me/6281211172228" target="_blank">Chat WhatsApp</a>
-</header>
-
 <div class="container">
-  <div id="produk" class="grid"></div>
+
+  <img src="rocell_gadget_logo.png" class="logo" alt="Rocell Gadget">
+
+  <div class="topbar">
+    <div class="left">
+      <input id="search" placeholder="Cari nama barang...">
+    </div>
+    <div class="right">
+      <span id="adminStatus"></span>
+      <button id="loginBtn">Login</button>
+      <button id="logoutBtn" class="hidden">Logout</button>
+      <button id="addBtn" class="primary hidden">Tambah</button>
+    </div>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Barang</th>
+        <th>Stok</th>
+        <th>Harga</th>
+        <th class="center">Aksi</th>
+      </tr>
+    </thead>
+    <tbody id="list"></tbody>
+  </table>
+
+  <footer>
+    © Rocell Gadget – Jual Beli HP Aman & Terpercaya
+  </footer>
 </div>
 
-<a class="floating-wa" href="https://wa.me/6281211172228" target="_blank">
-  WhatsApp
+<a class="wa-btn" target="_blank"
+   href="https://wa.me/6281211172228?text=Halo%20Rocell%20Gadget,%20saya%20mau%20tanya%20stok%20HP">
+  Chat WhatsApp
 </a>
 
-<footer>
-  © Rocell Gadget · Jual Beli HP Aman & Terpercaya
-</footer>
-
 <script>
-const PLACEHOLDER =
-"https://via.placeholder.com/400x400?text=Rocell+Gadget";
+const STORAGE = "rocell_items_v1";
+const ADMIN = "rocell_admin";
+const PASSWORD = "rocelladmin";
 
-fetch('items.json?'+Date.now())
-.then(res=>res.json())
-.then(data=>{
-  const wrap=document.getElementById('produk');
-  data.forEach(p=>{
-    const img=p.gambar && p.gambar.trim()!=='' ? p.gambar : PLACEHOLDER;
-    const harga=p.harga>0
-      ? 'Rp '+p.harga.toLocaleString('id-ID')
-      : 'Hubungi';
-    const pesan=encodeURIComponent(
-      `Halo Rocell Gadget, saya tertarik dengan ${p.nama}, apakah masih tersedia?`
-    );
-    wrap.innerHTML+=`
-      <div class="card">
-        <img src="${img}" alt="${p.nama}">
-        <div class="info">
-          <h3>${p.nama}</h3>
-          <div class="price">${harga}</div>
-        </div>
-        <a href="https://wa.me/6281211172228?text=${pesan}" target="_blank">
-          Chat WhatsApp
-        </a>
-      </div>`;
+const sample = [
+  {id:1,nama:"iPhone 13 Pro Max 128GB",stok:1,harga:8600000},
+  {id:2,nama:"Redmi Note 12 Pro 8/128",stok:1,harga:1200000},
+  {id:3,nama:"Samsung A52",stok:1,harga:1300000}
+];
+
+function load(){
+  let d = localStorage.getItem(STORAGE);
+  if(!d){
+    localStorage.setItem(STORAGE,JSON.stringify(sample));
+    return sample;
+  }
+  return JSON.parse(d);
+}
+
+function save(d){
+  localStorage.setItem(STORAGE,JSON.stringify(d));
+}
+
+let items = load();
+
+const list = document.getElementById("list");
+const search = document.getElementById("search");
+
+function render(data){
+  list.innerHTML="";
+  data.forEach(i=>{
+    const tr=document.createElement("tr");
+    tr.innerHTML=`
+      <td><b>${i.nama}</b></td>
+      <td>${i.stok} unit</td>
+      <td>Rp ${i.harga.toLocaleString("id-ID")}</td>
+      <td class="center actions">
+        <button class="edit">Edit</button>
+        <button class="del">Hapus</button>
+      </td>`;
+    tr.querySelector(".edit").onclick=()=>editItem(i.id);
+    tr.querySelector(".del").onclick=()=>delItem(i.id);
+    list.appendChild(tr);
   });
-});
+  updateAdminUI();
+}
+
+function updateAdminUI(){
+  const admin = localStorage.getItem(ADMIN);
+  document.getElementById("adminStatus").innerHTML =
+    admin ? '<span class="admin-badge">ADMIN</span>' : '';
+  loginBtn.classList.toggle("hidden",admin);
+  logoutBtn.classList.toggle("hidden",!admin);
+  addBtn.classList.toggle("hidden",!admin);
+  document.querySelectorAll(".edit,.del")
+    .forEach(b=>b.classList.toggle("hidden",!admin));
+}
+
+function editItem(id){
+  const i = items.find(x=>x.id===id);
+  const nama = prompt("Nama",i.nama);
+  if(!nama)return;
+  i.nama=nama;
+  i.stok=+prompt("Stok",i.stok);
+  i.harga=+prompt("Harga",i.harga);
+  save(items);
+  render(items);
+}
+
+function delItem(id){
+  if(confirm("Hapus item?")){
+    items=items.filter(i=>i.id!==id);
+    save(items);
+    render(items);
+  }
+}
+
+search.oninput=()=>{
+  const q=search.value.toLowerCase();
+  render(items.filter(i=>i.nama.toLowerCase().includes(q)));
+};
+
+loginBtn.onclick=()=>{
+  const pw=prompt("Password admin");
+  if(pw===PASSWORD){
+    localStorage.setItem(ADMIN,1);
+    updateAdminUI();
+  }else alert("Password salah");
+};
+
+logoutBtn.onclick=()=>{
+  localStorage.removeItem(ADMIN);
+  updateAdminUI();
+};
+
+addBtn.onclick=()=>{
+  const nama=prompt("Nama barang");
+  if(!nama)return;
+  items.unshift({
+    id:Date.now(),
+    nama,
+    stok:+prompt("Stok",1),
+    harga:+prompt("Harga",0)
+  });
+  save(items);
+  render(items);
+};
+
+render(items);
 </script>
 
 </body>

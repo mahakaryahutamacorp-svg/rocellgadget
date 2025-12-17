@@ -194,7 +194,7 @@ auth.onAuthStateChanged(user => {
 });
 
 // Render realtime
-db.collection("items").orderBy("nama").onSnapshot(snap => {
+db.collection("items").onSnapshot(snap => {
   produk.innerHTML = "";
   snap.forEach(doc => {
     const p = doc.data();

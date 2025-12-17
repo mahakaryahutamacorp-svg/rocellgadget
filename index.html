@@ -1,300 +1,159 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
-  <!-- FORCE LIGHT THEME: paste di atas file CSS / style -->
-<script>
-  try {
-    // Force light mode by storing preference and applying CSS variables immediately
-    localStorage.setItem('rocell_theme', 'light');
-    (function applyLight(){
-      const root = document.documentElement;
-      root.style.setProperty('--bg', '#f8f9fa');
-      root.style.setProperty('--card', '#ffffff');
-      root.style.setProperty('--muted', '#6c757d');
-      root.style.setProperty('--accent', '#0d6efd');
-      root.style.setProperty('--text', '#212529');
-      // optional: force body bg/text to avoid flashes
-      document.body && (document.body.style.background = '#f8f9fa');
-      document.body && (document.body.style.color = '#212529');
-    })();
-  } catch(e) { console.warn('force light theme failed', e); }
-</script>
-
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Rocell Gadget — Katalog (Admin)</title>
-<meta name="description" content="Katalog Rocell Gadget — admin CRUD langsung di browser (localStorage)" />
-<link rel="icon" href="rocell_gadget_logo.png" />
-
-<!-- Optional: Bootstrap CSS for quick nice UI (no JS) -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Rocell Gadget | Katalog HP</title>
 
 <style>
-  :root{--bg:#0d1117;--card:#0f1524;--muted:#91a5c6;--accent:#2563eb}
-  body{background:var(--bg);color:#e6edf3;font-family:Inter,system-ui,Segoe UI,Roboto,Arial;margin:0;padding:0}
-  .container{max-width:1100px;margin:18px auto;padding:0 12px}
-  .card{background:var(--card);border:1px solid #23375a}
-  table{width:100%;border-collapse:collapse}
-  thead th{background:#0b1220;color:var(--muted);padding:10px;border-bottom:1px solid #23375a;text-align:left}
-  tbody td{padding:10px;border-bottom:1px solid rgba(255,255,255,0.03)}
-  .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:#e6edf3}
-  .admin-badge{background:#1b7a2f;padding:.25rem .5rem;border-radius:.4rem;color:#fff}
-  .logo{display:block;margin:8px auto 14px;max-width:160px;border-radius:8px}
-  .topbar{display:flex;gap:8px;align-items:center;justify-content:space-between;margin-bottom:8px}
-  .actions{display:flex;gap:8px;align-items:center}
-  .small-muted{color:#9fb0c8;font-size:.92rem}
-  /* dialog fallback */
-  dialog{border-radius:8px;border:none;padding:0;background:transparent}
-  .modal-box{background:#0f1524;padding:18px;border-radius:8px;border:1px solid #23375a;color:#e6edf3;min-width:280px}
-  input,select{background:#0b1220;border:1px solid #23375a;color:#e6edf3;padding:.5rem;border-radius:6px;width:100%}
-  @media (max-width:600px){ .topbar{flex-direction:column;align-items:flex-start} }
+:root{
+  --bg:#0f1115;
+  --card:#171a21;
+  --text:#e5e7eb;
+  --muted:#9ca3af;
+  --accent:#2563eb;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto;
+  background:var(--bg);
+  color:var(--text);
+}
+header{
+  padding:20px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  border-bottom:1px solid #222;
+}
+header h1{
+  margin:0;
+  font-size:1.2rem;
+}
+header a{
+  background:var(--accent);
+  color:white;
+  padding:10px 14px;
+  border-radius:6px;
+  text-decoration:none;
+  font-weight:600;
+}
+.container{
+  padding:20px;
+  max-width:1200px;
+  margin:auto;
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+  gap:16px;
+}
+.card{
+  background:var(--card);
+  border-radius:10px;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+}
+.card img{
+  width:100%;
+  height:180px;
+  object-fit:contain;
+  background:#fff;
+}
+.card .info{
+  padding:14px;
+  flex:1;
+}
+.card h3{
+  margin:0 0 6px;
+  font-size:1rem;
+}
+.price{
+  color:var(--accent);
+  font-weight:700;
+  margin-bottom:10px;
+}
+.card a{
+  margin:14px;
+  text-align:center;
+  background:var(--accent);
+  color:white;
+  padding:10px;
+  border-radius:6px;
+  text-decoration:none;
+  font-weight:600;
+}
+.floating-wa{
+  position:fixed;
+  right:18px;
+  bottom:18px;
+  background:#25D366;
+  color:white;
+  padding:14px 18px;
+  border-radius:50px;
+  text-decoration:none;
+  font-weight:700;
+}
+footer{
+  text-align:center;
+  color:var(--muted);
+  padding:30px 10px;
+  font-size:0.9rem;
+}
 </style>
 </head>
+
 <body>
-  <div class="container">
-    <img src="rocell_gadget_logo.png" alt="Rocell Gadget" class="logo" onerror="this.style.display='none'">
-    <div class="topbar">
-      <div style="display:flex;gap:8px;align-items:center">
-        <button id="btnToggleView" class="btn-ghost">Terbuka</button>
-        <input id="searchInput" placeholder="Cari nama barang..." style="min-width:220px;padding:.45rem;border-radius:6px">
-      </div>
-      <div class="actions">
-        <span id="adminStatus"></span>
-        <button id="btnLogin" class="btn-ghost">Login</button>
-        <button id="btnLogout" class="btn-ghost" style="display:none">Logout</button>
-        <button id="btnTambah" class="btn-ghost" style="display:none">Tambah</button>
-      </div>
-    </div>
 
-    <div class="card">
-      <div style="padding:12px">
-        <table id="tblBarang" aria-live="polite">
-          <thead>
-            <tr><th style="width:90px">Gambar</th><th>Barang</th><th>Stok</th><th>Harga</th><th style="text-align:center">Aksi</th></tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
-    </div>
+<header>
+  <h1>Rocell Gadget</h1>
+  <a href="https://wa.me/6281211172228" target="_blank">Chat WhatsApp</a>
+</header>
 
-    <div style="margin-top:10px" class="small-muted">Catatan: perubahan disimpan di browser (localStorage). Hanya admin yang login bisa edit/hapus/tambah.</div>
-  </div>
+<div class="container">
+  <div id="produk" class="grid"></div>
+</div>
 
-  <!-- Login Dialog (native dialog element -> no external JS) -->
-  <dialog id="dlgLogin">
-    <div class="modal-box">
-      <h5>Login Admin</h5>
-      <div style="margin-top:8px"><input id="loginPassword" type="password" placeholder="Masukkan password"></div>
-      <div id="loginError" style="color:#ff6666;margin-top:8px;display:none"></div>
-      <div style="margin-top:10px;display:flex;gap:8px;justify-content:flex-end">
-        <button id="loginCancel" class="btn-ghost">Batal</button>
-        <button id="loginDo" class="btn-ghost">Masuk</button>
-      </div>
-    </div>
-  </dialog>
+<a class="floating-wa" href="https://wa.me/6281211172228" target="_blank">
+  WhatsApp
+</a>
 
-  <!-- Item Dialog -->
-  <dialog id="dlgItem">
-    <div class="modal-box">
-      <h5 id="itemTitle">Tambah Produk</h5>
-      <div style="margin-top:8px">
-        <label class="small-muted">Nama</label>
-        <input id="iNama" placeholder="Nama produk">
-      </div>
-      <div style="margin-top:8px">
-        <label class="small-muted">Brand</label>
-        <input id="iBrand" placeholder="Brand">
-      </div>
-      <div style="margin-top:8px;display:flex;gap:8px">
-        <div style="flex:1"><label class="small-muted">Stok</label><input id="iStok" type="number" value="1"></div>
-        <div style="flex:1"><label class="small-muted">Harga (Rp)</label><input id="iHarga" type="number" value="0"></div>
-      </div>
-      <div style="margin-top:8px">
-        <label class="small-muted">URL Gambar (opsional)</label>
-        <input id="iGambar" placeholder="https://...jpg">
-      </div>
-      <input id="iId" type="hidden">
-      <div style="margin-top:10px;display:flex;gap:8px;justify-content:flex-end">
-        <button id="iCancel" class="btn-ghost">Batal</button>
-        <button id="iSave" class="btn-ghost">Simpan</button>
-      </div>
-    </div>
-  </dialog>
+<footer>
+  © Rocell Gadget · Jual Beli HP Aman & Terpercaya
+</footer>
 
 <script>
-(() => {
-  'use strict';
+const PLACEHOLDER =
+"https://via.placeholder.com/400x400?text=Rocell+Gadget";
 
-  // CONFIG
-  const STORAGE_KEY = 'rocell_items_v1';
-  const ADMIN_FLAG = 'rocell_admin_logged';
-  const ADMIN_PASSWORD = 'rocelladmin'; // change if needed
-
-  // initial sample test items (added if storage empty)
-  const SAMPLE = [
-    {id:'t1', nama:'coming soon', brand:'Apple', stok:1, harga:0, gambar:''},
-    {id:'t2', nama:'coming soon', brand:'Samsung', stok:1, harga:0, gambar:''},
-    {id:'t3', nama:'coming soon', brand:'Oppo', stok:10, harga:0, gambar:''}
-  ];
-
-  // helpers
-  const q = s => document.querySelector(s);
-  const el = id => document.getElementById(id);
-  const fmt = n => new Intl.NumberFormat('id-ID').format(Number(n)||0);
-  const escapeHtml = s => (s||'').toString().replace(/[&"'<>]/g,c=>({'&':'&amp;','"':'&quot;',"'":'&#39;','<':'&lt;','>':'&gt;'})[c]);
-
-  function loadItems() {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (!raw) { localStorage.setItem(STORAGE_KEY, JSON.stringify(SAMPLE)); return SAMPLE.slice(); }
-      return JSON.parse(raw);
-    } catch(e) { console.error('loadItems', e); return SAMPLE.slice(); }
-  }
-  function saveItems(items) {
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(items)); } catch(e){ console.error('saveItems', e); }
-  }
-
-  let items = loadItems();
-
-  // render table
-  function renderRows(list) {
-    const tbody = q('#tblBarang tbody');
-    tbody.innerHTML = '';
-    (list || items).forEach(it => {
-      const tr = document.createElement('tr');
-      tr.dataset.id = it.id;
-      const imgHtml = it.gambar ? `<img src="${escapeHtml(it.gambar)}" alt="" style="max-width:80px;max-height:60px;object-fit:cover;border-radius:6px" onerror="this.style.display='none'">` : '';
-      const harga = Number(it.harga) > 0 ? 'Rp ' + fmt(it.harga) : '<span style="color:#999">Hubungi</span>';
-      tr.innerHTML = `
-        <td style="width:90px">${imgHtml}</td>
-        <td><strong>${escapeHtml(it.nama)}</strong><div style="color:#9fb0c8">${escapeHtml(it.brand)}</div></td>
-        <td>${Number(it.stok)||0} unit</td>
-        <td>${harga}</td>
-        <td style="text-align:center">
-          <button data-action="edit" class="btn-ghost">Edit</button>
-          <button data-action="delete" class="btn-ghost" style="margin-left:6px">Hapus</button>
-        </td>
-      `;
-      tbody.appendChild(tr);
-    });
-  }
-
-  // CRUD functions
-  function addItem(obj){ items.unshift(obj); saveItems(items); renderRows(); }
-  function updateItem(id, obj){ const i = items.findIndex(x=>x.id===id); if(i>=0){ items[i]=obj; saveItems(items); renderRows(); } }
-  function deleteItem(id){ items = items.filter(x=>x.id!==id); saveItems(items); renderRows(); }
-
-  // admin UI
-  function isAdmin(){ return localStorage.getItem(ADMIN_FLAG) === '1'; }
-  function setAdminMode(on){
-    const status = el('adminStatus');
-    const btnLogin = el('btnLogin'), btnLogout = el('btnLogout'), btnTambah = el('btnTambah');
-    if(on){ localStorage.setItem(ADMIN_FLAG,'1'); status.innerHTML = '<span class="admin-badge">ADMIN</span>'; btnLogin.style.display='none'; btnLogout.style.display='inline-block'; btnTambah.style.display='inline-block'; }
-    else { localStorage.removeItem(ADMIN_FLAG); status.innerHTML=''; btnLogin.style.display='inline-block'; btnLogout.style.display='none'; btnTambah.style.display='none'; }
-  }
-
-  // wire events (pure JS)
-  function attachEvents(){
-    // login dialog
-    const dlgLogin = el('dlgLogin'), dlgItem = el('dlgItem');
-    el('btnLogin').addEventListener('click', ()=>{ el('loginPassword').value=''; el('loginError').style.display='none'; dlgLogin.showModal(); });
-    el('loginCancel').addEventListener('click', ()=>dlgLogin.close());
-    el('loginDo').addEventListener('click', ()=>{
-      const pw = el('loginPassword').value||'';
-      if(pw === ADMIN_PASSWORD){ setAdminMode(true); dlgLogin.close(); } else { el('loginError').textContent='Password salah'; el('loginError').style.display='block'; }
-    });
-    el('btnLogout').addEventListener('click', ()=> setAdminMode(false));
-
-    // tambah button
-    el('btnTambah').addEventListener('click', ()=> openItem());
-
-    // table actions (delegated)
-    q('#tblBarang tbody').addEventListener('click', (ev)=>{
-      const btn = ev.target.closest('button');
-      if(!btn) return;
-      const action = btn.dataset.action;
-      const tr = ev.target.closest('tr');
-      if(!tr) return;
-      const id = tr.dataset.id;
-      if(action === 'edit'){
-        if(!isAdmin()){ alert('Hanya admin yang bisa mengedit'); return; }
-        const it = items.find(x=>x.id===id);
-        openItem(it);
-      } else if(action === 'delete'){
-        if(!isAdmin()){ alert('Hanya admin yang bisa menghapus'); return; }
-        if(confirm('Hapus item ini?')) deleteItem(id);
-      }
-    });
-
-    // save item
-    el('iCancel').addEventListener('click', ()=> el('dlgItem').close());
-    el('iSave').addEventListener('click', ()=>{
-      const id = el('iId').value || ('id'+Math.random().toString(36).slice(2,9));
-      const obj = {
-        id,
-        nama: (el('iNama').value||'').trim(),
-        brand: (el('iBrand').value||'').trim(),
-        stok: Number(el('iStok').value)||0,
-        harga: Number(el('iHarga').value)||0,
-        gambar: (el('iGambar').value||'').trim()
-      };
-      if(!obj.nama){ alert('Nama wajib diisi'); return; }
-      const existing = items.find(x=>x.id===id);
-      if(existing) updateItem(id,obj); else addItem(obj);
-      el('dlgItem').close();
-    });
-
-    // search
-    el('searchInput').addEventListener('input', function(){
-      const qv = (this.value||'').trim().toLowerCase();
-      if(!qv) { renderRows(); return; }
-      const filtered = items.filter(i => (i.nama+' '+i.brand).toLowerCase().includes(qv));
-      renderRows(filtered);
-    });
-
-    // toggle view (hide/show logo)
-    el('btnToggleView').addEventListener('click', function(){
-      const logo = document.querySelector('.logo');
-      if(logo.style.display === 'none'){ logo.style.display = 'block'; this.textContent='Terbuka'; } else { logo.style.display='none'; this.textContent='Compact'; }
-    });
-
-    // helper: open item dialog
-    window.openItemDialog = (it) => openItem(it);
-  }
-
-  function openItem(item){
-    const dlg = el('dlgItem');
-    if(item){
-      el('itemTitle').textContent = 'Edit Produk';
-      el('iId').value = item.id;
-      el('iNama').value = item.nama;
-      el('iBrand').value = item.brand;
-      el('iStok').value = item.stok;
-      el('iHarga').value = item.harga;
-      el('iGambar').value = item.gambar || '';
-    } else {
-      el('itemTitle').textContent = 'Tambah Produk';
-      el('iId').value = '';
-      el('iNama').value = '';
-      el('iBrand').value = '';
-      el('iStok').value = 1;
-      el('iHarga').value = 0;
-      el('iGambar').value = '';
-    }
-    dlg.showModal();
-  }
-
-  // boot
-  function boot(){
-    renderRows(items);
-    attachEvents();
-    setAdminMode(isAdmin());
-    console.log('Rocell Gadget (no-ext-js) ready');
-  }
-
-  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
-
-})();
+fetch('items.json?'+Date.now())
+.then(res=>res.json())
+.then(data=>{
+  const wrap=document.getElementById('produk');
+  data.forEach(p=>{
+    const img=p.gambar && p.gambar.trim()!=='' ? p.gambar : PLACEHOLDER;
+    const harga=p.harga>0
+      ? 'Rp '+p.harga.toLocaleString('id-ID')
+      : 'Hubungi';
+    const pesan=encodeURIComponent(
+      `Halo Rocell Gadget, saya tertarik dengan ${p.nama}, apakah masih tersedia?`
+    );
+    wrap.innerHTML+=`
+      <div class="card">
+        <img src="${img}" alt="${p.nama}">
+        <div class="info">
+          <h3>${p.nama}</h3>
+          <div class="price">${harga}</div>
+        </div>
+        <a href="https://wa.me/6281211172228?text=${pesan}" target="_blank">
+          Chat WhatsApp
+        </a>
+      </div>`;
+  });
+});
 </script>
+
 </body>
 </html>

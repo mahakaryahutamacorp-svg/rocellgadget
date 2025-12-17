@@ -1,297 +1,237 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <title>Rocell Gadget | Katalog HP</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Rocell Gadget - Jual beli HP aman & terpercaya">
-  <link rel="icon" href="rocell_gadget_logo.png">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Rocell Gadget | Katalog HP</title>
 
-  <style>
-    :root{
-      --bg:#f8fafc;
-      --card:#ffffff;
-      --text:#0f172a;
-      --muted:#64748b;
-      --accent:#2563eb;
-      --border:#e2e8f0;
-      --success:#16a34a;
-    }
+<meta name="description" content="Rocell Gadget - Jual beli HP aman & terpercaya" />
 
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
-      background:var(--bg);
-      color:var(--text);
-    }
+<style>
+:root{
+  --bg:#ffffff;
+  --card:#f8fafc;
+  --border:#e5e7eb;
+  --text:#0f172a;
+  --muted:#64748b;
+  --accent:#2563eb;
+  --wa:#22c55e;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
+  background:var(--bg);
+  color:var(--text);
+}
+.container{max-width:1100px;margin:24px auto;padding:0 16px}
+header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+}
+h1{margin:0;font-size:1.3rem}
+button{
+  padding:8px 12px;
+  border-radius:8px;
+  border:1px solid var(--border);
+  background:#fff;
+  cursor:pointer;
+}
+button.primary{
+  background:var(--accent);
+  color:#fff;
+  border-color:var(--accent);
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+  gap:16px;
+}
+.card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:12px;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+}
+.card img{
+  width:100%;
+  height:180px;
+  object-fit:contain;
+  background:#fff;
+}
+.card .info{
+  padding:12px;
+  flex:1;
+}
+.card h3{margin:0 0 6px;font-size:1rem}
+.price{color:var(--accent);font-weight:700;margin-bottom:10px}
+.card a{
+  margin:12px;
+  text-align:center;
+  background:var(--accent);
+  color:white;
+  padding:10px;
+  border-radius:6px;
+  text-decoration:none;
+  font-weight:600;
+}
+.admin{
+  margin:20px 0;
+  padding:12px;
+  border:1px dashed var(--border);
+  border-radius:12px;
+}
+.hidden{display:none}
+.wa-float{
+  position:fixed;
+  right:16px;
+  bottom:16px;
+  background:var(--wa);
+  color:white;
+  padding:12px 16px;
+  border-radius:999px;
+  text-decoration:none;
+  font-weight:600;
+}
+footer{
+  margin:24px 0;
+  text-align:center;
+  color:var(--muted);
+  font-size:13px;
+}
+</style>
 
-    .container{
-      max-width:1000px;
-      margin:auto;
-      padding:20px;
-    }
-
-    .logo{
-      display:block;
-      margin:10px auto 20px;
-      max-width:140px;
-    }
-
-    .topbar{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      justify-content:space-between;
-      align-items:center;
-      margin-bottom:15px;
-    }
-
-    .left, .right{
-      display:flex;
-      gap:8px;
-      align-items:center;
-    }
-
-    input{
-      padding:8px 10px;
-      border-radius:6px;
-      border:1px solid var(--border);
-    }
-
-    button{
-      padding:8px 12px;
-      border-radius:6px;
-      border:1px solid var(--border);
-      background:#fff;
-      cursor:pointer;
-    }
-
-    button.primary{
-      background:var(--accent);
-      color:#fff;
-      border:none;
-    }
-
-    button.success{
-      background:var(--success);
-      color:#fff;
-      border:none;
-    }
-
-    .admin-badge{
-      background:var(--success);
-      color:#fff;
-      padding:4px 8px;
-      border-radius:6px;
-      font-size:13px;
-    }
-
-    table{
-      width:100%;
-      border-collapse:collapse;
-      background:var(--card);
-      border:1px solid var(--border);
-      border-radius:8px;
-      overflow:hidden;
-    }
-
-    th,td{
-      padding:12px;
-      border-bottom:1px solid var(--border);
-      text-align:left;
-      vertical-align:middle;
-    }
-
-    th{
-      background:#f1f5f9;
-      font-size:14px;
-      color:var(--muted);
-    }
-
-    tr:last-child td{border-bottom:none}
-
-    .muted{color:var(--muted);font-size:13px}
-
-    .center{text-align:center}
-
-    .actions button{
-      margin-left:5px;
-    }
-
-    .hidden{display:none}
-
-    .wa-btn{
-      position:fixed;
-      right:20px;
-      bottom:20px;
-      background:#22c55e;
-      color:#fff;
-      padding:14px 18px;
-      border-radius:999px;
-      text-decoration:none;
-      font-weight:600;
-      box-shadow:0 10px 20px rgba(0,0,0,.15);
-    }
-
-    footer{
-      text-align:center;
-      margin-top:25px;
-      font-size:13px;
-      color:var(--muted);
-    }
-  </style>
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 </head>
 
 <body>
+
 <div class="container">
-
-  <img src="rocell_gadget_logo.png" class="logo" alt="Rocell Gadget">
-
-  <div class="topbar">
-    <div class="left">
-      <input id="search" placeholder="Cari nama barang...">
-    </div>
-    <div class="right">
-      <span id="adminStatus"></span>
-      <button id="loginBtn">Login</button>
+  <header>
+    <h1>Rocell Gadget</h1>
+    <div>
+      <button id="loginBtn">Login Admin</button>
       <button id="logoutBtn" class="hidden">Logout</button>
-      <button id="addBtn" class="primary hidden">Tambah</button>
     </div>
+  </header>
+
+  <div id="adminPanel" class="admin hidden">
+    <strong>ADMIN PANEL</strong><br/><br/>
+    <button id="addBtn" class="primary">Tambah Barang</button>
   </div>
 
-  <table>
-    <thead>
-      <tr>
-        <th>Barang</th>
-        <th>Stok</th>
-        <th>Harga</th>
-        <th class="center">Aksi</th>
-      </tr>
-    </thead>
-    <tbody id="list"></tbody>
-  </table>
+  <div id="produk" class="grid"></div>
 
   <footer>
-    © Rocell Gadget – Jual Beli HP Aman & Terpercaya
+    © Rocell Gadget · Jual Beli HP Aman & Terpercaya
   </footer>
 </div>
 
-<a class="wa-btn" target="_blank"
-   href="https://wa.me/6281211172228?text=Halo%20Rocell%20Gadget,%20saya%20mau%20tanya%20stok%20HP">
-  Chat WhatsApp
+<a class="wa-float" target="_blank"
+   href="https://wa.me/6281211172228">
+  WhatsApp
 </a>
 
 <script>
-const STORAGE = "rocell_items_v1";
-const ADMIN = "rocell_admin";
-const PASSWORD = "rocelladmin";
+/* =============================
+   🔥 KONFIGURASI WAJIB
+============================= */
 
-const sample = [
-  {id:1,nama:"iPhone 13 Pro Max 128GB",stok:1,harga:8600000},
-  {id:2,nama:"Redmi Note 12 Pro 8/128",stok:1,harga:1200000},
-  {id:3,nama:"Samsung A52",stok:1,harga:1300000}
-];
+// 🔁 GANTI DENGAN CONFIG FIREBASE KAMU
+const firebaseConfig = {
+  apiKey: "YOUR_FIREBASE_CONFIG_HERE",
+  authDomain: "YOUR_FIREBASE_CONFIG_HERE",
+  projectId: "YOUR_FIREBASE_CONFIG_HERE"
+};
 
-function load(){
-  let d = localStorage.getItem(STORAGE);
-  if(!d){
-    localStorage.setItem(STORAGE,JSON.stringify(sample));
-    return sample;
+// 🔐 GANTI DENGAN EMAIL GOOGLE ADMIN
+const ADMIN_EMAIL = "mahakaryahutama.corp@gmail.com";
+
+/* =============================
+   🚀 INIT FIREBASE
+============================= */
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+/* =============================
+   🧠 LOGIC
+============================= */
+const produk = document.getElementById("produk");
+const adminPanel = document.getElementById("adminPanel");
+const loginBtn = document.getElementById("loginBtn");
+const logoutBtn = document.getElementById("logoutBtn");
+
+// Login Google
+loginBtn.onclick = () => {
+  const provider = new firebase.auth.GoogleAuthProvider();
+  auth.signInWithPopup(provider);
+};
+
+// Logout
+logoutBtn.onclick = () => auth.signOut();
+
+// Auth state
+auth.onAuthStateChanged(user => {
+  if(user && user.email === ADMIN_EMAIL){
+    adminPanel.classList.remove("hidden");
+    logoutBtn.classList.remove("hidden");
+    loginBtn.classList.add("hidden");
+  }else{
+    adminPanel.classList.add("hidden");
+    logoutBtn.classList.add("hidden");
+    loginBtn.classList.remove("hidden");
   }
-  return JSON.parse(d);
-}
+});
 
-function save(d){
-  localStorage.setItem(STORAGE,JSON.stringify(d));
-}
+// Render realtime
+db.collection("items").orderBy("nama").onSnapshot(snap => {
+  produk.innerHTML = "";
+  snap.forEach(doc => {
+    const p = doc.data();
+    const img = p.gambar || "https://via.placeholder.com/300x300?text=Rocell+Gadget";
+    const harga = p.harga ? "Rp " + p.harga.toLocaleString("id-ID") : "Hubungi";
+    const pesan = encodeURIComponent(
+      `Halo Rocell Gadget, saya tertarik dengan ${p.nama}, apakah masih tersedia?`
+    );
 
-let items = load();
-
-const list = document.getElementById("list");
-const search = document.getElementById("search");
-
-function render(data){
-  list.innerHTML="";
-  data.forEach(i=>{
-    const tr=document.createElement("tr");
-    tr.innerHTML=`
-      <td><b>${i.nama}</b></td>
-      <td>${i.stok} unit</td>
-      <td>Rp ${i.harga.toLocaleString("id-ID")}</td>
-      <td class="center actions">
-        <button class="edit">Edit</button>
-        <button class="del">Hapus</button>
-      </td>`;
-    tr.querySelector(".edit").onclick=()=>editItem(i.id);
-    tr.querySelector(".del").onclick=()=>delItem(i.id);
-    list.appendChild(tr);
+    produk.innerHTML += `
+      <div class="card">
+        <img src="${img}">
+        <div class="info">
+          <h3>${p.nama}</h3>
+          <div class="price">${harga}</div>
+        </div>
+        <a target="_blank"
+           href="https://wa.me/6281211172228?text=${pesan}">
+           Chat WhatsApp
+        </a>
+      </div>
+    `;
   });
-  updateAdminUI();
-}
+});
 
-function updateAdminUI(){
-  const admin = localStorage.getItem(ADMIN);
-  document.getElementById("adminStatus").innerHTML =
-    admin ? '<span class="admin-badge">ADMIN</span>' : '';
-  loginBtn.classList.toggle("hidden",admin);
-  logoutBtn.classList.toggle("hidden",!admin);
-  addBtn.classList.toggle("hidden",!admin);
-  document.querySelectorAll(".edit,.del")
-    .forEach(b=>b.classList.toggle("hidden",!admin));
-}
+// Tambah barang
+document.getElementById("addBtn").onclick = () => {
+  const nama = prompt("Nama barang");
+  if(!nama) return;
+  const harga = Number(prompt("Harga")) || 0;
 
-function editItem(id){
-  const i = items.find(x=>x.id===id);
-  const nama = prompt("Nama",i.nama);
-  if(!nama)return;
-  i.nama=nama;
-  i.stok=+prompt("Stok",i.stok);
-  i.harga=+prompt("Harga",i.harga);
-  save(items);
-  render(items);
-}
-
-function delItem(id){
-  if(confirm("Hapus item?")){
-    items=items.filter(i=>i.id!==id);
-    save(items);
-    render(items);
-  }
-}
-
-search.oninput=()=>{
-  const q=search.value.toLowerCase();
-  render(items.filter(i=>i.nama.toLowerCase().includes(q)));
-};
-
-loginBtn.onclick=()=>{
-  const pw=prompt("Password admin");
-  if(pw===PASSWORD){
-    localStorage.setItem(ADMIN,1);
-    updateAdminUI();
-  }else alert("Password salah");
-};
-
-logoutBtn.onclick=()=>{
-  localStorage.removeItem(ADMIN);
-  updateAdminUI();
-};
-
-addBtn.onclick=()=>{
-  const nama=prompt("Nama barang");
-  if(!nama)return;
-  items.unshift({
-    id:Date.now(),
+  db.collection("items").add({
     nama,
-    stok:+prompt("Stok",1),
-    harga:+prompt("Harga",0)
+    harga,
+    stok: 1,
+    gambar: "",
+    createdAt: firebase.firestore.FieldValue.serverTimestamp()
   });
-  save(items);
-  render(items);
 };
-
-render(items);
 </script>
 
 </body>

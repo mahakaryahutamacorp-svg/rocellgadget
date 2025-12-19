@@ -115,7 +115,6 @@ footer{
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
 </head>
 
 <body>
@@ -169,7 +168,6 @@ const ADMIN_EMAIL = "mahakaryahutama.corp@gmail.com";
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
-const storage = firebase.storage();
 
 /* =============================
    DOM
@@ -246,13 +244,11 @@ document.getElementById("addBtn").onclick = async () => {
   await db.collection("items").add({
     nama,
     harga,
-    gambar: fotoURL,
     createdAt: firebase.firestore.FieldValue.serverTimestamp()
   });
 
   namaBarang.value = "";
   hargaBarang.value = "";
-  fotoBarang.value = "";
 };
 
 /* =============================

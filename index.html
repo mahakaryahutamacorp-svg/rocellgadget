@@ -30,7 +30,7 @@ body{
 }
 .container{max-width:1100px;margin:24px auto;padding:0 16px}
 .brand{display:flex;align-items:center;gap:12px}
-.brand img{height:44px}
+.brand img{height:55px}
 .brand h1{margin:0;font-size:1.25rem}
 .grid{
   display:grid;
@@ -61,6 +61,7 @@ body{
   display:block;
 }
 .admin-actions{display:flex;gap:8px;padding:0 12px 12px}
+.admin-actions .btn{ flex: 1; }
 .hidden{display:none}
 .wa-float{position:fixed;right:16px;bottom:16px;background:var(--wa);color:#fff;padding:12px 16px;border-radius:999px;text-decoration:none;font-weight:600;z-index:99}
 footer{margin:32px 0;text-align:center;color:var(--muted);font-size:13px}
@@ -196,8 +197,9 @@ db.collection("items").orderBy("createdAt", "desc")
       </a>
       ${isAdmin ? `
       <div class="admin-actions">
-        <button class="btn btn-secondary btn-sm w-100" onclick="openModal('${item.id}')">Edit</button>
-        <button class="btn btn-danger btn-sm w-100" onclick="deleteItem('${item.id}', '${item.gambar || ''}')">Hapus</button>
+        <button class="btn btn-outline-secondary btn-sm" onclick="openModal('${item.id}')">Edit</button>
+        <button class="btn btn-outline-secondary btn-sm" onclick="changePhoto('${item.id}', '${item.gambar || ''}')">Ubah Foto</button>
+        <button class="btn btn-outline-danger btn-sm" onclick="deleteItem('${item.id}', '${item.gambar || ''}')">Hapus</button>
       </div>` : ""}
     `;
     produkContainer.appendChild(card);
@@ -241,7 +243,6 @@ async function saveItem() {
     let newImageUrl = gambarLama;
     // Handle file upload
     if (file) {
-      // Delete old image if it exists and we are uploading a new one
       if (id && gambarLama) {
         try { await storage.refFromURL(gambarLama).delete(); } catch (e) { console.warn("Could not delete old image", e.message); }
       }
@@ -274,9 +275,7 @@ async function saveItem() {
 async function deleteItem(id, imageUrl) {
   if (!confirm("Hapus barang ini?")) return;
   try {
-    // Delete from Firestore
     await db.collection("items").doc(id).delete();
-    // Delete from Storage
     if (imageUrl) {
       await storage.refFromURL(imageUrl).delete();
     }
@@ -284,6 +283,39 @@ async function deleteItem(id, imageUrl) {
     console.error(err);
     alert("Gagal menghapus barang. Lihat console untuk detail.");
   }
+}
+
+async function changePhoto(id, oldImageUrl) {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.onchange = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        alert('Mengunggah foto baru... Proses ini mungkin memerlukan waktu beberapa saat.');
+        
+        try {
+            const newImageRef = storage.ref("produk/" + Date.now() + "_" + file.name);
+            const uploadSnap = await newImageRef.put(file);
+            const newImageUrl = await uploadSnap.ref.getDownloadURL();
+
+            await db.collection("items").doc(id).update({ gambar: newImageUrl });
+
+            if (oldImageUrl) {
+                try {
+                    await storage.refFromURL(oldImageUrl).delete();
+                } catch (storageErr) {
+                    console.warn("Gagal menghapus foto lama:", storageErr.message);
+                }
+            }
+            alert('Foto berhasil diperbarui!');
+        } catch (err) {
+            console.error("Gagal mengubah foto:", err);
+            alert("Gagal mengubah foto. Lihat console untuk detail.");
+        }
+    };
+    input.click();
 }
 
 // Event Listeners

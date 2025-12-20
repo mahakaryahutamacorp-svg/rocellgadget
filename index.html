@@ -12,63 +12,67 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
 
 <style>
-:root{
-  --bg:#ffffff;
-  --card-bg:#f8fafc;
-  --border:#e5e7eb;
-  --text:#0f172a;
-  --muted:#64748b;
-  --accent:#2563eb;
-  --danger:#dc2626;
-  --wa:#22c55e;
+:root {
+  --bg: #f8fafc;
+  --card-bg: #ffffff;
+  --border: #e5e7eb;
+  --text: #0f172a;
+  --muted: #64748b;
+  --accent: #2563eb;
+  --danger: #dc2626;
+  --wa: #22c55e;
+  --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
 }
-body{
-  margin:0;
+body {
+  margin: 0;
   font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial;
-  background:var(--bg);
-  color:var(--text);
+  background: var(--bg);
+  color: var(--text);
 }
-.container{max-width:1100px;margin:24px auto;padding:0 16px}
-.brand{display:flex;align-items:center;gap:12px}
-.brand img{height:55px}
-.brand h1{margin:0;font-size:1.25rem}
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
-  gap:16px;
+.container { max-width: 1100px; margin: 24px auto; padding: 0 16px; }
+.brand { display: flex; align-items: center; gap: 12px; }
+.brand img { height: 55px; }
+.brand h1 { margin: 0; font-size: 1.25rem; }
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
 }
-.card-product{
-  background:var(--card-bg);
-  border:1px solid var(--border);
-  border-radius:12px;
-  overflow:hidden;
-  display:flex;
-  flex-direction:column;
+.card-product {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: all .2s ease;
+  box-shadow: var(--shadow);
 }
-.card-product img{width:100%;height:180px;object-fit:contain;background:#fff}
-.card-product .info{padding:12px;flex:1}
-.card-product h3{margin:0 0 6px;font-size:1rem}
-.price{font-weight:700;color:var(--accent);margin-bottom:8px}
-.card-product .wa-link{
-  margin:0 12px 12px;
-  text-align:center;
-  background:var(--wa);
-  color:#fff;
-  padding:10px;
-  border-radius:6px;
-  text-decoration:none;
-  font-weight:600;
-  display:block;
+.card-product:hover { transform: translateY(-3px); }
+.card-product img { width: 100%; height: 180px; object-fit: contain; background: #fff; }
+.card-product .info { padding: 12px; flex: 1; }
+.card-product h3 { margin: 0 0 6px; font-size: 1rem; }
+.price { font-weight: 700; color: var(--accent); margin-bottom: 8px; }
+.card-product .wa-link {
+  margin: 0 12px 12px;
+  text-align: center;
+  background: var(--wa);
+  color: #fff;
+  padding: 10px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  display: block;
 }
-.admin-actions{display:flex;gap:8px;padding:0 12px 12px}
-.admin-actions .btn{ flex: 1; }
-.hidden{display:none}
-.wa-float{position:fixed;right:16px;bottom:16px;background:var(--wa);color:#fff;padding:12px 16px;border-radius:999px;text-decoration:none;font-weight:600;z-index:99}
-footer{margin:32px 0;text-align:center;color:var(--muted);font-size:13px}
-#adminToolbar { padding: 16px; border: 1px solid var(--border); border-radius: 12px; }
-.modal-content { background: #fff; color: var(--text); }
-.form-control { background-color: #f3f4f6; border-color: var(--border); }
-.form-control:focus { background-color: #fff; }
+.admin-actions { display: flex; gap: 8px; padding: 0 12px 12px; }
+.admin-actions .btn { flex: 1; }
+.hidden { display: none; }
+.wa-float { position: fixed; right: 16px; bottom: 16px; background: var(--wa); color: #fff; padding: 12px 16px; border-radius: 999px; text-decoration: none; font-weight: 600; z-index: 99; box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); }
+footer { margin: 48px 0 32px; text-align: center; color: var(--muted); font-size: 13px; }
+#adminToolbar { padding: 16px; border: 1px solid var(--border); border-radius: 12px; background: var(--card-bg); box-shadow: var(--shadow); }
+.form-control, .form-select { background-color: #f3f4f6; border-color: var(--border); }
+.form-control:focus { background-color: #fff; border-color: var(--accent); box-shadow: none; }
+#product-placeholder { text-align: center; padding: 4rem 0; color: var(--muted); }
 </style>
 
 <!-- Firebase SDK -->
@@ -81,37 +85,42 @@ footer{margin:32px 0;text-align:center;color:var(--muted);font-size:13px}
 <body>
 
 <div class="container">
-  <header class="d-flex justify-content-between align-items-center mb-4">
+  <header class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
     <div class="brand">
       <img src="rocell_gadget_logo.png" alt="Rocell Gadget">
       <h1>Rocell Gadget</h1>
     </div>
-    <div>
-      <button id="loginBtn" class="btn btn-outline-primary">Login Admin</button>
+    <div class="d-flex align-items-center gap-2">
+      <input type="search" id="searchInput" class="form-control" style="max-width:300px;" placeholder="Cari HP..."/>
+      <button id="loginBtn" class="btn btn-primary text-nowrap">Admin</button>
       <button id="logoutBtn" class="btn btn-outline-secondary hidden">Logout</button>
     </div>
   </header>
 
-  <div id="adminToolbar" class="admin hidden mb-4">
+  <div id="adminToolbar" class="hidden mb-4">
     <div class="d-flex justify-content-between align-items-center">
         <h5 class="mb-0">Panel Admin</h5>
-        <button id="addBtn" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Tambah Barang</button>
+        <button id="addBtn" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Tambah</button>
     </div>
   </div>
 
   <div id="produk" class="grid"></div>
+  <div id="product-placeholder">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <p class="mt-2">Memuat produk...</p>
+  </div>
 
-  <footer>
-    © Rocell Gadget · Jual Beli HP Aman & Terpercaya
-  </footer>
+  <footer>© Rocell Gadget · Jual Beli HP Aman & Terpercaya</footer>
 </div>
 
-<a class="wa-float" target="_blank" href="https://wa.me/6281211172228">
+<a class="wa-float" target="_blank" href="https://wa.me/6281211172228?text=Halo%20Rocell%20Gadget%2C%20saya%20mau%20bertanya.">
   <i class="bi bi-whatsapp"></i> WhatsApp
 </a>
 
 <!-- Modal -->
-<div class="modal fade" id="modalItem" tabindex="-1">
+<div class="modal fade" id="modalItem" tabindex="-1" data-bs-backdrop="static">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
@@ -121,8 +130,8 @@ footer{margin:32px 0;text-align:center;color:var(--muted);font-size:13px}
       <div class="modal-body">
         <input type="hidden" id="mId" />
         <input type="hidden" id="mGambarLama" />
-        <div class="mb-2"><label class="form-label">Nama</label><input id="mNama" class="form-control" /></div>
-        <div class="mb-2"><label class="form-label">Harga (Rp)</label><input id="mHarga" type="number" class="form-control" value="0" min="0" /></div>
+        <div class="mb-3"><label class="form-label">Nama Produk</label><input id="mNama" class="form-control" /></div>
+        <div class="mb-3"><label class="form-label">Harga (Rp)</label><input id="mHarga" type="number" class="form-control" value="0" min="0" /></div>
         <div class="mb-2">
             <label class="form-label">Foto</label>
             <input id="mGambar" type="file" class="form-control" accept="image/*" />
@@ -141,49 +150,55 @@ footer{margin:32px 0;text-align:center;color:var(--muted);font-size:13px}
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
+// --- CONFIG & STATE ---
 const firebaseConfig = {
   apiKey: "AIzaSyAcLq0OpLMY9gfOVb7854pzaEAjqNbgHGs",
   authDomain: "rocellgadget.firebaseapp.com",
   projectId: "rocellgadget",
   storageBucket: "rocellgadget.appspot.com",
-  messagingSenderId: "451065886878",
   appId: "1:451065886878:web:e3f291259be532f8a5638f"
 };
 const ADMIN_EMAIL = "mahakaryahutama.corp@gmail.com";
+let state = {
+    isAdmin: false,
+    products: [],
+    unsubscribe: null,
+};
 
-// Helper
+// --- HELPERS & UTILS ---
 const el = id => document.getElementById(id);
 
-// Init Firebase
+// --- FIREBASE INIT ---
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
 const storage = firebase.storage();
-let itemModal;
+let itemModal; // bootstrap modal instance
 
-
-// Auth state
-auth.onAuthStateChanged(user => {
-  const isAdmin = user && user.email === ADMIN_EMAIL;
-  el('adminToolbar').classList.toggle("hidden", !isAdmin);
-  el('loginBtn').classList.toggle("hidden", isAdmin);
-  el('logoutBtn').classList.toggle("hidden", !isAdmin);
-  loadProducts(); // Reload products to show/hide admin buttons
-});
-
-// Load products
-db.collection("items").orderBy("createdAt", "desc")
-.onSnapshot(snap => {
-  const produkContainer = el('produk');
-  produkContainer.innerHTML = "";
-  snap.forEach(doc => {
-    const item = { id: doc.id, ...doc.data() };
-    const harga = "Rp " + (item.harga || 0).toLocaleString("id-ID");
-    const pesan = encodeURIComponent(
-      `Halo Rocell Gadget, saya tertarik dengan ${item.nama} (${harga})`
+// --- UI RENDERING ---
+function renderProducts(filter = '') {
+    const productsToShow = state.products.filter(p =>
+        p.nama.toLowerCase().includes(filter.toLowerCase())
     );
-    const isAdmin = auth.currentUser && auth.currentUser.email === ADMIN_EMAIL;
+    const container = el('produk');
+    const placeholder = el('product-placeholder');
+    container.innerHTML = '';
 
+    if (state.unsubscribe && productsToShow.length === 0) {
+        placeholder.innerHTML = `<p>Produk tidak ditemukan.</p>`;
+        placeholder.classList.remove('hidden');
+    } else if (state.unsubscribe) {
+        placeholder.classList.add('hidden');
+    } else {
+        placeholder.classList.remove('hidden');
+    }
+
+    productsToShow.forEach(item => container.appendChild(createProductCard(item)));
+}
+
+function createProductCard(item) {
+    const harga = "Rp " + (item.harga || 0).toLocaleString("id-ID");
+    const pesan = encodeURIComponent(`Halo, saya tertarik dengan ${item.nama} (${harga})`);
     const card = document.createElement('div');
     card.className = 'card-product';
     card.innerHTML = `
@@ -195,106 +210,110 @@ db.collection("items").orderBy("createdAt", "desc")
       <a class="wa-link" target="_blank" href="https://wa.me/6281211172228?text=${pesan}">
         <i class="bi bi-whatsapp"></i> Chat WhatsApp
       </a>
-      ${isAdmin ? `
+      ${state.isAdmin ? `
       <div class="admin-actions">
-        <button class="btn btn-outline-secondary btn-sm" onclick="openModal('${item.id}')">Edit</button>
-        <button class="btn btn-outline-secondary btn-sm" onclick="changePhoto('${item.id}', '${item.gambar || ''}')">Ubah Foto</button>
-        <button class="btn btn-outline-danger btn-sm" onclick="deleteItem('${item.id}', '${item.gambar || ''}')">Hapus</button>
-      </div>` : ""}
-    `;
-    produkContainer.appendChild(card);
-  });
-});
-
-// CRUD Functions
-function openModal(id = null) {
-  itemModal.show();
-  const isEdit = id !== null;
-  el('modalItemTitle').textContent = isEdit ? 'Edit Produk' : 'Tambah Produk';
-  
-  if (isEdit) {
-    db.collection('items').doc(id).get().then(doc => {
-      if (!doc.exists) return alert('Barang tidak ditemukan!');
-      const item = doc.data();
-      el('mId').value = id;
-      el('mNama').value = item.nama;
-      el('mHarga').value = item.harga;
-      el('mGambarLama').value = item.gambar || '';
-    });
-  } else {
-    el('mId').value = '';
-    el('mNama').value = '';
-    el('mHarga').value = '';
-    el('mGambarLama').value = '';
-    el('mGambar').value = '';
-  }
+        <button class="btn btn-outline-secondary btn-sm" onclick="window.openModal('${item.id}')">Edit</button>
+        <button class="btn btn-outline-secondary btn-sm" onclick="window.changePhoto('${item.id}', '${item.gambar || ''}')">Ubah Foto</button>
+        <button class="btn btn-outline-danger btn-sm" onclick="window.deleteItem('${item.id}', '${item.gambar || ''}')">Hapus</button>
+      </div>` : ""}`;
+    return card;
 }
 
-async function saveItem() {
-  const id = el('mId').value;
-  const nama = el('mNama').value.trim();
-  const harga = Number(el('mHarga').value);
-  const file = el('mGambar').files[0];
-  const gambarLama = el('mGambarLama').value;
+function fetchAndRenderProducts() {
+    if (state.unsubscribe) state.unsubscribe(); // Detach old listener
 
-  if (!nama || !harga) return alert("Nama & harga wajib diisi");
-
-  try {
-    let newImageUrl = gambarLama;
-    // Handle file upload
-    if (file) {
-      if (id && gambarLama) {
-        try { await storage.refFromURL(gambarLama).delete(); } catch (e) { console.warn("Could not delete old image", e.message); }
-      }
-      const ref = storage.ref("produk/" + Date.now() + "_" + file.name);
-      const snap = await ref.put(file);
-      newImageUrl = await snap.ref.getDownloadURL();
-    }
-
-    const data = {
-      nama,
-      harga,
-      gambar: newImageUrl
-    };
-
-    if (id) { // Update
-      await db.collection("items").doc(id).update(data);
-    } else { // Create
-      data.createdAt = firebase.firestore.FieldValue.serverTimestamp();
-      await db.collection("items").add(data);
-    }
-
-    itemModal.hide();
-    el('mGambar').value = '';
-  } catch (err) {
-    console.error(err);
-    alert("Gagal menyimpan barang. Lihat console untuk detail.");
-  }
+    state.unsubscribe = db.collection("items").orderBy("createdAt", "desc")
+        .onSnapshot(snap => {
+            state.products = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            renderProducts(el('searchInput').value);
+        }, error => {
+            console.error("Gagal memuat produk:", error);
+            el('product-placeholder').innerHTML = '<p class="text-danger">Gagal memuat produk. Coba lagi nanti.</p>';
+        });
 }
 
-async function deleteItem(id, imageUrl) {
-  if (!confirm("Hapus barang ini?")) return;
-  try {
-    await db.collection("items").doc(id).delete();
-    if (imageUrl) {
-      await storage.refFromURL(imageUrl).delete();
-    }
-  } catch (err) {
-    console.error(err);
-    alert("Gagal menghapus barang. Lihat console untuk detail.");
-  }
-}
+// --- MODAL & CRUD ---
+window.openModal = (id = null) => {
+    itemModal.show();
+    const isEdit = id !== null;
+    el('modalItemTitle').textContent = isEdit ? 'Edit Produk' : 'Tambah Produk';
+    
+    // Reset form fields
+    ['mId', 'mNama', 'mHarga', 'mGambarLama', 'mGambar'].forEach(id => el(id).value = '');
 
-async function changePhoto(id, oldImageUrl) {
+    if (isEdit) {
+        const item = state.products.find(p => p.id === id);
+        if (!item) { alert('Barang tidak ditemukan!'); return itemModal.hide(); }
+        el('mId').value = id;
+        el('mNama').value = item.nama;
+        el('mHarga').value = item.harga;
+        el('mGambarLama').value = item.gambar || '';
+    }
+};
+
+window.saveItem = async () => {
+    const saveBtn = el('btnSaveItem');
+    const id = el('mId').value;
+    const nama = el('mNama').value.trim();
+    const harga = Number(el('mHarga').value);
+    const file = el('mGambar').files[0];
+    const gambarLama = el('mGambarLama').value;
+
+    if (!nama || !harga) return alert("Nama & harga wajib diisi.");
+
+    saveBtn.disabled = true;
+    saveBtn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Menyimpan...';
+
+    try {
+        let newImageUrl = gambarLama;
+        if (file) {
+            if (id && gambarLama) {
+                try { await storage.refFromURL(gambarLama).delete(); } catch (e) { console.warn("Gagal hapus foto lama:", e.message); }
+            }
+            const ref = storage.ref("produk/" + Date.now() + "_" + file.name);
+            const snap = await ref.put(file);
+            newImageUrl = await snap.ref.getDownloadURL();
+        }
+
+        const data = { nama, harga, gambar: newImageUrl };
+        if (id) {
+            await db.collection("items").doc(id).update(data);
+        } else {
+            data.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+            await db.collection("items").add(data);
+        }
+        itemModal.hide();
+    } catch (err) {
+        console.error("Gagal menyimpan:", err);
+        alert("Gagal menyimpan barang. Lihat console untuk detail.");
+    } finally {
+        saveBtn.disabled = false;
+        saveBtn.innerHTML = 'Simpan';
+    }
+};
+
+window.deleteItem = async (id, imageUrl) => {
+    if (!confirm("Anda yakin ingin menghapus barang ini?")) return;
+    try {
+        await db.collection("items").doc(id).delete();
+        if (imageUrl) await storage.refFromURL(imageUrl).delete();
+    } catch (err) {
+        console.error("Gagal menghapus:", err);
+        alert("Gagal menghapus barang. Lihat console untuk detail.");
+    }
+};
+
+window.changePhoto = (id, oldImageUrl) => {
     const input = document.createElement('input');
     input.type = 'file';
     input.accept = 'image/*';
     input.onchange = async (e) => {
         const file = e.target.files[0];
         if (!file) return;
-
-        alert('Mengunggah foto baru... Proses ini mungkin memerlukan waktu beberapa saat.');
         
+        const originalCardImg = document.querySelector(`[onclick="window.changePhoto('${id}', '${oldImageUrl}')"]`).closest('.card-product').querySelector('img');
+        originalCardImg.style.opacity = '0.5'; // Visual feedback
+
         try {
             const newImageRef = storage.ref("produk/" + Date.now() + "_" + file.name);
             const uploadSnap = await newImageRef.put(file);
@@ -302,29 +321,37 @@ async function changePhoto(id, oldImageUrl) {
 
             await db.collection("items").doc(id).update({ gambar: newImageUrl });
 
-            if (oldImageUrl) {
-                try {
-                    await storage.refFromURL(oldImageUrl).delete();
-                } catch (storageErr) {
-                    console.warn("Gagal menghapus foto lama:", storageErr.message);
-                }
+            if (oldImageUrl && oldImageUrl.startsWith('https://firebasestorage.googleapis.com')) {
+                try { await storage.refFromURL(oldImageUrl).delete(); } catch (e) { console.warn("Gagal hapus foto lama:", e.message); }
             }
-            alert('Foto berhasil diperbarui!');
         } catch (err) {
             console.error("Gagal mengubah foto:", err);
             alert("Gagal mengubah foto. Lihat console untuk detail.");
+            originalCardImg.style.opacity = '1'; // Revert on failure
         }
     };
     input.click();
-}
+};
 
-// Event Listeners
+// --- EVENT LISTENERS ---
 document.addEventListener('DOMContentLoaded', () => {
     itemModal = new bootstrap.Modal(el('modalItem'));
+
+    // Auth
+    auth.onAuthStateChanged(user => {
+        state.isAdmin = user && user.email === ADMIN_EMAIL;
+        el('adminToolbar').classList.toggle("hidden", !state.isAdmin);
+        el('loginBtn').classList.toggle("hidden", state.isAdmin);
+        el('logoutBtn').classList.toggle("hidden", !state.isAdmin);
+        fetchAndRenderProducts(); // Re-fetch to render correct state
+    });
+
+    // Actions
     el('loginBtn').onclick = () => auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
     el('logoutBtn').onclick = () => auth.signOut();
-    el('addBtn').onclick = () => openModal();
-    el('btnSaveItem').onclick = saveItem;
+    el('addBtn').onclick = () => window.openModal();
+    el('btnSaveItem').onclick = window.saveItem;
+    el('searchInput').oninput = (e) => renderProducts(e.target.value);
 });
 </script>
 

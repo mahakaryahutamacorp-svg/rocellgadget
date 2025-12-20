@@ -26,13 +26,26 @@ body{
   color:var(--text);
 }
 .container{max-width:1100px;margin:24px auto;padding:0 16px}
+
 header{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  margin-bottom:20px;
+  margin-bottom:24px;
 }
-h1{margin:0;font-size:1.3rem}
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.brand img{
+  height:44px;
+}
+.brand h1{
+  margin:0;
+  font-size:1.25rem;
+}
+
 button{
   padding:8px 12px;
   border-radius:8px;
@@ -50,11 +63,27 @@ button.danger{
   color:#fff;
   border-color:var(--danger);
 }
+
+.admin{
+  margin-bottom:24px;
+  padding:16px;
+  border:1px dashed var(--border);
+  border-radius:12px;
+}
+
+input{
+  width:100%;
+  padding:8px;
+  border-radius:8px;
+  border:1px solid var(--border);
+}
+
 .grid{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
   gap:16px;
 }
+
 .card{
   background:var(--card);
   border:1px solid var(--border);
@@ -73,38 +102,42 @@ button.danger{
   padding:12px;
   flex:1;
 }
-.card h3{margin:0 0 6px;font-size:1rem}
-.price{color:var(--accent);font-weight:700;margin-bottom:10px}
+.card h3{
+  margin:0 0 6px;
+  font-size:1rem;
+}
+.price{
+  font-weight:700;
+  color:var(--accent);
+  margin-bottom:8px;
+}
 .card a{
   margin:12px;
   text-align:center;
   background:var(--accent);
-  color:white;
+  color:#fff;
   padding:10px;
   border-radius:6px;
   text-decoration:none;
   font-weight:600;
 }
-.admin{
-  margin:20px 0;
-  padding:12px;
-  border:1px dashed var(--border);
-  border-radius:12px;
-}
+
 .hidden{display:none}
+
 .wa-float{
   position:fixed;
   right:16px;
   bottom:16px;
   background:var(--wa);
-  color:white;
+  color:#fff;
   padding:12px 16px;
   border-radius:999px;
   text-decoration:none;
   font-weight:600;
 }
+
 footer{
-  margin:24px 0;
+  margin:32px 0;
   text-align:center;
   color:var(--muted);
   font-size:13px;
@@ -121,8 +154,12 @@ footer{
 <body>
 
 <div class="container">
+
   <header>
-    <h1>Rocell Gadget</h1>
+    <div class="brand">
+      <img src="logo-rocell.png" alt="Rocell Gadget">
+      <h1>Rocell Gadget</h1>
+    </div>
     <div>
       <button id="loginBtn">Login Admin</button>
       <button id="logoutBtn" class="hidden">Logout</button>
@@ -130,10 +167,10 @@ footer{
   </header>
 
   <div id="adminPanel" class="admin hidden">
-    <strong>ADMIN PANEL</strong><br/><br/>
-    <input id="namaBarang" placeholder="Nama HP" /><br/><br/>
-    <input id="hargaBarang" type="number" placeholder="Harga" /><br/><br/>
-    <input id="fotoBarang" type="file" accept="image/*" /><br/><br/>
+    <strong>ADMIN PANEL</strong><br><br>
+    <input id="namaBarang" placeholder="Nama HP"><br><br>
+    <input id="hargaBarang" type="number" placeholder="Harga (contoh: 12500000)"><br><br>
+    <input id="fotoBarang" type="file" accept="image/*"><br><br>
     <button id="addBtn" class="primary">Simpan Barang</button>
   </div>
 
@@ -150,9 +187,7 @@ footer{
 </a>
 
 <script>
-/* =============================
-   🔥 FIREBASE CONFIG
-============================= */
+/* ================= FIREBASE CONFIG ================= */
 const firebaseConfig = {
   apiKey: "AIzaSyAcLq0OpLMY9gfOVb7854pzaEAjqNbgHGs",
   authDomain: "rocellgadget.firebaseapp.com",
@@ -163,78 +198,66 @@ const firebaseConfig = {
 };
 const ADMIN_EMAIL = "mahakaryahutama.corp@gmail.com";
 
-/* =============================
-   🚀 INIT
-============================= */
+/* ================= INIT ================= */
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
 const storage = firebase.storage();
 
-/* =============================
-   DOM
-============================= */
-const produk = document.getElementById("produk");
-const adminPanel = document.getElementById("adminPanel");
-const loginBtn = document.getElementById("loginBtn");
-const logoutBtn = document.getElementById("logoutBtn");
-
-/* =============================
-   AUTH
-============================= */
+/* ================= AUTH ================= */
 loginBtn.onclick = () => {
   const provider = new firebase.auth.GoogleAuthProvider();
   auth.signInWithPopup(provider);
 };
-
 logoutBtn.onclick = () => auth.signOut();
 
 auth.onAuthStateChanged(user => {
-  const isAdmin = user && user.email === ADMIN_EMAIL;
-  adminPanel.classList.toggle("hidden", !isAdmin);
-  loginBtn.classList.toggle("hidden", isAdmin);
-  logoutBtn.classList.toggle("hidden", !isAdmin);
+  const admin = user && user.email === ADMIN_EMAIL;
+  adminPanel.classList.toggle("hidden", !admin);
+  loginBtn.classList.toggle("hidden", admin);
+  logoutBtn.classList.toggle("hidden", !admin);
 });
 
-/* =============================
-   LOAD DATA REALTIME
-============================= */
-db.collection("items").orderBy("createdAt","desc").onSnapshot(snap => {
+/* ================= LOAD PRODUK ================= */
+db.collection("items").orderBy("createdAt","desc")
+.onSnapshot(snap => {
   produk.innerHTML = "";
   snap.forEach(doc => {
     const d = doc.data();
-    const img = d.gambar || "https://via.placeholder.com/300x300?text=Rocell+Gadget";
-    const harga = d.harga ? "Rp " + d.harga.toLocaleString("id-ID") : "Hubungi";
+    const harga = "Rp " + d.harga.toLocaleString("id-ID");
+    const pesan = encodeURIComponent(
+      `Halo Rocell Gadget, saya tertarik dengan ${d.nama} (${harga})`
+    );
 
     produk.innerHTML += `
-    <div class="card">
-      <img src="${img}">
-      <div class="info">
-        <h3>${d.nama}</h3>
-        <div class="price">${harga}</div>
-      </div>
-      <a target="_blank"
-        href="https://wa.me/6281211172228?text=Halo%20Rocell%20Gadget,%20saya%20tertarik%20${encodeURIComponent(d.nama)}">
-        Chat WhatsApp
-      </a>
-      ${auth.currentUser && auth.currentUser.email === ADMIN_EMAIL ? `
-      <div style="display:flex;gap:8px;padding:12px">
-        <button onclick="editFoto('${doc.id}','${d.gambar || ""}')">Edit Foto</button>
-        <button class="danger" onclick="hapusBarang('${doc.id}','${d.gambar || ""}')">Hapus</button>
-      </div>` : ""}
-    </div>`;
+      <div class="card">
+        <img src="${d.gambar || 'https://via.placeholder.com/300?text=Rocell+Gadget'}">
+        <div class="info">
+          <h3>${d.nama}</h3>
+          <div class="price">${harga}</div>
+        </div>
+        <a target="_blank"
+          href="https://wa.me/6281211172228?text=${pesan}">
+          Chat WhatsApp
+        </a>
+        ${auth.currentUser && auth.currentUser.email === ADMIN_EMAIL ? `
+        <div style="display:flex;gap:8px;padding:12px">
+          <button onclick="editFoto('${doc.id}','${d.gambar || ""}')">Edit Foto</button>
+          <button class="danger" onclick="hapusBarang('${doc.id}','${d.gambar || ""}')">
+            Hapus
+          </button>
+        </div>` : ""}
+      </div>`;
   });
 });
 
-/* =============================
-   TAMBAH BARANG
-============================= */
-document.getElementById("addBtn").onclick = async () => {
+/* ================= TAMBAH BARANG ================= */
+addBtn.onclick = async () => {
   const nama = namaBarang.value.trim();
-  const harga = Number(hargaBarang.value) || 0;
+  const harga = Number(hargaBarang.value);
   const file = fotoBarang.files[0];
 
-  if(!nama) return alert("Nama wajib diisi");
+  if(!nama || !harga) return alert("Nama & harga wajib diisi");
 
   let fotoURL = "";
   if(file){
@@ -255,18 +278,14 @@ document.getElementById("addBtn").onclick = async () => {
   fotoBarang.value = "";
 };
 
-/* =============================
-   HAPUS BARANG + FOTO
-============================= */
+/* ================= HAPUS ================= */
 async function hapusBarang(id, foto){
   if(!confirm("Hapus barang ini?")) return;
   if(foto) await storage.refFromURL(foto).delete();
   await db.collection("items").doc(id).delete();
 }
 
-/* =============================
-   EDIT FOTO
-============================= */
+/* ================= EDIT FOTO ================= */
 async function editFoto(id, fotoLama){
   const input = document.createElement("input");
   input.type = "file";

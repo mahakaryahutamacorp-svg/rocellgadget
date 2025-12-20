@@ -4,13 +4,17 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Rocell Gadget | Katalog HP</title>
-
 <meta name="description" content="Rocell Gadget - Jual beli HP aman & terpercaya" />
+<link rel="icon" href="rocell_gadget_logo.png" />
+
+<!-- CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
 
 <style>
 :root{
   --bg:#ffffff;
-  --card:#f8fafc;
+  --card-bg:#f8fafc;
   --border:#e5e7eb;
   --text:#0f172a;
   --muted:#64748b;
@@ -18,130 +22,52 @@
   --danger:#dc2626;
   --wa:#22c55e;
 }
-*{box-sizing:border-box}
 body{
   margin:0;
-  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial;
   background:var(--bg);
   color:var(--text);
 }
 .container{max-width:1100px;margin:24px auto;padding:0 16px}
-
-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:24px;
-}
-.brand{
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-.brand img{
-  height:44px;
-}
-.brand h1{
-  margin:0;
-  font-size:1.25rem;
-}
-
-button{
-  padding:8px 12px;
-  border-radius:8px;
-  border:1px solid var(--border);
-  background:#fff;
-  cursor:pointer;
-}
-button.primary{
-  background:var(--accent);
-  color:#fff;
-  border-color:var(--accent);
-}
-button.danger{
-  background:var(--danger);
-  color:#fff;
-  border-color:var(--danger);
-}
-
-.admin{
-  margin-bottom:24px;
-  padding:16px;
-  border:1px dashed var(--border);
-  border-radius:12px;
-}
-
-input{
-  width:100%;
-  padding:8px;
-  border-radius:8px;
-  border:1px solid var(--border);
-}
-
+.brand{display:flex;align-items:center;gap:12px}
+.brand img{height:44px}
+.brand h1{margin:0;font-size:1.25rem}
 .grid{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
   gap:16px;
 }
-
-.card{
-  background:var(--card);
+.card-product{
+  background:var(--card-bg);
   border:1px solid var(--border);
   border-radius:12px;
   overflow:hidden;
   display:flex;
   flex-direction:column;
 }
-.card img{
-  width:100%;
-  height:180px;
-  object-fit:contain;
-  background:#fff;
-}
-.card .info{
-  padding:12px;
-  flex:1;
-}
-.card h3{
-  margin:0 0 6px;
-  font-size:1rem;
-}
-.price{
-  font-weight:700;
-  color:var(--accent);
-  margin-bottom:8px;
-}
-.card a{
-  margin:12px;
+.card-product img{width:100%;height:180px;object-fit:contain;background:#fff}
+.card-product .info{padding:12px;flex:1}
+.card-product h3{margin:0 0 6px;font-size:1rem}
+.price{font-weight:700;color:var(--accent);margin-bottom:8px}
+.card-product .wa-link{
+  margin:0 12px 12px;
   text-align:center;
-  background:var(--accent);
+  background:var(--wa);
   color:#fff;
   padding:10px;
   border-radius:6px;
   text-decoration:none;
   font-weight:600;
+  display:block;
 }
-
+.admin-actions{display:flex;gap:8px;padding:0 12px 12px}
 .hidden{display:none}
-
-.wa-float{
-  position:fixed;
-  right:16px;
-  bottom:16px;
-  background:var(--wa);
-  color:#fff;
-  padding:12px 16px;
-  border-radius:999px;
-  text-decoration:none;
-  font-weight:600;
-}
-
-footer{
-  margin:32px 0;
-  text-align:center;
-  color:var(--muted);
-  font-size:13px;
-}
+.wa-float{position:fixed;right:16px;bottom:16px;background:var(--wa);color:#fff;padding:12px 16px;border-radius:999px;text-decoration:none;font-weight:600;z-index:99}
+footer{margin:32px 0;text-align:center;color:var(--muted);font-size:13px}
+#adminToolbar { padding: 16px; border: 1px solid var(--border); border-radius: 12px; }
+.modal-content { background: #fff; color: var(--text); }
+.form-control { background-color: #f3f4f6; border-color: var(--border); }
+.form-control:focus { background-color: #fff; }
 </style>
 
 <!-- Firebase SDK -->
@@ -154,24 +80,22 @@ footer{
 <body>
 
 <div class="container">
-
-  <header>
+  <header class="d-flex justify-content-between align-items-center mb-4">
     <div class="brand">
-      <img src="logo-rocell.png" alt="Rocell Gadget">
+      <img src="rocell_gadget_logo.png" alt="Rocell Gadget">
       <h1>Rocell Gadget</h1>
     </div>
     <div>
-      <button id="loginBtn">Login Admin</button>
-      <button id="logoutBtn" class="hidden">Logout</button>
+      <button id="loginBtn" class="btn btn-outline-primary">Login Admin</button>
+      <button id="logoutBtn" class="btn btn-outline-secondary hidden">Logout</button>
     </div>
   </header>
 
-  <div id="adminPanel" class="admin hidden">
-    <strong>ADMIN PANEL</strong><br><br>
-    <input id="namaBarang" placeholder="Nama HP"><br><br>
-    <input id="hargaBarang" type="number" placeholder="Harga (contoh: 12500000)"><br><br>
-    <input id="fotoBarang" type="file" accept="image/*"><br><br>
-    <button id="addBtn" class="primary">Simpan Barang</button>
+  <div id="adminToolbar" class="admin hidden mb-4">
+    <div class="d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Panel Admin</h5>
+        <button id="addBtn" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Tambah Barang</button>
+    </div>
   </div>
 
   <div id="produk" class="grid"></div>
@@ -181,13 +105,41 @@ footer{
   </footer>
 </div>
 
-<a class="wa-float" target="_blank"
-   href="https://wa.me/6281211172228">
-  WhatsApp
+<a class="wa-float" target="_blank" href="https://wa.me/6281211172228">
+  <i class="bi bi-whatsapp"></i> WhatsApp
 </a>
 
+<!-- Modal -->
+<div class="modal fade" id="modalItem" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalItemTitle">Tambah Produk</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="mId" />
+        <input type="hidden" id="mGambarLama" />
+        <div class="mb-2"><label class="form-label">Nama</label><input id="mNama" class="form-control" /></div>
+        <div class="mb-2"><label class="form-label">Harga (Rp)</label><input id="mHarga" type="number" class="form-control" value="0" min="0" /></div>
+        <div class="mb-2">
+            <label class="form-label">Foto</label>
+            <input id="mGambar" type="file" class="form-control" accept="image/*" />
+            <div class="form-text">Kosongkan jika tidak ingin mengubah foto.</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+        <button id="btnSaveItem" class="btn btn-primary">Simpan</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 <script>
-/* ================= FIREBASE CONFIG ================= */
 const firebaseConfig = {
   apiKey: "AIzaSyAcLq0OpLMY9gfOVb7854pzaEAjqNbgHGs",
   authDomain: "rocellgadget.firebaseapp.com",
@@ -198,111 +150,150 @@ const firebaseConfig = {
 };
 const ADMIN_EMAIL = "mahakaryahutama.corp@gmail.com";
 
-/* ================= INIT ================= */
+// Helper
+const el = id => document.getElementById(id);
+
+// Init Firebase
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
 const storage = firebase.storage();
+let itemModal;
 
-/* ================= AUTH ================= */
-loginBtn.onclick = () => {
-  const provider = new firebase.auth.GoogleAuthProvider();
-  auth.signInWithPopup(provider);
-};
-logoutBtn.onclick = () => auth.signOut();
 
+// Auth state
 auth.onAuthStateChanged(user => {
-  const admin = user && user.email === ADMIN_EMAIL;
-  adminPanel.classList.toggle("hidden", !admin);
-  loginBtn.classList.toggle("hidden", admin);
-  logoutBtn.classList.toggle("hidden", !admin);
+  const isAdmin = user && user.email === ADMIN_EMAIL;
+  el('adminToolbar').classList.toggle("hidden", !isAdmin);
+  el('loginBtn').classList.toggle("hidden", isAdmin);
+  el('logoutBtn').classList.toggle("hidden", !isAdmin);
+  loadProducts(); // Reload products to show/hide admin buttons
 });
 
-/* ================= LOAD PRODUK ================= */
-db.collection("items").orderBy("createdAt","desc")
+// Load products
+db.collection("items").orderBy("createdAt", "desc")
 .onSnapshot(snap => {
-  produk.innerHTML = "";
+  const produkContainer = el('produk');
+  produkContainer.innerHTML = "";
   snap.forEach(doc => {
-    const d = doc.data();
-    const harga = "Rp " + d.harga.toLocaleString("id-ID");
+    const item = { id: doc.id, ...doc.data() };
+    const harga = "Rp " + (item.harga || 0).toLocaleString("id-ID");
     const pesan = encodeURIComponent(
-      `Halo Rocell Gadget, saya tertarik dengan ${d.nama} (${harga})`
+      `Halo Rocell Gadget, saya tertarik dengan ${item.nama} (${harga})`
     );
+    const isAdmin = auth.currentUser && auth.currentUser.email === ADMIN_EMAIL;
 
-    produk.innerHTML += `
-      <div class="card">
-        <img src="${d.gambar || 'https://via.placeholder.com/300?text=Rocell+Gadget'}">
-        <div class="info">
-          <h3>${d.nama}</h3>
-          <div class="price">${harga}</div>
-        </div>
-        <a target="_blank"
-          href="https://wa.me/6281211172228?text=${pesan}">
-          Chat WhatsApp
-        </a>
-        ${auth.currentUser && auth.currentUser.email === ADMIN_EMAIL ? `
-        <div style="display:flex;gap:8px;padding:12px">
-          <button onclick="editFoto('${doc.id}','${d.gambar || ""}')">Edit Foto</button>
-          <button class="danger" onclick="hapusBarang('${doc.id}','${d.gambar || ""}')">
-            Hapus
-          </button>
-        </div>` : ""}
-      </div>`;
+    const card = document.createElement('div');
+    card.className = 'card-product';
+    card.innerHTML = `
+      <img src="${item.gambar || 'https://via.placeholder.com/300?text=Rocell+Gadget'}">
+      <div class="info">
+        <h3>${item.nama}</h3>
+        <div class="price">${harga}</div>
+      </div>
+      <a class="wa-link" target="_blank" href="https://wa.me/6281211172228?text=${pesan}">
+        <i class="bi bi-whatsapp"></i> Chat WhatsApp
+      </a>
+      ${isAdmin ? `
+      <div class="admin-actions">
+        <button class="btn btn-secondary btn-sm w-100" onclick="openModal('${item.id}')">Edit</button>
+        <button class="btn btn-danger btn-sm w-100" onclick="deleteItem('${item.id}', '${item.gambar || ''}')">Hapus</button>
+      </div>` : ""}
+    `;
+    produkContainer.appendChild(card);
   });
 });
 
-/* ================= TAMBAH BARANG ================= */
-addBtn.onclick = async () => {
-  const nama = namaBarang.value.trim();
-  const harga = Number(hargaBarang.value);
-  const file = fotoBarang.files[0];
-
-  if(!nama || !harga) return alert("Nama & harga wajib diisi");
-
-  let fotoURL = "";
-  if(file){
-    const ref = storage.ref("produk/" + Date.now() + "_" + file.name);
-    const snap = await ref.put(file);
-    fotoURL = await snap.ref.getDownloadURL();
+// CRUD Functions
+function openModal(id = null) {
+  itemModal.show();
+  const isEdit = id !== null;
+  el('modalItemTitle').textContent = isEdit ? 'Edit Produk' : 'Tambah Produk';
+  
+  if (isEdit) {
+    db.collection('items').doc(id).get().then(doc => {
+      if (!doc.exists) return alert('Barang tidak ditemukan!');
+      const item = doc.data();
+      el('mId').value = id;
+      el('mNama').value = item.nama;
+      el('mHarga').value = item.harga;
+      el('mGambarLama').value = item.gambar || '';
+    });
+  } else {
+    el('mId').value = '';
+    el('mNama').value = '';
+    el('mHarga').value = '';
+    el('mGambarLama').value = '';
+    el('mGambar').value = '';
   }
-
-  await db.collection("items").add({
-    nama,
-    harga,
-    gambar: fotoURL,
-    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-  });
-
-  namaBarang.value = "";
-  hargaBarang.value = "";
-  fotoBarang.value = "";
-};
-
-/* ================= HAPUS ================= */
-async function hapusBarang(id, foto){
-  if(!confirm("Hapus barang ini?")) return;
-  if(foto) await storage.refFromURL(foto).delete();
-  await db.collection("items").doc(id).delete();
 }
 
-/* ================= EDIT FOTO ================= */
-async function editFoto(id, fotoLama){
-  const input = document.createElement("input");
-  input.type = "file";
-  input.accept = "image/*";
-  input.onchange = async () => {
-    const file = input.files[0];
-    if(!file) return;
+async function saveItem() {
+  const id = el('mId').value;
+  const nama = el('mNama').value.trim();
+  const harga = Number(el('mHarga').value);
+  const file = el('mGambar').files[0];
+  const gambarLama = el('mGambarLama').value;
 
-    const ref = storage.ref("produk/" + Date.now() + "_" + file.name);
-    const snap = await ref.put(file);
-    const fotoBaru = await snap.ref.getDownloadURL();
+  if (!nama || !harga) return alert("Nama & harga wajib diisi");
 
-    await db.collection("items").doc(id).update({ gambar: fotoBaru });
-    if(fotoLama) await storage.refFromURL(fotoLama).delete();
-  };
-  input.click();
+  try {
+    let newImageUrl = gambarLama;
+    // Handle file upload
+    if (file) {
+      // Delete old image if it exists and we are uploading a new one
+      if (id && gambarLama) {
+        try { await storage.refFromURL(gambarLama).delete(); } catch (e) { console.warn("Could not delete old image", e.message); }
+      }
+      const ref = storage.ref("produk/" + Date.now() + "_" + file.name);
+      const snap = await ref.put(file);
+      newImageUrl = await snap.ref.getDownloadURL();
+    }
+
+    const data = {
+      nama,
+      harga,
+      gambar: newImageUrl
+    };
+
+    if (id) { // Update
+      await db.collection("items").doc(id).update(data);
+    } else { // Create
+      data.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+      await db.collection("items").add(data);
+    }
+
+    itemModal.hide();
+    el('mGambar').value = '';
+  } catch (err) {
+    console.error(err);
+    alert("Gagal menyimpan barang. Lihat console untuk detail.");
+  }
 }
+
+async function deleteItem(id, imageUrl) {
+  if (!confirm("Hapus barang ini?")) return;
+  try {
+    // Delete from Firestore
+    await db.collection("items").doc(id).delete();
+    // Delete from Storage
+    if (imageUrl) {
+      await storage.refFromURL(imageUrl).delete();
+    }
+  } catch (err) {
+    console.error(err);
+    alert("Gagal menghapus barang. Lihat console untuk detail.");
+  }
+}
+
+// Event Listeners
+document.addEventListener('DOMContentLoaded', () => {
+    itemModal = new bootstrap.Modal(el('modalItem'));
+    el('loginBtn').onclick = () => auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+    el('logoutBtn').onclick = () => auth.signOut();
+    el('addBtn').onclick = () => openModal();
+    el('btnSaveItem').onclick = saveItem;
+});
 </script>
 
 </body>

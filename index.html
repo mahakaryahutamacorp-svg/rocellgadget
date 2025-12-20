@@ -115,6 +115,7 @@ footer{
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
 </head>
 
 <body>
@@ -132,6 +133,7 @@ footer{
     <strong>ADMIN PANEL</strong><br/><br/>
     <input id="namaBarang" placeholder="Nama HP" /><br/><br/>
     <input id="hargaBarang" type="number" placeholder="Harga" /><br/><br/>
+    <input id="fotoBarang" type="file" accept="image/*" /><br/><br/>
     <button id="addBtn" class="primary">Simpan Barang</button>
   </div>
 
@@ -167,6 +169,7 @@ const ADMIN_EMAIL = "mahakaryahutama.corp@gmail.com";
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
+const storage = firebase.storage();
 
 /* =============================
    DOM
@@ -216,6 +219,7 @@ db.collection("items").orderBy("createdAt","desc").onSnapshot(snap => {
       </a>
       ${auth.currentUser && auth.currentUser.email === ADMIN_EMAIL ? `
       <div style="display:flex;gap:8px;padding:12px">
+        <button onclick="editFoto('${doc.id}','${d.gambar || ""}')">Edit Foto</button>
         <button class="danger" onclick="hapusBarang('${doc.id}','${d.gambar || ""}')">Hapus</button>
       </div>` : ""}
     </div>`;
@@ -232,19 +236,23 @@ document.getElementById("addBtn").onclick = async () => {
 
   if(!nama) return alert("Nama wajib diisi");
 
+  let fotoURL = "";
   if(file){
     const ref = storage.ref("produk/" + Date.now() + "_" + file.name);
     const snap = await ref.put(file);
+    fotoURL = await snap.ref.getDownloadURL();
   }
 
   await db.collection("items").add({
     nama,
     harga,
+    gambar: fotoURL,
     createdAt: firebase.firestore.FieldValue.serverTimestamp()
   });
 
   namaBarang.value = "";
   hargaBarang.value = "";
+  fotoBarang.value = "";
 };
 
 /* =============================

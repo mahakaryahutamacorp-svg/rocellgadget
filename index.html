@@ -3,79 +3,275 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Rocell Gadget | Katalog HP</title>
-<meta name="description" content="Rocell Gadget - Jual beli HP aman & terpercaya" />
+<title>Rocell Gadget | Premium Smartphone Store</title>
+<meta name="description" content="Rocell Gadget - Pusat HP Berkualitas, Aman & Terpercaya" />
 <link rel="icon" href="rocell_gadget_logo.png" />
 
-<!-- CSS -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 
 <style>
 :root {
-  --bg: #f8fafc;
-  --card-bg: #ffffff;
-  --border: #e5e7eb;
-  --text: #0f172a;
-  --muted: #64748b;
-  --accent: #2563eb;
-  --danger: #dc2626;
-  --wa: #22c55e;
-  --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --bg-dark: #0f172a;
+  --bg-card: #1e293b;
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --accent-gradient: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+  --accent-hover: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+  --wa-color: #22c55e;
+  --border-color: rgba(255, 255, 255, 0.1);
+  --glass: rgba(30, 41, 59, 0.7);
+  --shadow-glow: 0 0 20px rgba(59, 130, 246, 0.15);
 }
+
 body {
   margin: 0;
-  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial;
-  background: var(--bg);
-  color: var(--text);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background-color: var(--bg-dark);
+  color: var(--text-primary);
+  background-image: radial-gradient(circle at 10% 20%, rgba(59, 130, 246, 0.1) 0%, transparent 20%),
+                    radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 20%);
+  min-height: 100vh;
 }
-.container { max-width: 1100px; margin: 24px auto; padding: 0 16px; }
-.brand { display: flex; align-items: center; gap: 12px; }
-.brand img { height: 75px; }
-.brand h1 { margin: 0; font-size: 1.5rem; }
+
+/* Navbar */
+.navbar-custom {
+    background: rgba(15, 23, 42, 0.8);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-color);
+    padding: 1rem 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+.brand-text {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 800;
+    font-size: 1.5rem;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+}
+
+/* Hero Section */
+.hero-section {
+    text-align: center;
+    padding: 3rem 1rem;
+    margin-bottom: 2rem;
+}
+.hero-title {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+}
+.hero-subtitle {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Search Input */
+.search-wrapper {
+    position: relative;
+    max-width: 500px;
+    margin: 2rem auto 0;
+}
+.form-control-custom {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 50px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s;
+}
+.form-control-custom:focus {
+    background: var(--bg-card);
+    border-color: #3b82f6;
+    color: white;
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
+}
+.form-control-custom::placeholder { color: var(--text-secondary); }
+
+/* Product Grid */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 24px;
+  padding: 0 10px;
 }
+
+/* Product Card */
 .card-product {
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: 12px;
+  background: var(--glass);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  transition: all .2s ease;
-  box-shadow: var(--shadow);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
 }
-.card-product:hover { transform: translateY(-3px); }
-.card-product img { width: 100%; height: 180px; object-fit: contain; background: #fff; }
-.card-product .info { padding: 12px; flex: 1; }
-.card-product h3 { margin: 0 0 6px; font-size: 1rem; }
-.price { font-weight: 700; color: var(--accent); margin-bottom: 8px; }
-.card-product .wa-link {
-  margin: 0 12px 12px;
-  text-align: center;
-  background: var(--wa);
+
+.card-product:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-glow);
+  border-color: rgba(139, 92, 246, 0.3);
+}
+
+.img-wrapper {
+    background: white;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+    height: 220px;
+}
+
+.card-product img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: transform 0.5s ease;
+}
+
+.card-product:hover img {
+    transform: scale(1.08);
+}
+
+.card-product .info { padding: 20px; flex: 1; display: flex; flex-direction: column; }
+.card-product h3 { 
+    margin: 0 0 8px; 
+    font-size: 1.1rem; 
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--text-primary);
+}
+.price { 
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700; 
+    font-size: 1.25rem;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 15px; 
+    display: inline-block;
+}
+
+/* Buttons */
+.btn-wa {
+  margin-top: auto;
+  background: var(--wa-color);
   color: #fff;
   padding: 10px;
-  border-radius: 8px;
+  border-radius: 12px;
   text-decoration: none;
   font-weight: 600;
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.3s;
+  border: none;
+  box-shadow: 0 4px 6px -1px rgba(34, 197, 94, 0.2);
 }
-.admin-actions { display: flex; gap: 8px; padding: 0 12px 12px; }
-.admin-actions .btn { flex: 1; }
-.hidden { display: none; }
-.wa-float { position: fixed; right: 16px; bottom: 16px; background: var(--wa); color: #fff; padding: 12px 16px; border-radius: 999px; text-decoration: none; font-weight: 600; z-index: 99; box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); }
-footer { margin: 48px 0 32px; text-align: center; color: var(--muted); font-size: 13px; }
-#adminToolbar { padding: 16px; border: 1px solid var(--border); border-radius: 12px; background: var(--card-bg); box-shadow: var(--shadow); }
-.form-control, .form-select { background-color: #f3f4f6; border-color: var(--border); }
-.form-control:focus { background-color: #fff; border-color: var(--accent); box-shadow: none; }
-#product-placeholder { text-align: center; padding: 4rem 0; color: var(--muted); }
+.btn-wa:hover {
+    background: #16a34a;
+    transform: scale(1.02);
+    box-shadow: 0 10px 15px -3px rgba(34, 197, 94, 0.3);
+    color: white;
+}
+
+/* Floating WA */
+.wa-float { 
+    position: fixed; 
+    right: 20px; 
+    bottom: 20px; 
+    background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+    color: #fff; 
+    width: 60px; height: 60px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 30px;
+    z-index: 999; 
+    box-shadow: 0 10px 25px rgba(37, 211, 102, 0.4);
+    text-decoration: none; 
+    animation: pulse 2s infinite;
+}
+.wa-float:hover { color: white; transform: scale(1.1); }
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
+    70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+}
+
+/* Admin Panel */
+#adminToolbar { 
+    background: var(--bg-card); 
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+.btn-primary-custom {
+    background: var(--accent-gradient);
+    border: none;
+    color: white;
+    font-weight: 600;
+}
+.btn-primary-custom:hover {
+    background: var(--accent-hover);
+    color: white;
+}
+
+/* Utilities */
+.hidden { display: none !important; }
+.badge-new {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: #ef4444;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+footer { margin: 60px 0 30px; text-align: center; color: var(--text-secondary); font-size: 14px; border-top: 1px solid var(--border-color); padding-top: 30px; }
+
+/* Modal Dark Mode */
+.modal-content {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+}
+.modal-header { border-bottom: 1px solid var(--border-color); }
+.modal-footer { border-top: 1px solid var(--border-color); }
+.btn-close { filter: invert(1); }
+.form-control, .form-select {
+    background-color: #0f172a;
+    border: 1px solid var(--border-color);
+    color: white;
+}
+.form-control:focus {
+    background-color: #0f172a;
+    border-color: #3b82f6;
+    color: white;
+}
 </style>
 
-<!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
@@ -84,69 +280,99 @@ footer { margin: 48px 0 32px; text-align: center; color: var(--muted); font-size
 
 <body>
 
-<div class="container">
-  <header class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
-    <div class="brand">
-      <img src="rocell_gadget_logo.png" alt="Rocell Gadget">
-      <h1>Rocell Gadget</h1>
+<nav class="navbar-custom">
+    <div class="container d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center gap-2">
+            <img src="rocell_gadget_logo.png" alt="Logo" height="40" style="border-radius: 8px;">
+            <span class="brand-text">Rocell Gadget</span>
+        </div>
+        <div>
+            <button id="loginBtn" class="btn btn-sm btn-outline-light rounded-pill px-3">Admin Login</button>
+            <button id="logoutBtn" class="btn btn-sm btn-outline-danger rounded-pill px-3 hidden">Logout</button>
+        </div>
     </div>
-    <div class="d-flex align-items-center gap-2">
-      <input type="search" id="searchInput" class="form-control" style="max-width:300px;" placeholder="Cari HP..."/>
-      <button id="loginBtn" class="btn btn-primary text-nowrap">Admin</button>
-      <button id="logoutBtn" class="btn btn-outline-secondary hidden">Logout</button>
-    </div>
-  </header>
+</nav>
 
-  <div id="adminToolbar" class="hidden mb-4">
+<div class="container">
+  
+  <div class="hero-section animate__animated animate__fadeInDown">
+    <h1 class="hero-title">Upgrade Gadget Impianmu <br><span style="color: #3b82f6;">Hari Ini.</span></h1>
+    <p class="hero-subtitle">Koleksi HP terbaik dengan harga paling bersaing. Dijamin aman, original, dan terpercaya.</p>
+    
+    <div class="search-wrapper">
+        <i class="bi bi-search" style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: var(--text-secondary);"></i>
+        <input type="search" id="searchInput" class="form-control-custom" style="padding-left: 50px;" placeholder="Cari tipe HP (iPhone, Samsung, dll)..."/>
+    </div>
+  </div>
+
+  <div id="adminToolbar" class="hidden animate__animated animate__fadeIn">
     <div class="d-flex justify-content-between align-items-center">
-        <h5 class="mb-0">Panel Admin</h5>
-        <button id="addBtn" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Tambah</button>
+        <div>
+            <h5 class="mb-1 fw-bold">👋 Panel Admin</h5>
+            <small class="text-secondary">Kelola stok barang Anda di sini.</small>
+        </div>
+        <button id="addBtn" class="btn btn-primary-custom rounded-pill px-4"><i class="bi bi-plus-lg me-2"></i>Tambah Produk</button>
     </div>
   </div>
 
   <div id="produk" class="grid"></div>
-  <div id="product-placeholder">
-      <div class="spinner-border text-primary" role="status">
+  
+  <div id="product-placeholder" class="text-center py-5">
+      <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
         <span class="visually-hidden">Loading...</span>
       </div>
-      <p class="mt-2">Memuat produk...</p>
+      <p class="mt-3 text-secondary">Sedang menyiapkan katalog...</p>
   </div>
 
-  <footer>© Rocell Gadget · Jual Beli HP Aman & Terpercaya</footer>
+  <footer>
+    <div class="mb-2">
+        <span class="brand-text" style="font-size: 1.2rem;">Rocell Gadget</span>
+    </div>
+    <p>© 2024 Rocell Gadget. All rights reserved.</p>
+    <div class="d-flex justify-content-center gap-3 mt-3">
+        <a href="#" class="text-secondary"><i class="bi bi-instagram fs-5"></i></a>
+        <a href="#" class="text-secondary"><i class="bi bi-facebook fs-5"></i></a>
+        <a href="#" class="text-secondary"><i class="bi bi-tiktok fs-5"></i></a>
+    </div>
+  </footer>
 </div>
 
-<a class="wa-float" target="_blank" href="https://wa.me/6281211172228?text=Halo%20Rocell%20Gadget%2C%20saya%20mau%20bertanya.">
-  <i class="bi bi-whatsapp"></i> WhatsApp
+<a class="wa-float" target="_blank" href="https://wa.me/6281211172228?text=Halo%20Rocell%20Gadget%2C%20saya%20tertarik%20dengan%20produk%20Anda." title="Hubungi Kami">
+  <i class="bi bi-whatsapp"></i>
 </a>
 
-<!-- Modal -->
 <div class="modal fade" id="modalItem" tabindex="-1" data-bs-backdrop="static">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modalItemTitle">Tambah Produk</h5>
+        <h5 class="modal-title fw-bold" id="modalItemTitle">Tambah Produk</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
         <input type="hidden" id="mId" />
         <input type="hidden" id="mGambarLama" />
-        <div class="mb-3"><label class="form-label">Nama Produk</label><input id="mNama" class="form-control" /></div>
-        <div class="mb-3"><label class="form-label">Harga (Rp)</label><input id="mHarga" type="number" class="form-control" value="0" min="0" /></div>
+        <div class="mb-3">
+            <label class="form-label text-secondary">Nama Produk</label>
+            <input id="mNama" class="form-control" placeholder="Contoh: iPhone 13 Pro Max 256GB" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label text-secondary">Harga (Rp)</label>
+            <input id="mHarga" type="number" class="form-control" placeholder="0" min="0" />
+        </div>
         <div class="mb-2">
-            <label class="form-label">Foto</label>
+            <label class="form-label text-secondary">Foto Produk</label>
             <input id="mGambar" type="file" class="form-control" accept="image/*" />
-            <div class="form-text">Kosongkan jika tidak ingin mengubah foto.</div>
+            <div class="form-text text-secondary opacity-50">Disarankan rasio 1:1 atau background putih.</div>
         </div>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-        <button id="btnSaveItem" class="btn btn-primary">Simpan</button>
+        <button class="btn btn-outline-secondary rounded-pill" data-bs-dismiss="modal">Batal</button>
+        <button id="btnSaveItem" class="btn btn-primary-custom rounded-pill px-4">Simpan Produk</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
@@ -165,7 +391,7 @@ let state = {
     unsubscribe: null,
 };
 
-// --- HELPERS & UTILS ---
+// --- HELPERS ---
 const el = id => document.getElementById(id);
 
 // --- FIREBASE INIT ---
@@ -173,7 +399,7 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
 const storage = firebase.storage();
-let itemModal; // bootstrap modal instance
+let itemModal;
 
 // --- UI RENDERING ---
 function renderProducts(filter = '') {
@@ -185,7 +411,7 @@ function renderProducts(filter = '') {
     container.innerHTML = '';
 
     if (state.unsubscribe && productsToShow.length === 0) {
-        placeholder.innerHTML = `<p>Produk tidak ditemukan.</p>`;
+        placeholder.innerHTML = `<div class="py-5"><i class="bi bi-emoji-frown fs-1 text-secondary mb-3 d-block"></i><p class="text-secondary">Produk tidak ditemukan.</p></div>`;
         placeholder.classList.remove('hidden');
     } else if (state.unsubscribe) {
         placeholder.classList.add('hidden');
@@ -193,53 +419,65 @@ function renderProducts(filter = '') {
         placeholder.classList.remove('hidden');
     }
 
-    productsToShow.forEach(item => container.appendChild(createProductCard(item)));
+    productsToShow.forEach((item, index) => {
+        // Add staggered animation delay
+        const card = createProductCard(item);
+        card.style.animationDelay = `${index * 0.05}s`;
+        card.classList.add('animate__animated', 'animate__fadeInUp');
+        container.appendChild(card);
+    });
 }
 
 function createProductCard(item) {
     const harga = "Rp " + (item.harga || 0).toLocaleString("id-ID");
-    const pesan = encodeURIComponent(`Halo, saya tertarik dengan ${item.nama} (${harga})`);
+    const pesan = encodeURIComponent(`Halo Rocell Gadget, saya tertarik deal untuk *${item.nama}* dengan harga *${harga}*. Masih available?`);
     const card = document.createElement('div');
     card.className = 'card-product';
+    
+    // Admin Buttons HTML
+    const adminHtml = state.isAdmin ? `
+      <div class="d-flex gap-2 mt-2 pt-2 border-top border-secondary border-opacity-25">
+        <button class="btn btn-sm btn-outline-light flex-fill" onclick="window.openModal('${item.id}')"><i class="bi bi-pencil"></i></button>
+        <button class="btn btn-sm btn-outline-light flex-fill" onclick="window.changePhoto('${item.id}', '${item.gambar || ''}')"><i class="bi bi-image"></i></button>
+        <button class="btn btn-sm btn-outline-danger flex-fill" onclick="window.deleteItem('${item.id}', '${item.gambar || ''}')"><i class="bi bi-trash"></i></button>
+      </div>` : "";
+
     card.innerHTML = `
-      <img src="${item.gambar || 'https://via.placeholder.com/300?text=Rocell+Gadget'}">
+      <div class="img-wrapper">
+        <div class="badge-new">HOT DEAL</div>
+        <img src="${item.gambar || 'https://via.placeholder.com/300?text=Rocell+Gadget'}" alt="${item.nama}" loading="lazy">
+      </div>
       <div class="info">
         <h3>${item.nama}</h3>
         <div class="price">${harga}</div>
+        <a class="btn-wa" target="_blank" href="https://wa.me/6281211172228?text=${pesan}">
+          <i class="bi bi-whatsapp"></i> Ambil Promo Ini
+        </a>
+        ${adminHtml}
       </div>
-      <a class="wa-link" target="_blank" href="https://wa.me/6281211172228?text=${pesan}">
-        <i class="bi bi-whatsapp"></i> Chat WhatsApp
-      </a>
-      ${state.isAdmin ? `
-      <div class="admin-actions">
-        <button class="btn btn-outline-secondary btn-sm" onclick="window.openModal('${item.id}')">Edit</button>
-        <button class="btn btn-outline-secondary btn-sm" onclick="window.changePhoto('${item.id}', '${item.gambar || ''}')">Ubah Foto</button>
-        <button class="btn btn-outline-danger btn-sm" onclick="window.deleteItem('${item.id}', '${item.gambar || ''}')">Hapus</button>
-      </div>` : ""}`;
+    `;
     return card;
 }
 
 function fetchAndRenderProducts() {
-    if (state.unsubscribe) state.unsubscribe(); // Detach old listener
+    if (state.unsubscribe) state.unsubscribe();
 
     state.unsubscribe = db.collection("items").orderBy("createdAt", "desc")
         .onSnapshot(snap => {
             state.products = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
             renderProducts(el('searchInput').value);
         }, error => {
-            console.error("Gagal memuat produk:", error);
-            el('product-placeholder').innerHTML = '<p class="text-danger">Gagal memuat produk. Coba lagi nanti.</p>';
+            console.error("Error:", error);
+            el('product-placeholder').innerHTML = '<p class="text-danger">Gagal memuat koneksi.</p>';
         });
 }
 
-// --- MODAL & CRUD ---
+// --- MODAL & CRUD FUNCTIONS (Sama seperti sebelumnya) ---
 window.openModal = (id = null) => {
     itemModal.show();
     const isEdit = id !== null;
-    el('modalItemTitle').textContent = isEdit ? 'Edit Produk' : 'Tambah Produk';
-    
-    // Reset form fields
-    ['mId', 'mNama', 'mHarga', 'mGambarLama', 'mGambar'].forEach(id => el(id).value = '');
+    el('modalItemTitle').textContent = isEdit ? 'Edit Produk' : 'Tambah Produk Baru';
+    ['mId', 'mNama', 'mHarga', 'mGambarLama', 'mGambar'].forEach(i => el(i).value = '');
 
     if (isEdit) {
         const item = state.products.find(p => p.id === id);
@@ -268,7 +506,7 @@ window.saveItem = async () => {
         let newImageUrl = gambarLama;
         if (file) {
             if (id && gambarLama) {
-                try { await storage.refFromURL(gambarLama).delete(); } catch (e) { console.warn("Gagal hapus foto lama:", e.message); }
+                try { await storage.refFromURL(gambarLama).delete(); } catch (e) {}
             }
             const ref = storage.ref("produk/" + Date.now() + "_" + file.name);
             const snap = await ref.put(file);
@@ -284,51 +522,33 @@ window.saveItem = async () => {
         }
         itemModal.hide();
     } catch (err) {
-        console.error("Gagal menyimpan:", err);
-        alert("Gagal menyimpan barang. Lihat console untuk detail.");
+        alert("Gagal menyimpan: " + err.message);
     } finally {
         saveBtn.disabled = false;
-        saveBtn.innerHTML = 'Simpan';
+        saveBtn.innerHTML = 'Simpan Produk';
     }
 };
 
 window.deleteItem = async (id, imageUrl) => {
-    if (!confirm("Anda yakin ingin menghapus barang ini?")) return;
+    if (!confirm("Hapus produk ini permanen?")) return;
     try {
         await db.collection("items").doc(id).delete();
         if (imageUrl) await storage.refFromURL(imageUrl).delete();
-    } catch (err) {
-        console.error("Gagal menghapus:", err);
-        alert("Gagal menghapus barang. Lihat console untuk detail.");
-    }
+    } catch (err) { alert("Gagal hapus: " + err.message); }
 };
 
 window.changePhoto = (id, oldImageUrl) => {
     const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = 'image/*';
+    input.type = 'file'; input.accept = 'image/*';
     input.onchange = async (e) => {
         const file = e.target.files[0];
         if (!file) return;
-        
-        const originalCardImg = document.querySelector(`[onclick="window.changePhoto('${id}', '${oldImageUrl}')"]`).closest('.card-product').querySelector('img');
-        originalCardImg.style.opacity = '0.5'; // Visual feedback
-
         try {
-            const newImageRef = storage.ref("produk/" + Date.now() + "_" + file.name);
-            const uploadSnap = await newImageRef.put(file);
-            const newImageUrl = await uploadSnap.ref.getDownloadURL();
-
-            await db.collection("items").doc(id).update({ gambar: newImageUrl });
-
-            if (oldImageUrl && oldImageUrl.startsWith('https://firebasestorage.googleapis.com')) {
-                try { await storage.refFromURL(oldImageUrl).delete(); } catch (e) { console.warn("Gagal hapus foto lama:", e.message); }
-            }
-        } catch (err) {
-            console.error("Gagal mengubah foto:", err);
-            alert("Gagal mengubah foto. Lihat console untuk detail.");
-            originalCardImg.style.opacity = '1'; // Revert on failure
-        }
+            const snap = await storage.ref("produk/" + Date.now() + "_" + file.name).put(file);
+            const url = await snap.ref.getDownloadURL();
+            await db.collection("items").doc(id).update({ gambar: url });
+            if (oldImageUrl) try { await storage.refFromURL(oldImageUrl).delete(); } catch (e) {}
+        } catch (err) { alert("Gagal update foto."); }
     };
     input.click();
 };
@@ -336,17 +556,16 @@ window.changePhoto = (id, oldImageUrl) => {
 // --- EVENT LISTENERS ---
 document.addEventListener('DOMContentLoaded', () => {
     itemModal = new bootstrap.Modal(el('modalItem'));
-
-    // Auth
+    
+    // Auth Listener
     auth.onAuthStateChanged(user => {
         state.isAdmin = user && user.email === ADMIN_EMAIL;
         el('adminToolbar').classList.toggle('hidden', !state.isAdmin);
         el('loginBtn').classList.toggle('hidden', state.isAdmin);
         el('logoutBtn').classList.toggle('hidden', !state.isAdmin);
-        fetchAndRenderProducts(); // Re-fetch to render correct state
+        fetchAndRenderProducts();
     });
 
-    // Actions
     el('loginBtn').onclick = () => auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
     el('logoutBtn').onclick = () => auth.signOut();
     el('addBtn').onclick = () => window.openModal();
@@ -354,6 +573,5 @@ document.addEventListener('DOMContentLoaded', () => {
     el('searchInput').oninput = (e) => renderProducts(e.target.value);
 });
 </script>
-
 </body>
 </html>

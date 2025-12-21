@@ -1,158 +1,126 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Rocell Gadget | Katalog HP</title>
+  <meta charset="UTF-8">
+  <title>Rocell Gadget | Upload Produk</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
-body{
-  font-family: system-ui, -apple-system, Segoe UI, Arial;
-  background:#f5f6f8;
-  margin:0;
-  padding:0;
-  color:#111;
-}
-header{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  padding:16px;
-  background:#fff;
-  box-shadow:0 2px 6px rgba(0,0,0,.06);
-}
-header img{
-  height:48px;
-}
-.container{
-  max-width:1100px;
-  margin:auto;
-  padding:16px;
-}
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
-  gap:16px;
-}
-.card{
-  background:#fff;
-  border-radius:12px;
-  overflow:hidden;
-  box-shadow:0 2px 8px rgba(0,0,0,.08);
-}
-.card img{
-  width:100%;
-  height:180px;
-  object-fit:cover;
-}
-.card .info{
-  padding:12px;
-}
-.card h3{
-  margin:0 0 6px;
-  font-size:1rem;
-}
-.price{
-  color:#2563eb;
-  font-weight:700;
-}
-.admin{
-  background:#fff;
-  border:2px dashed #cbd5e1;
-  padding:16px;
-  border-radius:12px;
-  margin-bottom:24px;
-}
-input,button{
-  width:100%;
-  padding:10px;
-  margin-bottom:10px;
-  border-radius:8px;
-  border:1px solid #cbd5e1;
-}
-button{
-  background:#2563eb;
-  color:#fff;
-  font-weight:600;
-  cursor:pointer;
-  border:none;
-}
-button:hover{opacity:.9}
-footer{
-  text-align:center;
-  padding:24px;
-  color:#64748b;
-  font-size:13px;
-}
-</style>
+  <style>
+    body{
+      font-family: Arial, sans-serif;
+      background:#f5f7fa;
+      margin:0;
+      padding:0;
+    }
+    header{
+      background:#2563eb;
+      color:white;
+      padding:14px 20px;
+      font-size:18px;
+      font-weight:bold;
+    }
+    .container{
+      max-width:420px;
+      margin:30px auto;
+      background:white;
+      padding:20px;
+      border-radius:10px;
+      box-shadow:0 10px 25px rgba(0,0,0,.08);
+    }
+    h2{
+      margin-top:0;
+      text-align:center;
+    }
+    input, button{
+      width:100%;
+      margin:10px 0;
+      padding:12px;
+      font-size:14px;
+      border-radius:6px;
+      border:1px solid #ddd;
+      box-sizing:border-box;
+    }
+    button{
+      background:#2563eb;
+      color:white;
+      border:none;
+      cursor:pointer;
+      font-weight:bold;
+    }
+    button:hover{
+      background:#1e4ed8;
+    }
+    .status{
+      margin-top:10px;
+      text-align:center;
+      font-size:13px;
+    }
+    img{
+      max-width:100%;
+      margin-top:10px;
+      border-radius:6px;
+    }
+  </style>
 </head>
 
 <body>
 
-<header>
-  <img src="rocell_gadget_logo.png" alt="Rocell Gadget">
-  <strong>Rocell Gadget</strong>
-</header>
+<header>Rocell Gadget – Upload Produk</header>
 
 <div class="container">
+  <h2>Tambah Produk</h2>
 
-  <!-- ADMIN PANEL -->
-  <div class="admin">
-    <strong>Tambah Produk (langsung ke laptop)</strong><br><br>
+  <input type="text" id="nama" placeholder="Nama Produk">
+  <input type="number" id="harga" placeholder="Harga (contoh: 2500000)">
+  <input type="file" id="foto" accept="image/*">
 
-    <input id="nama" placeholder="Nama HP">
-    <input id="harga" type="number" placeholder="Harga">
-    <input id="foto" type="file" accept="image/*">
-    <button onclick="uploadProduk()">Upload Produk</button>
-  </div>
+  <!-- WAJIB type=button -->
+  <button type="button" onclick="uploadProduk()">Upload Produk</button>
 
-  <!-- PRODUK -->
-  <div id="produk" class="grid"></div>
-
+  <div class="status" id="status"></div>
+  <img id="preview">
 </div>
 
-<footer>
-  © Rocell Gadget · Server lokal laptop
-</footer>
-
 <script>
-const SERVER = "http://192.168.110.104:3000"; // IP LAPTOP KAMU
+/* 🔧 GANTI IP SESUAI LAPTOP KAMU */
+const SERVER_URL = "http://192.168.110.104:3000/upload";
 
-async function uploadProduk(){
+function uploadProduk(){
   const nama = document.getElementById("nama").value;
   const harga = document.getElementById("harga").value;
   const foto = document.getElementById("foto").files[0];
+  const status = document.getElementById("status");
 
-  if(!nama || !foto){
-    alert("Nama & foto wajib");
+  if(!nama || !harga || !foto){
+    alert("Lengkapi semua field!");
     return;
   }
 
-  const fd = new FormData();
-  fd.append("nama", nama);
-  fd.append("harga", harga);
-  fd.append("foto", foto);
+  const formData = new FormData();
+  formData.append("nama", nama);
+  formData.append("harga", harga);
+  formData.append("foto", foto);
 
-  const res = await fetch(SERVER + "/upload", {
-    method:"POST",
-    body: fd
+  status.innerText = "⏳ Mengupload...";
+
+  fetch(SERVER_URL, {
+    method: "POST",
+    body: formData
+  })
+  .then(res => res.json())
+  .then(data => {
+    if(data.status === "ok"){
+      status.innerText = "✅ Upload berhasil";
+      document.getElementById("preview").src =
+        "http://192.168.110.104:3000" + data.url;
+    }else{
+      status.innerText = "❌ Gagal upload";
+    }
+  })
+  .catch(err => {
+    status.innerText = "❌ Error koneksi server";
+    console.error(err);
   });
-
-  const data = await res.json();
-  tambahCard(data);
-}
-
-function tambahCard(d){
-  const div = document.createElement("div");
-  div.className = "card";
-  div.innerHTML = `
-    <img src="${SERVER}${d.url}">
-    <div class="info">
-      <h3>${d.nama}</h3>
-      <div class="price">Rp ${Number(d.harga).toLocaleString("id-ID")}</div>
-    </div>
-  `;
-  document.getElementById("produk").prepend(div);
 }
 </script>
 

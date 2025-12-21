@@ -3,212 +3,186 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Rocell Gadget | High Performance Catalog</title>
-<meta name="description" content="Rocell Gadget - Solusi Gadget Terbaik Anda" />
+<title>Rocell Gadget | High-Performance Smartphone Store</title>
+<meta name="description" content="Rocell Gadget - Solusi Gadget Terbaik & Terpercaya" />
 <link rel="icon" href="rocell_gadget_logo.png" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 
 <style>
 :root {
-  /* Palette yang membangkitkan semangat */
-  --primary: #0062ff; /* Blue Electric */
-  --secondary: #00f2fe; /* Cyan Neon */
-  --accent: #ff007a; /* Pink Punch untuk urgensi */
-  --bg-main: #fcfdfe;
-  --text-dark: #0a0c10;
-  --glass-white: rgba(255, 255, 255, 0.8);
-  --grad-main: linear-gradient(135deg, #0062ff 0%, #00f2fe 100%);
-  --shadow-hit: 0 20px 40px -15px rgba(0, 98, 255, 0.25);
+  --primary: #0062ff; 
+  --secondary: #00f2fe;
+  --accent: #ff007a;
+  --bg-body: #f4f7ff;
+  --card-shadow: 0 20px 40px rgba(0, 98, 255, 0.08);
+  --grad-linear: linear-gradient(135deg, #0062ff 0%, #00f2fe 100%);
 }
 
 body {
-  background-color: var(--bg-main);
-  color: var(--text-dark);
+  background-color: var(--bg-body);
+  color: #1e293b;
   font-family: 'Plus Jakarta Sans', sans-serif;
   overflow-x: hidden;
+  transition: all 0.3s ease;
 }
 
-/* Background Abstract Decor */
-body::before {
-  content: "";
-  position: fixed;
-  top: -10%; right: -10%;
-  width: 40%; height: 50%;
-  background: radial-gradient(circle, rgba(0, 242, 254, 0.15) 0%, transparent 70%);
-  z-index: -1;
+/* Background Decoration */
+.bg-blob {
+  position: fixed; width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(0, 98, 255, 0.05) 0%, transparent 70%);
+  z-index: -1; border-radius: 50%;
 }
 
-h1, h2, h3, .price { font-family: 'Space Grotesk', sans-serif; }
-
-/* Navbar Energik */
+/* Navbar Premium */
 .navbar-custom {
-  background: var(--glass-white);
+  background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(15px);
-  padding: 18px 0;
-  border-bottom: 2px solid #f1f4f9;
+  padding: 15px 0;
+  border-bottom: 1px solid rgba(0, 98, 255, 0.1);
   position: sticky; top: 0; z-index: 1000;
+  box-shadow: 0 4px 30px rgba(0,0,0,0.03);
 }
 
-.brand-wrapper img {
-  height: 50px;
-  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
-  transition: transform 0.3s;
-}
-.brand-wrapper:hover img { transform: rotate(-5deg) scale(1.1); }
+.brand-logo { height: 45px; transition: 0.3s ease; }
+.brand-logo:hover { transform: scale(1.1) rotate(-3deg); }
 
-/* Hero Section: The "Vibe" Maker */
-.hero-box {
-  background: var(--grad-main);
-  padding: 60px 30px;
-  border-radius: 30px;
+/* Hero Section High Energy */
+.hero-wrapper {
+  background: var(--grad-linear);
+  border-radius: 40px;
+  padding: 80px 40px;
   color: white;
   text-align: center;
-  margin-top: 30px;
   position: relative;
   overflow: hidden;
-  box-shadow: var(--shadow-hit);
+  margin-top: 30px;
+  box-shadow: 0 25px 50px -12px rgba(0, 98, 255, 0.4);
 }
 
-.hero-box h2 { font-weight: 800; font-size: 2.8rem; margin-bottom: 15px; }
-.hero-box p { font-size: 1.1rem; opacity: 0.9; max-width: 600px; margin: 0 auto; }
-
-/* Search Bar */
-.search-container {
-  max-width: 600px;
-  margin: -30px auto 40px;
-  position: relative;
-  z-index: 10;
-}
-.search-container input {
-  height: 65px;
-  border-radius: 20px;
-  border: none;
-  padding-left: 30px;
-  font-size: 1.1rem;
-  box-shadow: 0 15px 30px rgba(0,0,0,0.08);
-  transition: 0.3s;
-}
-.search-container input:focus {
-  transform: translateY(-5px);
-  box-shadow: 0 20px 40px rgba(0, 98, 255, 0.15);
+.hero-wrapper::after {
+  content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  background: url('https://www.transparenttextures.com/patterns/cubes.png'); opacity: 0.1;
 }
 
-/* Product Card - High Energy */
+.hero-title { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; line-height: 1.1; margin-bottom: 20px; }
+
+/* Smart Search Bar */
+.search-box-wrap {
+  max-width: 700px; margin: -40px auto 50px; position: relative; z-index: 100;
+}
+.search-input {
+  height: 75px; border-radius: 25px; border: none; padding: 0 35px;
+  font-size: 1.2rem; font-weight: 600;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.search-input:focus { transform: scale(1.02); box-shadow: 0 20px 45px rgba(0, 98, 255, 0.2); outline: none; }
+
+/* Product Grid */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 30px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 30px; padding: 20px 0;
 }
 
-.card-product {
-  background: white;
-  border-radius: 24px;
-  border: 1px solid #edf2f7;
-  padding: 15px;
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  position: relative;
+/* Card Advanced Design */
+.card-item {
+  background: white; border-radius: 35px; border: 1px solid rgba(0,0,0,0.02);
+  padding: 20px; position: relative; transition: all 0.5s ease;
+  display: flex; flex-direction: column; height: 100%;
 }
 
-.card-product:hover {
-  transform: translateY(-12px);
+.card-item:hover {
+  transform: translateY(-15px) scale(1.02);
+  box-shadow: var(--card-shadow);
   border-color: var(--primary);
-  box-shadow: var(--shadow-hit);
 }
 
-.img-frame {
-  background: #f8fafc;
-  border-radius: 18px;
-  height: 240px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 15px;
-  overflow: hidden;
-}
-
-.card-product img {
-  max-width: 85%;
-  max-height: 85%;
-  object-fit: contain;
-  transition: 0.5s;
-}
-
-.card-product:hover img { transform: scale(1.1) rotate(2deg); }
-
-.hot-badge {
-  position: absolute;
-  top: 25px; left: 25px;
-  background: var(--accent);
-  color: white;
-  font-size: 0.7rem;
-  font-weight: 800;
-  padding: 5px 12px;
-  border-radius: 50px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  z-index: 2;
-}
-
-.info h3 { font-size: 1.25rem; font-weight: 700; margin-bottom: 5px; color: #1e293b; }
-.price { font-size: 1.4rem; color: var(--primary); font-weight: 700; margin-bottom: 15px; }
-
-/* Call to Action Buttons */
-.wa-link {
-  background: var(--grad-main);
-  color: white;
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 12px;
-  border-radius: 15px;
-  font-weight: 700;
-  transition: 0.3s;
-}
-.wa-link:hover {
-  filter: brightness(1.1);
-  color: white;
-  gap: 15px;
-}
-
-/* Floating WhatsApp (Napas/Berdenyut) */
-.wa-float {
-  position: fixed;
-  bottom: 30px; right: 30px;
-  width: 65px; height: 65px;
-  background: #25d366;
-  color: white;
-  border-radius: 50%;
+.image-container {
+  background: #f8fbff; border-radius: 25px; height: 260px;
   display: flex; align-items: center; justify-content: center;
-  font-size: 30px;
-  box-shadow: 0 10px 20px rgba(37, 211, 102, 0.3);
-  z-index: 1000;
-  animation: pulse-wa 2s infinite;
+  margin-bottom: 20px; position: relative; overflow: hidden;
 }
 
-@keyframes pulse-wa {
+.image-container img {
+  max-width: 85%; max-height: 85%; object-fit: contain;
+  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.card-item:hover .image-container img { transform: scale(1.15) rotate(3deg); }
+
+.tag-exclusive {
+  position: absolute; top: 20px; left: 20px;
+  background: var(--accent); color: white; padding: 6px 15px;
+  border-radius: 50px; font-size: 0.75rem; font-weight: 800;
+  text-transform: uppercase; letter-spacing: 1px; z-index: 5;
+  box-shadow: 0 5px 15px rgba(255, 0, 122, 0.3);
+}
+
+.product-name { font-weight: 800; font-size: 1.3rem; margin-bottom: 8px; color: #111827; }
+.product-price { 
+  font-family: 'Space Grotesk', sans-serif; font-size: 1.6rem; 
+  color: var(--primary); margin-bottom: 20px; 
+}
+
+/* Button "Sikat" (Call to Action) */
+.btn-deal {
+  background: var(--grad-linear); color: white; border: none;
+  padding: 15px; border-radius: 20px; font-weight: 800;
+  text-decoration: none; display: flex; align-items: center; justify-content: center;
+  gap: 10px; transition: 0.3s;
+}
+
+.btn-deal:hover {
+  color: white; transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0, 98, 255, 0.3);
+  letter-spacing: 0.5px;
+}
+
+/* Floating Elements */
+.wa-float {
+  position: fixed; bottom: 35px; right: 35px; width: 70px; height: 70px;
+  background: #25d366; color: white; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 35px; z-index: 1000; text-decoration: none;
+  box-shadow: 0 15px 30px rgba(37, 211, 102, 0.4);
+  animation: pulseInfinite 2s infinite;
+}
+
+@keyframes pulseInfinite {
   0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
   70% { transform: scale(1.1); box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
   100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
 }
 
-/* Modal Styling */
-.modal-content { border-radius: 30px; border: none; padding: 15px; }
-.btn-primary { background: var(--grad-main); border: none; border-radius: 12px; font-weight: 700; }
+/* Admin Toolbar */
+#adminToolbar {
+  background: white; border-radius: 25px; padding: 25px;
+  margin-bottom: 40px; border: 2px dashed var(--primary);
+}
 
 .hidden { display: none !important; }
 
-footer {
-  margin-top: 80px;
-  padding-bottom: 40px;
-  text-align: center;
-  font-weight: 600;
-  color: #94a3b8;
+/* Modal Customization */
+.modal-content { border-radius: 40px; border: none; overflow: hidden; }
+.modal-header { background: var(--grad-linear); color: white; padding: 25px; }
+.btn-close { filter: brightness(0) invert(1); }
+
+footer { margin: 80px 0 40px; text-align: center; font-weight: 700; color: #94a3b8; }
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .hero-title { font-size: 2.2rem; }
+  .hero-wrapper { padding: 50px 20px; }
+  .grid { grid-template-columns: 1fr 1fr; gap: 15px; }
+}
+@media (max-width: 480px) {
+  .grid { grid-template-columns: 1fr; }
 }
 </style>
 
@@ -220,79 +194,91 @@ footer {
 
 <body>
 
+<div class="bg-blob" style="top: -100px; left: -100px;"></div>
+<div class="bg-blob" style="bottom: -100px; right: -100px; background: radial-gradient(circle, rgba(0, 242, 254, 0.05) 0%, transparent 70%);"></div>
+
 <nav class="navbar-custom">
   <div class="container d-flex justify-content-between align-items-center">
-    <div class="brand-wrapper d-flex align-items-center gap-2">
-      <img src="rocell_gadget_logo.png" alt="Rocell Gadget">
-      <h1 class="h4 mb-0 fw-bold d-none d-sm-block">ROCELL <span style="color:var(--primary)">GADGET</span></h1>
+    <div class="d-flex align-items-center gap-3">
+      <img src="rocell_gadget_logo.png" class="brand-logo" alt="Rocell Logo">
+      <span class="fw-bold fs-4 d-none d-md-block" style="letter-spacing: -1px;">ROCELL <span style="color:var(--primary)">GADGET</span></span>
     </div>
     <div class="d-flex gap-2">
-      <button id="loginBtn" class="btn btn-outline-primary rounded-pill px-4">Admin</button>
-      <button id="logoutBtn" class="btn btn-danger rounded-pill px-4 hidden">Logout</button>
+      <button id="loginBtn" class="btn btn-outline-primary rounded-pill fw-bold px-4">Staff Only</button>
+      <button id="logoutBtn" class="btn btn-danger rounded-pill fw-bold px-4 hidden">Log Out</button>
     </div>
   </div>
 </nav>
 
 <div class="container">
   
-  <div class="hero-box">
-    <h2>READY TO UPGRADE?</h2>
-    <p>Dapatkan unit gadget kualitas sultan dengan harga teman. Stok terbatas setiap harinya!</p>
+  <div class="hero-wrapper animate__animated animate__zoomIn">
+    <h1 class="hero-title">DAPATKAN GADGET <br> LEVEL TERATAS.</h1>
+    <p class="opacity-75 fs-5">Harga termurah se-Indonesia, kualitas unit pilihan tenaga ahli.</p>
   </div>
 
-  <div class="search-container">
-    <input type="search" id="searchInput" class="form-control shadow-sm" placeholder="Mau cari iPhone, Samsung, atau apa?" />
+  <div class="search-box-wrap animate__animated animate__fadeInUp">
+    <input type="search" id="searchInput" class="form-control search-input" placeholder="Lagi cari unit apa hari ini? Tulis di sini..." />
   </div>
 
-  <div id="adminToolbar" class="hidden mb-4 p-3 border-start border-4 border-primary bg-white shadow-sm rounded-3">
-    <div class="d-flex justify-content-between align-items-center">
-        <h5 class="mb-0 fw-bold"><i class="bi bi-shield-lock me-2"></i>Admin Dashboard</h5>
-        <button id="addBtn" class="btn btn-primary px-4"><i class="bi bi-plus-circle me-2"></i>Tambah Unit</button>
+  <div id="adminToolbar" class="hidden animate__animated animate__fadeIn">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+        <div>
+            <h4 class="fw-800 mb-0">ADMIN CONTROL</h4>
+            <p class="text-secondary mb-0">Pantau stok dan update harga secara realtime.</p>
+        </div>
+        <button id="addBtn" class="btn btn-primary btn-lg rounded-pill px-5 fw-bold shadow-lg"><i class="bi bi-plus-circle-fill me-2"></i>Tambah Unit</button>
     </div>
   </div>
 
   <div id="produk" class="grid"></div>
   
-  <div id="product-placeholder" class="text-center py-5">
-      <div class="spinner-grow text-primary" role="status"></div>
-      <p class="mt-3 fw-bold text-secondary">Checking our stock...</p>
+  <div id="product-placeholder" class="text-center py-5 mt-5">
+      <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status"></div>
+      <p class="mt-4 fw-bold text-primary animate__animated animate__pulse animate__infinite">Sinkronisasi Database Rocell Gadget...</p>
   </div>
 
   <footer>
-    <p>© 2025 Rocell Gadget · Jual Beli HP Bergaransi & Terpercaya</p>
+    <div class="d-flex justify-content-center gap-4 mb-3 fs-3">
+        <i class="bi bi-instagram text-primary"></i><i class="bi bi-tiktok text-primary"></i><i class="bi bi-facebook text-primary"></i>
+    </div>
+    <p>© 2025 Rocell Gadget Store. Jaminan Original & Bergaransi.</p>
   </footer>
 </div>
 
-<a class="wa-float" target="_blank" href="https://wa.me/6281211172228">
+<a class="wa-float" target="_blank" href="https://wa.me/6281211172228" title="Chat WhatsApp">
   <i class="bi bi-whatsapp"></i>
 </a>
 
-<div class="modal fade" id="modalItem" tabindex="-1">
+<div class="modal fade" id="modalItem" tabindex="-1" data-bs-backdrop="static">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
-      <div class="modal-header border-0">
-        <h5 class="modal-title fw-bold" id="modalItemTitle">Tambah Unit</h5>
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold" id="modalItemTitle"><i class="bi bi-phone-vibrate me-2"></i>Update Unit</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body p-4">
         <input type="hidden" id="mId" />
         <input type="hidden" id="mGambarLama" />
-        <div class="mb-3">
-          <label class="form-label fw-bold">Nama Gadget</label>
-          <input id="mNama" class="form-control rounded-3" placeholder="Contoh: iPhone 14 Pro" />
+        <div class="mb-4">
+          <label class="form-label fw-800">Nama Lengkap Gadget</label>
+          <input id="mNama" class="form-control form-control-lg rounded-4 shadow-sm" placeholder="Contoh: iPhone 15 Pro Titanium" />
         </div>
-        <div class="mb-3">
-          <label class="form-label fw-bold">Harga Deal (Rp)</label>
-          <input id="mHarga" type="number" class="form-control rounded-3" value="0" />
+        <div class="mb-4">
+          <label class="form-label fw-800">Harga Jual (Tanpa Titik/Koma)</label>
+          <div class="input-group">
+            <span class="input-group-text rounded-start-4">Rp</span>
+            <input id="mHarga" type="number" class="form-control form-control-lg rounded-end-4 shadow-sm" placeholder="10000000" />
+          </div>
         </div>
-        <div class="mb-3">
-          <label class="form-label fw-bold">Upload Foto</label>
-          <input id="mGambar" type="file" class="form-control rounded-3" accept="image/*" />
+        <div class="mb-2">
+          <label class="form-label fw-800">Foto Unit (Kualitas HD)</label>
+          <input id="mGambar" type="file" class="form-control form-control-lg rounded-4 shadow-sm" accept="image/*" />
         </div>
       </div>
-      <div class="modal-footer border-0">
-        <button class="btn btn-light rounded-3" data-bs-dismiss="modal">Cancel</button>
-        <button id="btnSaveItem" class="btn btn-primary px-5">Publish Now</button>
+      <div class="modal-footer border-0 p-4">
+        <button class="btn btn-light btn-lg rounded-pill px-4" data-bs-dismiss="modal">Batal</button>
+        <button id="btnSaveItem" class="btn btn-primary btn-lg rounded-pill px-5 fw-bold shadow">PUBLISH SEKARANG</button>
       </div>
     </div>
   </div>
@@ -301,6 +287,7 @@ footer {
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
+// --- KONFIGURASI FIREBASE ---
 const firebaseConfig = {
   apiKey: "AIzaSyAcLq0OpLMY9gfOVb7854pzaEAjqNbgHGs",
   authDomain: "rocellgadget.firebaseapp.com",
@@ -311,13 +298,15 @@ const firebaseConfig = {
 const ADMIN_EMAIL = "mahakaryahutama.corp@gmail.com";
 let state = { isAdmin: false, products: [], unsubscribe: null };
 
-const el = id => document.getElementById(id);
+// Init Firebase
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
 const storage = firebase.storage();
+const el = id => document.getElementById(id);
 let itemModal;
 
+// --- RENDER LOGIC ---
 function renderProducts(filter = '') {
     const productsToShow = state.products.filter(p => p.nama.toLowerCase().includes(filter.toLowerCase()));
     const container = el('produk');
@@ -325,39 +314,44 @@ function renderProducts(filter = '') {
     container.innerHTML = '';
 
     if (state.unsubscribe && productsToShow.length === 0) {
-        placeholder.innerHTML = `<div class="py-5"><i class="bi bi-search fs-1"></i><p class="mt-2">Wah, barang itu belum masuk stok.</p></div>`;
+        placeholder.innerHTML = `<div class="py-5 animate__animated animate__fadeIn"><i class="bi bi-box-seam fs-1 text-secondary"></i><p class="mt-3 fs-5 fw-bold text-secondary">Ups! Unit tersebut sedang kosong.</p></div>`;
         placeholder.classList.remove('hidden');
     } else {
         placeholder.classList.add('hidden');
     }
 
-    productsToShow.forEach(item => {
-        const harga = "Rp " + (item.harga || 0).toLocaleString("id-ID");
-        const pesan = encodeURIComponent(`Halo Rocell Gadget, unit *${item.nama}* (${harga}) masih ada? Mau deal dong.`);
+    productsToShow.forEach((item, idx) => {
+        const hargaNum = item.harga || 0;
+        const hargaStr = "Rp " + hargaNum.toLocaleString("id-ID");
+        const waLink = `https://wa.me/6281211172228?text=Halo%20Rocell%20Gadget%2C%20saya%20tertarik%20ingin%20deal%20*${encodeURIComponent(item.nama)}*%20dengan%20harga%20*${hargaStr}*.%20Ready%20barangnya?`;
+        
         const card = document.createElement('div');
-        card.className = 'card-product';
+        card.className = `card-item animate__animated animate__fadeInUp`;
+        card.style.animationDelay = `${idx * 0.1}s`;
+        
         card.innerHTML = `
-            <div class="hot-badge">Limited</div>
-            <div class="img-frame">
-                <img src="${item.gambar || 'https://via.placeholder.com/300?text=Rocell+Gadget'}">
+            <div class="tag-exclusive">Best Seller</div>
+            <div class="image-container">
+                <img src="${item.gambar || 'https://via.placeholder.com/400?text=Rocell+Gadget'}" alt="${item.nama}" loading="lazy">
             </div>
-            <div class="info text-center">
-                <h3>${item.nama}</h3>
-                <div class="price">${harga}</div>
-                <a class="wa-link" target="_blank" href="https://wa.me/6281211172228?text=${pesan}">
-                    <i class="bi bi-cart-check-fill"></i> SIKAT SEKARANG
-                </a>
-                ${state.isAdmin ? `
-                <div class="d-flex gap-1 mt-3">
-                    <button class="btn btn-sm btn-outline-secondary w-100" onclick="window.openModal('${item.id}')">Edit</button>
-                    <button class="btn btn-sm btn-outline-danger w-100" onclick="window.deleteItem('${item.id}', '${item.gambar || ''}')">Hapus</button>
-                </div>` : ""}
-            </div>`;
+            <div class="flex-grow-1">
+                <h3 class="product-name">${item.nama}</h3>
+                <div class="product-price">${hargaStr}</div>
+            </div>
+            <a class="btn-deal" target="_blank" href="${waLink}">
+                <i class="bi bi-lightning-charge-fill"></i> SIKAT SEKARANG
+            </a>
+            ${state.isAdmin ? `
+            <div class="d-flex gap-2 mt-3 pt-3 border-top">
+                <button class="btn btn-sm btn-outline-dark flex-grow-1 rounded-pill" onclick="window.openModal('${item.id}')"><i class="bi bi-pencil-square"></i></button>
+                <button class="btn btn-sm btn-outline-danger flex-grow-1 rounded-pill" onclick="window.deleteItem('${item.id}', '${item.gambar || ''}')"><i class="bi bi-trash3-fill"></i></button>
+            </div>` : ""}
+        `;
         container.appendChild(card);
     });
 }
 
-function fetchAndRenderProducts() {
+function fetchRealtimeData() {
     if (state.unsubscribe) state.unsubscribe();
     state.unsubscribe = db.collection("items").orderBy("createdAt", "desc")
         .onSnapshot(snap => {
@@ -366,17 +360,19 @@ function fetchAndRenderProducts() {
         });
 }
 
-// Global functions for buttons
+// --- CRUD OPERATIONS ---
 window.openModal = (id = null) => {
     itemModal.show();
+    const isEdit = id !== null;
+    el('modalItemTitle').innerHTML = isEdit ? '<i class="bi bi-pencil-square me-2"></i>Edit Data Unit' : '<i class="bi bi-plus-circle me-2"></i>Tambah Unit Baru';
     el('mId').value = id || '';
-    if (id) {
-        const item = state.products.find(p => p.id === id);
-        el('mNama').value = item.nama;
-        el('mHarga').value = item.harga;
-        el('mGambarLama').value = item.gambar || '';
+    if (isEdit) {
+        const p = state.products.find(x => x.id === id);
+        el('mNama').value = p.nama;
+        el('mHarga').value = p.harga;
+        el('mGambarLama').value = p.gambar || '';
     } else {
-        el('mNama').value = ''; el('mHarga').value = 0; el('mGambarLama').value = '';
+        el('mNama').value = ''; el('mHarga').value = ''; el('mGambarLama').value = ''; el('mGambar').value = '';
     }
 };
 
@@ -384,40 +380,59 @@ window.saveItem = async () => {
     const btn = el('btnSaveItem');
     const id = el('mId').value;
     const file = el('mGambar').files[0];
-    btn.disabled = true; btn.innerHTML = "Processing...";
+    const nama = el('mNama').value.trim();
+    const harga = Number(el('mHarga').value);
+
+    if (!nama || !harga) return alert("Mohon lengkapi nama dan harga unit!");
+
+    btn.disabled = true;
+    btn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span>Uploading...`;
 
     try {
         let url = el('mGambarLama').value;
         if (file) {
-            const ref = storage.ref("produk/" + Date.now() + "_" + file.name);
+            const ref = storage.ref(`produk/${Date.now()}_${file.name}`);
             await ref.put(file);
             url = await ref.getDownloadURL();
         }
-        const data = { nama: el('mNama').value, harga: Number(el('mHarga').value), gambar: url };
-        if (id) await db.collection("items").doc(id).update(data);
-        else { data.createdAt = firebase.firestore.FieldValue.serverTimestamp(); await db.collection("items").add(data); }
-        itemModal.hide();
-    } catch (e) { alert("Error saving product."); }
-    finally { btn.disabled = false; btn.innerHTML = "Publish Now"; }
-};
 
-window.deleteItem = async (id, url) => {
-    if (confirm("Hapus item ini?")) {
-        await db.collection("items").doc(id).delete();
-        if (url && url.includes("firebasestorage")) await storage.refFromURL(url).delete();
+        const data = { nama, harga, gambar: url };
+        if (id) {
+            await db.collection("items").doc(id).update(data);
+        } else {
+            data.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+            await db.collection("items").add(data);
+        }
+        itemModal.hide();
+    } catch (err) {
+        alert("Gagal memproses data: " + err.message);
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = "PUBLISH SEKARANG";
     }
 };
 
-// Start
+window.deleteItem = async (id, url) => {
+    if (confirm("Anda yakin ingin menghapus unit ini dari katalog?")) {
+        await db.collection("items").doc(id).delete();
+        if (url && url.includes("firebasestorage")) {
+            try { await storage.refFromURL(url).delete(); } catch(e) {}
+        }
+    }
+};
+
+// --- AUTH & EVENT ---
 document.addEventListener('DOMContentLoaded', () => {
     itemModal = new bootstrap.Modal(el('modalItem'));
+    
     auth.onAuthStateChanged(user => {
         state.isAdmin = user && user.email === ADMIN_EMAIL;
         el('adminToolbar').classList.toggle('hidden', !state.isAdmin);
         el('loginBtn').classList.toggle('hidden', state.isAdmin);
         el('logoutBtn').classList.toggle('hidden', !state.isAdmin);
-        fetchAndRenderProducts();
+        fetchRealtimeData();
     });
+
     el('loginBtn').onclick = () => auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
     el('logoutBtn').onclick = () => auth.signOut();
     el('addBtn').onclick = () => window.openModal();

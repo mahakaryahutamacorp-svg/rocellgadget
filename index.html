@@ -1,324 +1,304 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Rocell Gadget | High-End Smartphone Store</title>
-<meta name="description" content="Rocell Gadget - Jual Beli HP Berkualitas di Sidodadi BK 9" />
-<link rel="icon" href="rocell_gadget_logo.png" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rocell Gadget | Premium Catalog</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <style>
+        :root {
+            --primary: #0062ff;
+            --neon: #00f2fe;
+            --dark: #0f172a;
+            --glass: rgba(255, 255, 255, 0.8);
+            --grad: linear-gradient(135deg, #0062ff 0%, #00f2fe 100%);
+        }
 
-<style>
-:root {
-  --primary: #0062ff; 
-  --secondary: #00f2fe;
-  --accent: #ff007a;
-  --bg-body: #f4f7ff;
-  --grad-linear: linear-gradient(135deg, #0062ff 0%, #00f2fe 100%);
-}
+        body {
+            background-color: #f8fafc;
+            color: var(--dark);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+        }
 
-body {
-  background-color: var(--bg-body);
-  color: #1e293b;
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  overflow-x: hidden;
-}
+        /* Hero & Header */
+        .navbar-custom {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(0, 98, 255, 0.1);
+            position: sticky; top: 0; z-index: 1000;
+        }
 
-/* Navbar & Address */
-.navbar-custom {
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(20px);
-  padding: 15px 0;
-  border-bottom: 1px solid rgba(0, 98, 255, 0.1);
-  position: sticky; top: 0; z-index: 1000;
-}
+        .brand-section img { height: 60px; transition: 0.3s; }
+        .address-box { font-size: 0.75rem; color: #64748b; line-height: 1.2; }
 
-.brand-logo { height: 55px; transition: 0.3s; }
-.address-text { font-size: 0.75rem; color: #64748b; line-height: 1.2; max-width: 200px; }
+        .hero-banner {
+            background: var(--grad);
+            border-radius: 40px;
+            padding: 80px 20px;
+            color: white;
+            text-align: center;
+            margin-top: 30px;
+            box-shadow: 0 20px 40px rgba(0, 98, 255, 0.2);
+            position: relative; overflow: hidden;
+        }
 
-/* Hero Section */
-.hero-box {
-  background: var(--grad-linear);
-  border-radius: 35px;
-  padding: 70px 40px;
-  color: white;
-  text-align: center;
-  margin-top: 25px;
-  box-shadow: 0 25px 50px -12px rgba(0, 98, 255, 0.3);
-}
-.hero-box h1 { font-family: 'Space Grotesk', sans-serif; font-size: 3rem; font-weight: 800; }
+        .hero-banner h1 { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 800; }
 
-/* Product Card */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 25px; padding-top: 40px;
-}
+        /* Search Bar Canggih */
+        .search-wrap { max-width: 600px; margin: -35px auto 40px; position: relative; z-index: 10; }
+        .search-input {
+            height: 70px; border-radius: 20px; border: none; padding-left: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05); font-size: 1.1rem;
+        }
 
-.card-product {
-  background: white; border-radius: 30px; padding: 20px;
-  transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  position: relative; border: 1px solid rgba(0,0,0,0.03);
-  display: flex; flex-direction: column; height: 100%;
-}
+        /* Product Card Premium */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+        }
 
-.card-product:hover { transform: translateY(-12px); box-shadow: 0 20px 40px rgba(0,98,255,0.1); }
+        .card-gadget {
+            background: white; border-radius: 30px; padding: 20px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid #f1f5f9; position: relative;
+            display: flex; flex-direction: column; height: 100%;
+        }
 
-.img-container {
-  background: #f8fbff; border-radius: 20px; height: 220px;
-  display: flex; align-items: center; justify-content: center;
-  margin-bottom: 15px; overflow: hidden;
-}
+        .card-gadget:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 25px 50px -12px rgba(0, 98, 255, 0.15);
+            border-color: var(--primary);
+        }
 
-.img-container img { max-width: 85%; max-height: 85%; object-fit: contain; transition: 0.5s; }
-.card-product:hover img { transform: scale(1.1) rotate(3deg); }
+        .img-box {
+            background: #f1f5f9; border-radius: 20px; height: 250px;
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 20px; overflow: hidden;
+        }
 
-.price-tag { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; color: var(--primary); font-weight: 700; }
+        .img-box img { max-width: 80%; max-height: 80%; transition: 0.5s; }
+        .card-gadget:hover img { transform: scale(1.1) rotate(2deg); }
 
-.btn-wa {
-  background: var(--grad-linear); color: white; border: none;
-  padding: 12px; border-radius: 15px; font-weight: 800;
-  text-decoration: none; display: flex; align-items: center; justify-content: center;
-  gap: 8px; margin-top: auto;
-}
-.btn-wa:hover { color: white; filter: brightness(1.1); }
+        .price-text {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.7rem; color: var(--primary); font-weight: 700;
+        }
 
-/* Status Badge */
-.badge-exclusive {
-  position: absolute; top: 20px; left: 20px;
-  background: var(--accent); color: white; padding: 4px 12px;
-  border-radius: 50px; font-size: 0.7rem; font-weight: 800; z-index: 5;
-}
+        .badge-ready {
+            position: absolute; top: 25px; left: 25px;
+            background: #22c55e; color: white; padding: 5px 12px;
+            border-radius: 50px; font-size: 0.7rem; font-weight: 800;
+        }
 
-/* Floating Elements */
-.wa-float {
-  position: fixed; bottom: 30px; right: 30px; width: 65px; height: 65px;
-  background: #25d366; color: white; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 32px; z-index: 1000; box-shadow: 0 10px 20px rgba(37,211,102,0.3);
-  animation: pulse 2s infinite;
-}
+        .btn-deal {
+            background: var(--grad); color: white; border: none;
+            padding: 15px; border-radius: 18px; font-weight: 800;
+            text-decoration: none; display: flex; align-items: center;
+            justify-content: center; gap: 10px; margin-top: auto;
+        }
 
-@keyframes pulse {
-  0% { box-shadow: 0 0 0 0 rgba(37,211,102,0.7); }
-  70% { box-shadow: 0 0 0 15px rgba(37,211,102,0); }
-  100% { box-shadow: 0 0 0 0 rgba(37,211,102,0); }
-}
+        /* Admin Panel */
+        #adminPanel {
+            background: white; border-radius: 25px; padding: 30px;
+            border: 2px dashed var(--primary); margin-bottom: 40px;
+        }
 
-.hidden { display: none !important; }
-#adminPanel { background: white; border-radius: 20px; padding: 20px; border: 2px dashed var(--primary); margin-bottom: 20px; }
-</style>
+        .wa-float {
+            position: fixed; bottom: 30px; right: 30px; width: 65px; height: 65px;
+            background: #25d366; color: white; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 30px; z-index: 1000; box-shadow: 0 10px 20px rgba(37,211,102,0.3);
+            animation: pulse 2s infinite;
+        }
 
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .hidden { display: none !important; }
+    </style>
+
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 </head>
-
 <body>
 
-<nav class="navbar-custom shadow-sm">
-  <div class="container d-flex justify-content-between align-items-center">
-    <div class="d-flex align-items-center gap-3">
-      <img src="rocell_gadget_logo.png" class="brand-logo" alt="Logo">
-      <div class="d-none d-md-block">
-        <h5 class="fw-800 mb-0">ROCELL <span style="color:var(--primary)">GADGET</span></h5>
-        <span class="address-text"><i class="bi bi-geo-alt-fill text-danger"></i> Jl. Raya Pasar Sidodadi BK 9, OKU Timur, Sumsel</span>
-      </div>
+<nav class="navbar-custom py-2 shadow-sm">
+    <div class="container d-flex justify-content-between align-items-center">
+        <div class="brand-section d-flex align-items-center gap-3">
+            <img src="rocell_gadget_logo.png" alt="Rocell Logo">
+            <div class="d-none d-md-block">
+                <h5 class="fw-800 mb-0">ROCELL <span style="color:var(--primary)">GADGET</span></h5>
+                <span class="address-box"><i class="bi bi-geo-alt-fill text-danger"></i> Jl. Raya Pasar Sidodadi BK 9, OKU Timur, Sumsel</span>
+            </div>
+        </div>
+        <div>
+            <button id="loginBtn" class="btn btn-outline-primary rounded-pill px-4 fw-bold">Admin</button>
+            <button id="logoutBtn" class="btn btn-danger rounded-pill px-4 hidden">Logout</button>
+        </div>
     </div>
-    <div class="d-flex gap-2">
-      <input type="search" id="searchInput" class="form-control rounded-pill px-3" placeholder="Cari unit...">
-      <button id="loginBtn" class="btn btn-primary rounded-pill px-4 fw-bold">Login</button>
-      <button id="logoutBtn" class="btn btn-danger rounded-pill px-4 hidden">Logout</button>
-    </div>
-  </div>
 </nav>
 
 <div class="container">
-  <div class="hero-box animate__animated animate__zoomIn">
-    <h1>UNIT PREMIUM.<br>HARGA TEMAN.</h1>
-    <p class="opacity-75">Solusi Gadget Original & Bergaransi se-Sumatera Selatan.</p>
-  </div>
-
-  <div id="adminPanel" class="hidden mt-4 animate__animated animate__fadeInDown">
-    <div class="row g-3">
-        <div class="col-md-4"><input type="text" id="namaInput" class="form-control" placeholder="Nama Produk (ex: iPhone 13)"></div>
-        <div class="col-md-3"><input type="number" id="hargaInput" class="form-control" placeholder="Harga (Angka)"></div>
-        <div class="col-md-3"><input type="file" id="fotoInput" class="form-control"></div>
-        <div class="col-md-2"><button onclick="uploadKeServer()" id="uploadBtn" class="btn btn-primary w-100 fw-bold">UPLOAD</button></div>
+    <div class="hero-banner animate__animated animate__fadeIn">
+        <h1>LEVEL UP YOUR <br> LIFESTYLE.</h1>
+        <p class="opacity-75 fs-5 mt-3">Gadget Berkualitas Tinggi, Harga Bersahabat di OKU Timur.</p>
     </div>
-    <div id="uploadStatus" class="small mt-2 fw-bold text-center"></div>
-  </div>
 
-  <div id="produkGrid" class="grid"></div>
+    <div class="search-wrap">
+        <input type="search" id="searchInput" class="form-control search-input" placeholder="Lagi cari iPhone atau Samsung apa hari ini?">
+    </div>
 
-  <div id="loader" class="text-center py-5">
-      <div class="spinner-grow text-primary" role="status"></div>
-      <p class="mt-3 fw-bold">Sinkronisasi Stok Sidodadi BK 9...</p>
-  </div>
+    <div id="adminPanel" class="hidden animate__animated animate__fadeInDown">
+        <h4 class="fw-bold mb-4"><i class="bi bi-cpu-fill me-2"></i>Control Unit Server</h4>
+        <div class="row g-3">
+            <div class="col-md-4"><input type="text" id="inpNama" class="form-control" placeholder="Nama Gadget"></div>
+            <div class="col-md-3"><input type="number" id="inpHarga" class="form-control" placeholder="Harga (Contoh: 5000000)"></div>
+            <div class="col-md-3"><input type="file" id="inpFoto" class="form-control"></div>
+            <div class="col-md-2"><button onclick="uploadKeServer()" id="btnUpload" class="btn btn-primary w-100 fw-bold">UPLOAD</button></div>
+        </div>
+        <div id="statusUpload" class="mt-3 small fw-bold"></div>
+    </div>
 
-  <footer class="text-center mt-5 mb-4 text-secondary">
-    <p class="mb-0 fw-bold">ROCELL GADGET STORE</p>
-    <small>Jalan raya pasar sidodadi bk 9, OKU Timur, Sumatera Selatan</small>
-  </footer>
+    <div id="katalog" class="product-grid"></div>
+
+    <div id="loading" class="text-center py-5">
+        <div class="spinner-border text-primary" role="status"></div>
+        <p class="mt-3 fw-bold">Menghubungkan ke Server Rocell...</p>
+    </div>
+
+    <footer class="text-center py-5 mt-5 text-secondary">
+        <p class="mb-1 fw-bold">ROCELL GADGET STORE</p>
+        <p class="small">Sidodadi BK 9, Sumatra Selatan © 2025</p>
+    </footer>
 </div>
 
 <a href="https://wa.me/6281211172228" class="wa-float" target="_blank">
-  <i class="bi bi-whatsapp"></i>
+    <i class="bi bi-whatsapp"></i>
 </a>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
 <script>
-// --- CONFIGURASI ---
-const SERVER_URL = "http://192.168.110.104:3000";
-const firebaseConfig = {
-  apiKey: "AIzaSyAcLq0OpLMY9gfOVb7854pzaEAjqNbgHGs",
-  authDomain: "rocellgadget.firebaseapp.com",
-  projectId: "rocellgadget",
-  storageBucket: "rocellgadget.appspot.com",
-  appId: "1:451065886878:web:e3f291259be532f8a5638f"
-};
-const ADMIN_EMAIL = "mahakaryahutama.corp@gmail.com";
+    // Konfigurasi Alamat Server Anda
+    const SERVER_URL = "http://192.168.110.104:3000";
+    
+    // Konfigurasi Firebase Anda
+    const firebaseConfig = {
+        apiKey: "AIzaSyAcLq0OpLMY9gfOVb7854pzaEAjqNbgHGs",
+        authDomain: "rocellgadget.firebaseapp.com",
+        projectId: "rocellgadget",
+        storageBucket: "rocellgadget.appspot.com",
+        appId: "1:451065886878:web:e3f291259be532f8a5638f"
+    };
+    const ADMIN_EMAIL = "mahakaryahutama.corp@gmail.com";
 
-// --- STATE ---
-let products = [];
-let isAdmin = false;
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    let productList = [];
 
-// Initialize Firebase Auth
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-
-// --- FUNCTIONS ---
-
-// 1. Ambil Data dari Lokal Server
-async function fetchProducts() {
-    try {
-        // Asumsi server Anda punya endpoint GET /produk untuk list data
-        // Jika tidak ada, Anda bisa menyimpan list data di Firestore dan filenya di server.
-        // Untuk contoh ini, kita simulasikan pengambilan data.
-        document.getElementById('loader').classList.add('hidden');
-        renderUI();
-    } catch (err) {
-        console.error("Server Offline", err);
-    }
-}
-
-// 2. Upload ke Lokal Server (Fungsi Admin)
-async function uploadKeServer() {
-    const nama = document.getElementById("namaInput").value;
-    const harga = document.getElementById("hargaInput").value;
-    const foto = document.getElementById("fotoInput").files[0];
-    const status = document.getElementById("uploadStatus");
-    const btn = document.getElementById("uploadBtn");
-
-    if (!nama || !harga || !foto) {
-        status.innerHTML = "❌ Lengkapi semua data!";
-        status.className = "text-danger";
-        return;
+    // Fungsi Ambil Data dari Server
+    async function muatKatalog() {
+        try {
+            // Kita coba fetch dari server Node.js Anda
+            // Pastikan server Anda punya endpoint GET /produk yang mengembalikan JSON array
+            const res = await fetch(`${SERVER_URL}/produk`); 
+            productList = await res.json();
+            tampilkanKatalog();
+        } catch (err) {
+            console.error("Gagal terhubung ke server lokal.");
+            // Jika server mati, kita tampilkan pesan error
+            document.getElementById('loading').innerHTML = `<p class="text-danger fw-bold">Server Offline (Cek Node.js di Laptop)</p>`;
+        } finally {
+            document.getElementById('loading').classList.add('hidden');
+        }
     }
 
-    btn.disabled = true;
-    btn.innerHTML = "UPLOADING...";
+    function tampilkanKatalog() {
+        const grid = document.getElementById('katalog');
+        const keyword = document.getElementById('searchInput').value.toLowerCase();
+        grid.innerHTML = "";
 
-    const formData = new FormData();
-    formData.append("nama", nama);
-    formData.append("harga", harga);
-    formData.append("foto", foto);
+        const filtered = productList.filter(p => p.nama.toLowerCase().includes(keyword));
 
-    try {
-        const res = await fetch(SERVER_URL + "/upload", {
-            method: "POST",
-            body: formData
+        filtered.forEach((p, i) => {
+            const harga = "Rp " + Number(p.harga).toLocaleString("id-ID");
+            const waLink = `https://wa.me/6281211172228?text=Halo%20Rocell%20Gadget%2C%20saya%20tertarik%20ingin%20bungkus%20*${encodeURIComponent(p.nama)}*%20dengan%20harga%20${harga}.%20Unitnya%20ready?`;
+
+            const card = document.createElement('div');
+            card.className = "card-gadget animate__animated animate__fadeInUp";
+            card.style.animationDelay = `${i * 0.1}s`;
+            card.innerHTML = `
+                <div class="badge-ready">Ready Stock</div>
+                <div class="img-box">
+                    <img src="${SERVER_URL}${p.url}" onerror="this.src='https://via.placeholder.com/300?text=Rocell+Gadget'">
+                </div>
+                <div class="flex-grow-1">
+                    <h5 class="fw-800 mb-1">${p.nama}</h5>
+                    <div class="price-text">${harga}</div>
+                </div>
+                <a href="${waLink}" target="_blank" class="btn-deal mt-3">
+                    <i class="bi bi-lightning-charge-fill"></i> SIKAT SEKARANG
+                </a>
+            `;
+            grid.appendChild(card);
         });
-        const data = await res.json();
-        
-        status.innerHTML = "✅ Berhasil Diupload ke Server!";
-        status.className = "text-success";
-        
-        // Tambahkan ke array lokal agar langsung muncul
-        products.unshift(data);
-        renderUI();
-
-        // Reset Form
-        document.getElementById("namaInput").value = "";
-        document.getElementById("hargaInput").value = "";
-        document.getElementById("fotoInput").value = "";
-    } catch (err) {
-        status.innerHTML = "❌ Gagal: Pastikan Server Aktif (192.168.110.104:3000)";
-        status.className = "text-danger";
-    } finally {
-        btn.disabled = false;
-        btn.innerHTML = "UPLOAD";
     }
-}
 
-// 3. Render Katalog ke Layar
-function renderUI() {
-    const grid = document.getElementById("produkGrid");
-    const search = document.getElementById("searchInput").value.toLowerCase();
-    grid.innerHTML = "";
+    // Fungsi Upload ke Server Node.js (192.168.110.104)
+    async function uploadKeServer() {
+        const nama = document.getElementById('inpNama').value;
+        const harga = document.getElementById('inpHarga').value;
+        const foto = document.getElementById('inpFoto').files[0];
+        const status = document.getElementById('statusUpload');
 
-    const filtered = products.filter(p => p.nama.toLowerCase().includes(search));
+        if(!nama || !harga || !foto) return alert("Mohon lengkapi data unit!");
 
-    filtered.forEach((p, index) => {
-        const hargaFormat = "Rp " + Number(p.harga).toLocaleString("id-ID");
-        const waLink = `https://wa.me/6281211172228?text=Halo%20Rocell%20Gadget%2C%20saya%20tertarik%20dengan%20*${encodeURIComponent(p.nama)}*%20harga%20${hargaFormat}.%20Ready?`;
+        const formData = new FormData();
+        formData.append("nama", nama);
+        formData.append("harga", harga);
+        formData.append("foto", foto);
+
+        status.innerHTML = "⌛ Sedang mengupload ke server laptop...";
         
-        const card = document.createElement("div");
-        card.className = "card-product animate__animated animate__fadeInUp";
-        card.style.animationDelay = (index * 0.1) + "s";
-        
-        card.innerHTML = `
-            <div class="badge-exclusive">NEW ARRIVAL</div>
-            <div class="img-container">
-                <img src="${SERVER_URL}${p.url}" onerror="this.src='https://via.placeholder.com/300?text=Rocell+Gadget'">
-            </div>
-            <div class="mb-3">
-                <h6 class="fw-bold mb-1">${p.nama}</h6>
-                <div class="price-tag">${hargaFormat}</div>
-            </div>
-            <a href="${waLink}" target="_blank" class="btn-wa">
-                <i class="bi bi-lightning-fill"></i> SIKAT SEKARANG
-            </a>
-            ${isAdmin ? `<button class="btn btn-sm btn-outline-danger border-0 mt-2" onclick="hapusLokal(${index})">Hapus</button>` : ""}
-        `;
-        grid.appendChild(card);
+        try {
+            const res = await fetch(`${SERVER_URL}/upload`, {
+                method: "POST",
+                body: formData
+            });
+            if(res.ok) {
+                status.innerHTML = "✅ Unit Berhasil Terpublikasi!";
+                muatKatalog(); // Refresh tampilan
+                document.getElementById('inpNama').value = "";
+                document.getElementById('inpHarga').value = "";
+                document.getElementById('inpFoto').value = "";
+            }
+        } catch (err) {
+            status.innerHTML = "❌ Gagal koneksi ke server 192.168.110.104";
+        }
+    }
+
+    // Auth Admin Logic
+    auth.onAuthStateChanged(user => {
+        const isAdmin = user && user.email === ADMIN_EMAIL;
+        document.getElementById('adminPanel').classList.toggle('hidden', !isAdmin);
+        document.getElementById('loginBtn').classList.toggle('hidden', isAdmin);
+        document.getElementById('logoutBtn').classList.toggle('hidden', !isAdmin);
     });
-}
 
-function hapusLokal(index) {
-    if(confirm("Hapus dari tampilan?")) {
-        products.splice(index, 1);
-        renderUI();
-    }
-}
+    document.getElementById('loginBtn').onclick = () => auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+    document.getElementById('logoutBtn').onclick = () => auth.signOut();
+    document.getElementById('searchInput').oninput = tampilkanKatalog;
 
-// --- AUTH LOGIC ---
-auth.onAuthStateChanged(user => {
-    if (user && user.email === ADMIN_EMAIL) {
-        isAdmin = true;
-        document.getElementById("adminPanel").classList.remove("hidden");
-        document.getElementById("logoutBtn").classList.remove("hidden");
-        document.getElementById("loginBtn").classList.add("hidden");
-    } else {
-        isAdmin = false;
-        document.getElementById("adminPanel").classList.add("hidden");
-        document.getElementById("logoutBtn").classList.add("hidden");
-        document.getElementById("loginBtn").classList.remove("hidden");
-    }
-    renderUI();
-});
-
-document.getElementById("loginBtn").onclick = () => auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
-document.getElementById("logoutBtn").onclick = () => auth.signOut();
-document.getElementById("searchInput").oninput = () => renderUI();
-
-// Jalankan saat start
-fetchProducts();
+    // Start
+    muatKatalog();
 </script>
 
 </body>
